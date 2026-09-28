@@ -62,6 +62,7 @@ namespace IdeaUnstuck.Core
         public int DiameterDimensionCount { get; set; }
         public int FullCircleCount { get; set; }
         public bool InchCircleAtOrigin { get; set; }
+        public bool CircleAtOrigin { get; set; }
         public string DimensionSignature { get; set; } = "";
         // Regions describe faces bounded by contours. A region with several loops can contain holes.
         public int RegionCount { get; set; }

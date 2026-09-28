@@ -1,55 +1,54 @@
 # IDEA Unstuck handoff
 
-## Needs Mr. Pina
-
-- Install the final overnight build as administrator after saving work and closing SOLIDWORKS. This unattended session has a non-elevated token and read-only access to the installed program directory. No UAC prompt will be launched or awaited.
-- Validate the new installed DLL in the real Task Pane after that install. Core live tests and managed-control tests do not replace installed-host UI checks.
-- After installing the current DLL, run `SelfTest --chaos` (500 operations), `SelfTest --soak` (45 minutes), ten shutdown-during-tick trials, and ten unload/reload cycles. Tonight's chaos/soak preflights explicitly skipped the old installed DLL; timing and memory results are not available.
-- Supply a reachable school network share for the network-file edge case. No credentials or shares were fabricated.
-- Supply a SOLIDWORKS 2025 school PC, a second Windows login, and a DPI check at 100%, 125%, and 150%.
-- Perform the physical Ctrl-click Teacher export reveal and the 30-minute student-style modeling acceptance check.
-
-## Overnight run in progress
-
-Phase 0 verified `pina-hash` authentication, private visibility, and a clean remote main before changes. Search completion now gives all diagnosis types a More help target and checks managed article navigation, related links, bold fix, and query/article persistence across render updates. The first regression exposed the missing assembly help link (31 pass, 1 fail); it was fixed and the final rerun is in progress. The control/logic run now has 19 pass, 0 fail. Final results below will supersede these interim notes.
-
 Private repository: https://github.com/pina-hash/idea-unstuck
 
-Pilot release: https://github.com/pina-hash/idea-unstuck/releases/tag/v0.1.0-pilot
+Pilot release: https://github.com/pina-hash/idea-unstuck/releases/tag/v0.2.0-pilot
 
 ## Done
 
-The x64 .NET Framework 4.8 SOLIDWORKS Task Pane add-in, diagnosis rules, guarded rescue actions, four guided paths, local telemetry, installer/uninstaller, and SelfTest runner are implemented. The installed copy on the development PC is at `C:\Program Files\IDEA\Unstuck`.
+- Local search embeds 49 help entries with 79 valid related links. Exact/prefix/one-typo/whole-phrasing scoring, top-five titles, inline articles, related navigation, and More help for every diagnosis are implemented. Both requested queries rank correctly. The 12 original requested diagnosis mappings and all observed live diagnosis links pass.
+- Nine additional live trap cases cover active tools, wrong lesson plane, one-sided first boss and missing sizes, circle radius labels, an empty part after five minutes, rebuild, SketchXpert availability, hidden tree, and selection filters. All 25 wrong entries are audited in docs/trap-coverage.md.
+- First 10 minutes is expanded by default, including with no document. Its eight steps and location hints lead to an origin-centered 1.000-inch circle, 0.500-inch Mid Plane extrusion, and saving. Four earlier lesson paths remain available. Saved-state checks cannot identify a student's last name.
+- Stuck v2 uses two unchanged minutes, four undos in 60 seconds, or three matched starts/cancellations of one command within two minutes. Native command events and cleanup are implemented; a native Line cancel fixture passes.
+- Student wording was reviewed throughout articles and pane guidance. docs/wording.md records 261 changed groups. Actual classroom sixth-grade readability remains to be confirmed.
+- Teacher summary reads offline ZIP/JSONL exports, deduplicates events, and produces HTML plus JSON with diagnosis counts/minutes, median first-body time, stuck initials, and buttons. Synthetic checks and actual overnight log aggregation passed.
+- Poll timing/concurrency counters, coalesced refreshes, disposal guards, and bounded samples are implemented. Detailed sketch reads are limited to the active/last sketch; feature errors are still checked across the bounded tree. The timer remains 1500 ms. No network or new modal dialog was added to the product.
 
-The search update embeds the supplied 49-entry `IdeaUnstuck.Core/kb.json` unchanged. It searches locally with exact/prefix/single-typo/whole-phrasing scores, shows the top five titles, and opens inline fix, steps, why, and related links. Diagnosis More help links map to the requested articles. The 1.5-second poll is unchanged; search adds no network calls or modal dialogs.
+## Test results
 
-Current search-build evidence:
+- Full final functional SelfTest: **49 PASS, 0 FAIL, 0 SKIP** (23 logic/control + 26 real SOLIDWORKS cases). Build: **0 warnings, 0 errors**.
+- Trap suite at phase 2: **28 PASS, 0 FAIL**. Edge suite at phase 3: **27 PASS, 0 FAIL, 1 SKIP** (network share). Learning suite before final wording: **25 PASS, 0 FAIL**. These overlap with the full suite.
+- Teacher-summary synthetic checks: **2 PASS, 0 FAIL**. Actual overnight aggregate counts are in TEST_RESULTS.md and verification/overnight-teacher-summary.json.
+- Core/AddIn have **zero SolidWorks.Interop runtime assembly references**. A 2025 API audit lists all unconfirmed uses; no 2025 execution is claimed.
+- Chaos: **0 operations**, skipped. Soak: **0 minutes**, skipped. Poll median/p95/max and start/end soak memory: **not measured**. Ten shutdown-during-tick trials and ten unload/reload cycles: **not run**.
+- Historical v0.1 installed-host, startup and installer successes are retained in TEST_RESULTS.md. They do not validate the new v0.2 installed pane. The development machine still has the older v0.1 DLL installed.
 
-- Build: **0 warnings, 0 errors**.
-- Logic SelfTest: **17 PASS, 0 FAIL**, including six help cases.
-- Installed-host SelfTest: **21 PASS, 0 FAIL** (the same 17 logic cases plus four host checks; do not add these as independent cases).
-- Knowledge base: **49 entries, 79 related links, 12 diagnosis mappings** verified. Both requested search queries return the expected first title.
-- Updated install succeeded; installed Core and AddIn hashes match the release binaries. Installed host reported zero exceptions.
+## Failed or skipped, and why
 
-Previous build evidence, retained separately: full SelfTest **26 PASS, 0 FAIL** (11 logic + 15 live SOLIDWORKS cases), two normal-startup runs **14 PASS, 0 FAIL each**, and installer install/install/uninstall/uninstall/install cycle **5 PASS, 0 FAIL**. Those results predate search and are not a substitute for the current full regression rerun. See TEST_RESULTS.md and verification/ for exact scope and logs.
+Earlier fixture failures (assembly help link, radius input dialog, selection-filter cleanup, and missing empty-body setup in a new control assertion) were repaired and rerun. The final complete functional suite has no failures. Original failure evidence is retained in verification/.
 
-The source, documentation, verification folder, and four release binaries are committed and pushed. `bin`, `obj`, and generated test parts are excluded. Release `v0.1.0-pilot` was built from code commit `9a9f1cf` and published with TEST_RESULTS.md as its notes. This handoff is a subsequent documentation-only commit on main.
+Current installed-host validation and stress/lifecycle work could not run against the changed DLL: this session is non-elevated and cannot replace files in Program Files. The overnight instructions prohibit waiting for UAC or user input. The stress modes detect the old installed build and skip instead of reporting its metrics as current.
 
-## Unfinished and checks still owed
+No reachable school network share was provided. No second Windows login or SOLIDWORKS 2025 PC was available. Some 2025 help pages returned 403 or generic help shells, so the API audit remains partly unconfirmed. The browser rejected local file: URLs, preventing visual print-layout verification of the teacher HTML. Its data tests passed.
 
-1. Rerun the full current SelfTest (expected **32 cases** if all run: 17 logic + 15 live; this is an expected count, not a passing result).
-2. Finish visible search UI verification: both example queries, bold fix, numbered steps, Why, related links, diagnosis More help, and preserving query/article while polling and document state changes. The automation-created host reported a healthy pane, but its visible task pane showed Import Model. A normal desktop launch was prepared for inspection, then the user stopped Computer Use with Escape and requested immediate cloud publication. No visual pass is claimed.
-3. **SOLIDWORKS 2025 on a school PC:** run installation, all SelfTests, pane checks, and startup checks. Only SOLIDWORKS 2026 SP4.1 / API 34.4.1 was available here.
-4. **Second Windows login:** verify the logon initializer and automatic add-in startup under another student account; check school PowerShell/logon policy.
-5. **30 minutes of normal modeling:** all lessons, dimension/extrude/cut/fillet/save, switches, native Ctrl+Z, opening existing documents, and no noticeable lag or logged exceptions.
-6. **Ctrl-click export:** Ctrl-click the pane title, click Teacher export, and inspect the Desktop ZIP. The export function was tested through the installed automation interface; the reveal gesture itself was not.
-7. Complete the remaining TEST_PLAN.md checks, including higher DPI, nested outlines, all guided student workflows, and deployment signing review with school IT.
+Search-only traps and reasons: delete-part/enter-repeat/shape-jumped/dragged-arrow depend on student intent; lost-part/view-tilted cannot distinguish intentional view changes; dim-box preferences cannot prove a specific input window should be present; crashed cannot be diagnosed after the in-process host exits or blocks; toolbar-gone has no verified whole-CommandManager visibility getter here. Blue/under-defined colors can be valid, so they do not alone trigger an error. Full details: docs/trap-coverage.md.
 
-No automatic endpoint highlighting or geometry repair is implemented. Unknown native errors retain their code and ask a TA. Bounding-box-based change-size evidence cannot detect every internal edit. This remains a pilot, not an accepted classroom rollout.
+No automatic geometry repair or endpoint highlighting is implemented. No student document changes without a click. Large-part external COM reads were slow (about 2.6/4.7 seconds for 20/300 sketches); these are not in-host poll timings. The 50 ms p95 performance target is not yet proven.
 
-## Resume on a new Windows computer
+## Needs Mr. Pina
 
-Use an account with access to the private GitHub repository and a licensed working SOLIDWORKS installation with standard English part/assembly templates. Install Git, a .NET SDK (development used **10.0.401**), and the **.NET Framework 4.8 Developer Pack**. An existing 4.8 runtime alone does not supply the targeting assemblies needed to build.
+1. Save work and close SOLIDWORKS. Install this final v0.2 build with install.bat as administrator. This is the first blocked step; no UAC prompt was launched overnight.
+2. Open the new installed pane. Run --addin and normal-startup checks below. Visually verify search, related links, all diagnosis More help links, the first lesson, hints, and preserved reading during polling.
+3. With the exact current DLL loaded and no documents open, run --chaos (500 operations) and --soak (45 minutes). Record the metrics and memory JSON. Investigate p95 above 50 ms or sustained memory growth. The 256 MiB warmed-run limit is only a finite leak screen.
+4. Perform ten shutdown-during-tick trials and ten Tools > Add-Ins unload/reload cycles; record crashes, duplicate panes, handlers, and exceptions. This lifecycle procedure is not automated yet.
+5. Test **SOLIDWORKS 2025 on a school PC**, including all SelfTests and uncertain API calls. Test **a second Windows login**, including the startup initializer and school policy.
+6. Check DPI at **100%, 125%, and 150%**, pane width, wrapping, and buttons.
+7. Do **30 minutes of student-style modeling** through all five paths, including native Ctrl+Z and document switches. Separately perform the **Ctrl-click export** reveal, Teacher export, and ZIP inspection.
+8. Supply a reachable network part file. Check read-only/network behavior on the school setup. Print the teacher HTML to confirm one-page layout. Read the wording with students and a teacher before classroom rollout.
+
+## Resume on another Windows computer
+
+Use a licensed SOLIDWORKS installation with standard English templates and an account allowed into the private repo. Install Git, a .NET SDK (development used 10.0.401), and the **.NET Framework 4.8 Developer Pack**. An installed runtime alone is not the Developer Pack.
 
 ```powershell
 git clone https://github.com/pina-hash/idea-unstuck.git
@@ -59,36 +58,35 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\build.ps1
 .\release\IdeaUnstuck.SelfTest.exe
 ```
 
-`build.ps1` executes the following build and copies the four required outputs to release:
+Exact underlying build:
 
 ```powershell
 dotnet build IdeaUnstuck.sln -c Release
 ```
 
-The default interop location is `C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist`. For a different installation, use:
+For a different SOLIDWORKS installation path:
 
 ```powershell
 dotnet build IdeaUnstuck.sln -c Release -p:SolidWorksInteropPath="C:\your\SOLIDWORKS\api\redist"
 ```
 
-Then copy `IdeaUnstuck.*.dll` from the AddIn build folder and `IdeaUnstuck.SelfTest.exe*` from the SelfTest build folder into release, as build.ps1 does. Interop types are embedded; do not ship the SOLIDWORKS interop DLLs.
+build.ps1 copies Core.dll, AddIn.dll, SelfTest.exe and its config into release. If building with a custom interop path, copy these four outputs as build.ps1 does. Never ship SOLIDWORKS interop DLLs. Save work and close SOLIDWORKS before running install.bat as administrator. Run live tests outside student modeling; they create and close their own fixtures.
 
-Save your work and close SOLIDWORKS before installation. Run `install.bat` as administrator, approve Windows elevation, and wait for SUCCESS. Run live tests when no student modeling is in progress; the runner creates and closes its own disposable documents.
-
-Exact installed-host commands:
+After installing the exact build:
 
 ```powershell
 .\release\IdeaUnstuck.SelfTest.exe --addin
-```
-
-For normal-startup verification, launch SOLIDWORKS normally, wait for startup to finish, then run:
-
-```powershell
+# Launch SOLIDWORKS normally before the startup check:
 .\release\IdeaUnstuck.SelfTest.exe --addin --startup
 .\release\IdeaUnstuck.SelfTest.exe --diagnose --show-pane
 .\release\IdeaUnstuck.SelfTest.exe --diagnose --export
+.\release\IdeaUnstuck.SelfTest.exe --edges
+.\release\IdeaUnstuck.SelfTest.exe --chaos
+.\release\IdeaUnstuck.SelfTest.exe --soak
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\test-summary.ps1 -WorkFolder .\release\test-results\summary-check
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\summarize-logs.ps1 -InputFolder C:\ClassLogs -OutputPath C:\ClassLogs\teacher-summary.html
 ```
 
-`--inspect` holds the SelfTest fixture for up to five minutes, or until `release\test-results\inspect.stop` exists; remove that marker before a new inspection. Log exports go to the current user's Desktop. Native-host telemetry should be checked through that ZIP because a packaged terminal can see a virtualized AppData location.
+Exit codes: 0 complete pass, 1 failure, 2 skipped prerequisite. Do not count skips as passes. --inspect waits up to five minutes for UI inspection; omit it for unattended work. Teacher exports go to the Windows Desktop. A packaged terminal can see virtualized AppData, so export native-host logs through the add-in.
 
-Record actual counts and remaining failures in TEST_RESULTS.md, add verification evidence, rebuild release files if code changed, then commit and push main. Keep unperformed acceptance checks marked NOT RUN.
+Record new evidence in verification/ and TEST_RESULTS.md. Rebuild release files after code changes. Commit and push each completed phase. This is a pilot; the pending checks above are required before classroom acceptance.

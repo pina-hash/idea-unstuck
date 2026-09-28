@@ -1,0 +1,154 @@
+﻿{
+    "events":  3820,
+    "malformedLines":  0,
+    "firstBodySamples":  6,
+    "medianFirstBodySeconds":  1.7343344,
+    "topByCount":  [
+                       {
+                           "id":  "unsaved",
+                           "count":  293,
+                           "minutes":  179.62
+                       },
+                       {
+                           "id":  "millimeters",
+                           "count":  122,
+                           "minutes":  266.75
+                       },
+                       {
+                           "id":  "stuck",
+                           "count":  92,
+                           "minutes":  46.67
+                       },
+                       {
+                           "id":  "left-sketch",
+                           "count":  42,
+                           "minutes":  2.75
+                       },
+                       {
+                           "id":  "no-body",
+                           "count":  42,
+                           "minutes":  2.75
+                       },
+                       {
+                           "id":  "no-document",
+                           "count":  19,
+                           "minutes":  74.58
+                       },
+                       {
+                           "id":  "wrong-document",
+                           "count":  17,
+                           "minutes":  0.36
+                       },
+                       {
+                           "id":  "multiple-outlines",
+                           "count":  12,
+                           "minutes":  0.74
+                       },
+                       {
+                           "id":  "multiple-bodies",
+                           "count":  7,
+                           "minutes":  0.43
+                       },
+                       {
+                           "id":  "open-contour",
+                           "count":  7,
+                           "minutes":  0.65
+                       }
+                   ],
+    "topByMinutes":  [
+                         {
+                             "id":  "millimeters",
+                             "count":  122,
+                             "minutes":  266.75
+                         },
+                         {
+                             "id":  "unsaved",
+                             "count":  293,
+                             "minutes":  179.62
+                         },
+                         {
+                             "id":  "no-document",
+                             "count":  19,
+                             "minutes":  74.58
+                         },
+                         {
+                             "id":  "stuck",
+                             "count":  92,
+                             "minutes":  46.67
+                         },
+                         {
+                             "id":  "left-sketch",
+                             "count":  42,
+                             "minutes":  2.75
+                         },
+                         {
+                             "id":  "no-body",
+                             "count":  42,
+                             "minutes":  2.75
+                         },
+                         {
+                             "id":  "multiple-outlines",
+                             "count":  12,
+                             "minutes":  0.74
+                         },
+                         {
+                             "id":  "open-contour",
+                             "count":  7,
+                             "minutes":  0.65
+                         },
+                         {
+                             "id":  "multiple-bodies",
+                             "count":  7,
+                             "minutes":  0.43
+                         },
+                         {
+                             "id":  "feature",
+                             "count":  6,
+                             "minutes":  0.4
+                         }
+                     ],
+    "stuckInitials":  [
+                          {
+                              "initials":  "?",
+                              "count":  94
+                          },
+                          {
+                              "initials":  "A",
+                              "count":  6
+                          }
+                      ],
+    "buttons":  [
+                    {
+                        "button":  "edit",
+                        "count":  13
+                    },
+                    {
+                        "button":  "exit",
+                        "count":  128
+                    },
+                    {
+                        "button":  "export",
+                        "count":  4
+                    },
+                    {
+                        "button":  "find",
+                        "count":  12
+                    },
+                    {
+                        "button":  "front",
+                        "count":  211
+                    },
+                    {
+                        "button":  "roll",
+                        "count":  12
+                    },
+                    {
+                        "button":  "undo",
+                        "count":  27
+                    },
+                    {
+                        "button":  "units",
+                        "count":  29
+                    }
+                ]
+}

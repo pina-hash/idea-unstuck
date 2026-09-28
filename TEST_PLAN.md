@@ -19,8 +19,8 @@ Use disposable parts and standard English templates. Tests change only their own
 | Part zoomed away | Geometry unchanged; no invented off-screen diagnosis | Find my part restores useful view scale | Live SelfTest; framing visual |
 | Front Plane sketch | In sketch, correct support name | Start sketch and Exit sketch change mode as expected | Live SelfTest |
 | Copy for AI | Correct year, snapshot, causes request, screenshot sentence | Clipboard receives prompt when button is pressed | Live SelfTest and installed-pane UI check |
-| Error for 3 minutes | stuck | Fix error and stuck card clears | Deterministic clock test |
-| Five undos in 1 minute | stuck | After old undos expire, stuck clears | Deterministic clock test; native event manual |
+| Same diagnosis for 2 minutes | stuck | Fix error and stuck card clears | Deterministic clock test |
+| Four undos in 1 minute | stuck | After old undos expire, stuck clears | Deterministic clock test; native event manual |
 | Unknown codes | Raw value and Ask a TA | No empty text | Deterministic test |
 | Automatic reads | No changed geometry, features, or edit mode | Five reads agree | Live SelfTest |
 | Checklists | No completion from button presses alone | Dimensions, feature state, bodies, saved state provide evidence | Deterministic negative test and manual full lessons |
@@ -35,7 +35,7 @@ Use disposable parts and standard English templates. Tests change only their own
 
 1. **Second Windows user:** Install once as an administrator. Sign out. Sign into a different student Windows account. Wait for logon initialization, open SOLIDWORKS, and verify both add-in checkboxes and the pane. Repeat with an account that had never used SOLIDWORKS. Record whether school policy blocked the logon program.
 2. **Restart:** Open the pane, close SOLIDWORKS normally, and reopen it twice. Confirm the pane loads without duplicate tabs and without an error in the log.
-3. **Thirty minutes of normal modeling:** Draw, dimension, extrude, cut, fillet, save, change parts, Undo with Ctrl+Z, close documents, and reopen them. Include all four guided paths. Confirm there is no noticeable lag and no exception or startup_error in that session's JSONL. Do not substitute an idle timer test for this check.
+3. **Thirty minutes of normal modeling:** Draw, dimension, extrude, cut, fillet, save, change parts, Undo with Ctrl+Z, close documents, and reopen them. Include all five guided paths. Confirm there is no noticeable lag and no exception or startup_error in that session's JSONL. Do not substitute an idle timer test for this check.
 4. **Uninstall:** Close SOLIDWORKS. Run uninstall twice. Verify the install directory, COM CLSID, SOLIDWORKS add-in entry, machine logon entry, and each tested user's startup entry are gone. Existing parts and log files should remain. Reopen SOLIDWORKS and confirm the helper is absent.
 5. **SOLIDWORKS 2025:** On a Windows 10 lab PC, install the same release binaries. Run every live SelfTest case. Confirm correct task-pane hosting, keyboard Undo detection, and startup for the second Windows user. Record the exact service pack and PASS/FAIL counts.
 6. **Pane width and DPI:** At normal Task Pane width, confirm there is no horizontal scroll and labels wrap. Repeat at 100%, 125%, and 150% Windows display scaling. Buttons should remain at least 36 pixels high.
@@ -44,3 +44,14 @@ Use disposable parts and standard English templates. Tests change only their own
 9. **Units and Undo:** Check that the unit button does not rescale an existing part. Try Undo and verify its behavior for the installed SOLIDWORKS service pack. View and edit-mode changes are not promised to be undoable.
 
 Record unperformed checks as NOT RUN, never PASS. A failed fixture is a test failure until it exercises the intended trap and verifies its recovery.
+
+## Overnight additions
+
+- `--traps`: active Line command; first sketch on Top Plane; one-sided first boss; a body backed by a sketch with no sizes; radial circle label; five-minute empty part using an injected clock; rebuild status; SketchXpert availability; hidden FeatureManager; selection filter flags. See docs/trap-coverage.md for the 25-entry detection audit and limits.
+- `--learning`: follow all eight First 10 minutes steps through a real 1.000-inch circle and saved 0.500-inch Mid Plane boss; match three native Line start/cancel events. `--unit` also checks exact time/undo boundaries, unmatched cancellation rejection, default expanded lesson, and all eight hints.
+- `--edges`: 20 sketches, 300 sketch features, non-English names, read-only file, drawing, no document, cut/fillet fixtures. Provide a reachable network file separately; it is skipped when unavailable.
+- `--chaos`: install the current DLL first, close existing documents, run 500 operations, retain chaos.json, assert host health, nonblank cards and nonoverlapping polls.
+- `--soak`: model for 45 minutes, retain soak.json, report median/p95/max poll time and start/end memory. Poll p95 must be <=50 ms. Investigate sustained memory growth; the script's 256 MiB warmed-run threshold is a finite leak screen.
+- Manually repeat SOLIDWORKS shutdown during active polling ten times, then add-in unload/reload ten times. Record process exit/start, duplicate panes/handlers, event counts and exceptions after each. These lifecycle tests are not automated or passed yet.
+- Run `tools/test-summary.ps1 -WorkFolder .\release\test-results\summary-check`, then summarize actual exported logs. Verify the HTML's print layout fits one landscape page. The script checks data and privacy separately from layout.
+- Read the student wording with a teacher and students. Confirm the sixth-grade target and exact menu names on the school installation; see docs/wording.md.

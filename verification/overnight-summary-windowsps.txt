@@ -1,0 +1,3 @@
+Report: C:\Users\aleja\Documents\Codex\2026-09-27\prop\work\summary-test-windowsps\test-summary.html
+Events=7; malformed=1; first-body samples=2
+SUMMARY TEST PASS=2 FAIL=0 (aggregation/deduplication; privacy)

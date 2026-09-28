@@ -1,0 +1,5 @@
+Object=System.__ComObject; COM=True
+Proxy=False
+Log: C:\Users\aleja\AppData\Local\IDEA\Unstuck; error: ; pane visible: True; child controls: 1; pane: {Width=328, Height=1054}; help entries: 49
+Status=connected|0|887|0
+Export=C:\Users\aleja\OneDrive\Desktop\IDEA-Unstuck-20260927-213711-a7a28d.zip

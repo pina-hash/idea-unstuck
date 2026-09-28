@@ -21,7 +21,7 @@ namespace IdeaUnstuck.AddIn
         readonly FlowLayoutPanel results, article;
         KnowledgeBase help;
         internal int HelpEntryCount => help?.Entries.Count ?? 0;
-        readonly HashSet<string> expanded = new HashSet<string> { "My first 3D part" };
+        readonly HashSet<string> expanded = new HashSet<string> { "First 10 minutes" };
         string fingerprint;
         List<GuidedPath> paths;
         public UnstuckPane() : this(new Telemetry(), id => { }) { }
@@ -83,11 +83,23 @@ namespace IdeaUnstuck.AddIn
             article.Controls.Add(TextLabel(entry.Title, true));
             article.Controls.Add(TextLabel(entry.Fix, true));
             article.Controls.Add(TextLabel("Step by step", true));
-            for (int i = 0; i < entry.Steps.Count; i++) article.Controls.Add(TextLabel((i + 1) + ". " + entry.Steps[i].T));
+            for (int i = 0; i < entry.Steps.Count; i++) article.Controls.Add(TextLabel((i + 1) + ". " + entry.Steps[i].T + "\nWhere: " + HelpRegion(entry.Steps[i].W)));
             article.Controls.Add(TextLabel("Why: " + entry.Why));
             if (entry.Related.Count > 0) article.Controls.Add(TextLabel("Related help", true));
             foreach (var id in entry.Related) { var related = help.Find(id); article.Controls.Add(HelpLink(related.Title, () => OpenHelp(related))); }
             article.Visible = true; FitWidths(); root.ScrollControlIntoView(article);
+        }
+        static string HelpRegion(string code)
+        {
+            switch(code) {
+                case "graphics": return "the drawing area"; case "keyboard": return "your keyboard";
+                case "menu": return "the top menu"; case "mouse": return "your mouse";
+                case "property": return "the settings panel on the left"; case "ribbon": case "tabs": return "the tool tabs at the top";
+                case "rollback": case "tree": return "the model tree on the left";
+                case "status": case "units": return "the status bar along the bottom";
+                case "taskpane": return "the Task Pane on the right"; case "corner": return "the upper-right corner of the drawing area";
+                default: return "the SOLIDWORKS window";
+            }
         }
         public void ShowMessage(string text) { message.Text = text; message.Visible = true; FitWidths(); }
         public void Render(StateSnapshot state, List<Diagnosis> diagnoses, List<GuidedPath> guided)
@@ -104,7 +116,7 @@ namespace IdeaUnstuck.AddIn
                 {
                     var card = Stack(); card.Padding = new Padding(6); card.BackColor = d.IsError ? Color.FromArgb(255, 236, 225) : Color.FromArgb(240, 244, 248);
                     card.Controls.Add(TextLabel(d.Title, true)); card.Controls.Add(TextLabel(d.Meaning)); card.Controls.Add(TextLabel(d.NextClick));
-                    if (d.Action != null) card.Controls.Add(ActionButton(d.Action == "copy" ? "Copy for AI" : d.Action == "units" ? "Set units to inches" : d.Action == "roll" ? "Roll to end" : d.Action == "undo" ? "Undo" : "Get back into my sketch", d.Action));
+                    if (d.Action != null) card.Controls.Add(ActionButton(d.Action == "copy" ? "Copy for AI" : d.Action == "units" ? "Set units to inches" : d.Action == "roll" ? "Roll to end" : d.Action == "undo" ? "Undo" : d.Action == "front" ? "Start a sketch on the Front Plane" : "Get back into my sketch", d.Action));
                     var entry = help?.ForDiagnosis(d.Id);
                     if (entry != null) card.Controls.Add(HelpLink("More help", () => OpenHelp(entry)));
                     cards.Controls.Add(card);
@@ -117,7 +129,7 @@ namespace IdeaUnstuck.AddIn
         {
             Clear(checklist);
             if (paths == null) return;
-            foreach (var path in paths)
+            foreach (var path in paths.OrderByDescending(p => p.Title == "First 10 minutes"))
             {
                 var heading = new Button { Text = (expanded.Contains(path.Title) ? "Hide: " : "Show: ") + path.Title, AutoSize = true, MinimumSize = new Size(0, 40), Margin = new Padding(0, 4, 0, 4), FlatStyle = FlatStyle.Flat, UseMnemonic = false };
                 heading.Click += (s, e) => Guard("path_expand", () => { log.Write("button_pressed", new { action="path_toggle", path=path.Title }); if (!expanded.Add(path.Title)) expanded.Remove(path.Title); RenderPaths(); FitWidths(); });
@@ -126,6 +138,7 @@ namespace IdeaUnstuck.AddIn
                 foreach (var step in path.Steps)
                 {
                     checklist.Controls.Add(TextLabel((step.Done ? "✓ " : "□ ") + step.Text));
+                    if (step.Hint != null) checklist.Controls.Add(HelpLink("Show me where", () => ShowMessage(step.Hint)));
                     if (!step.Done && step.Action != null) checklist.Controls.Add(ActionButton("Do it for me", step.Action));
                 }
             }

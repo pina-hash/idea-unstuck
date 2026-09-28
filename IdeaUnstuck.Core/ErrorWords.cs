@@ -34,10 +34,10 @@ namespace IdeaUnstuck.Core
                 case 17: return "The rounding would remove a needed face or edge.";
                 case 18: case 19: return "The rounding size is too big for this edge.";
                 case 30: return "The new shape does not touch the existing shape.";
-                case 31: return "The extrusion cannot find its ending face.";
-                case 32: return "These extrusion settings cannot make a solid shape.";
+                case 31: return "Extrude adds thickness to a sketch. It cannot find its ending face.";
+                case 32: return "Extrude adds thickness to a sketch. These settings cannot make a solid shape.";
                 case 33: case 36: return "The sketch mixes open and closed outlines.";
-                case 34: case 35: case 37: return "The sketch outline cannot make this extrusion.";
+                case 34: case 35: case 37: return "Extrude adds thickness to a sketch. This outline cannot make that shape.";
                 case 38: return "A rule joining parts points to an invalid edge.";
                 case 39: return "A rule joining parts points to an invalid face.";
                 case 40: return "A rule joining parts could not create a surface.";
@@ -50,7 +50,7 @@ namespace IdeaUnstuck.Core
                 case 47: return "A rule joining parts is not valid.";
                 case 49: case 50: return "This feature uses an older tool. Ask a TA.";
                 case 51: return "The sketch lost a link to another item.";
-                case 52: return "The partial rounding does not meet its reference.";
+                case 52: return "The partial round does not meet the item it uses as a guide.";
                 case 53: return "The partial rounding could not update.";
                 case 54: return "The partial rounding cannot continue along these edges.";
                 case 55: return "The partial rounding lost its starting edge.";
@@ -66,8 +66,8 @@ namespace IdeaUnstuck.Core
                 case 66: return "Partial rounding cannot use this closed chain of edges.";
                 case 67: return "The partial rounding reference matches more than one point.";
                 case 68: return "SOLIDWORKS could not repair the partial rounding.";
-                case 69: return "The sheet metal sweep needs a valid outline and path.";
-                case 70: return "The sheet metal sweep crosses itself.";
+                case 69: return "Sweep moves an outline along a path. Check both the outline and path.";
+                case 70: return "Sweep moves an outline along a path. This shape crosses itself.";
                 case 71: return "The cut does not touch the solid shape.";
                 case 72: return "Lines in the sketch cross each other.";
                 case 73: return "This feature is missing an item it needs.";
@@ -87,7 +87,7 @@ namespace IdeaUnstuck.Core
                 case 8: return "A line has no length. Delete it.";
                 case 10: case 15: return "This tool needs an open outline.";
                 case 11: return "The sketch mixes open and closed outlines.";
-                case 16: return "The outlines are nested more than this tool allows.";
+                case 16: return "There are too many outlines inside other outlines for this tool.";
                 case 20: return "This tool needs one open outline or separate closed outlines.";
                 case 21: return "Choose a centerline for the shape to turn around.";
                 case 22: return "The outline is open or cannot be followed.";

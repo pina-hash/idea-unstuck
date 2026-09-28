@@ -1,5 +1,41 @@
 # Verification report
 
+## Overnight phase 4: final functional build
+
+**49 PASS, 0 FAIL, 0 SKIP** in the complete current regression: 23 logic/managed-control cases, 15 original live cases, nine live trap cases, and two live learning cases on SOLIDWORKS 2026 SP4.1 / API 34.4.1. Build: **0 warnings, 0 errors**. Evidence: verification/overnight-phase4-final.txt and overnight-phase4-build.txt. Counts from overlapping suites must not be added as unique coverage.
+
+The First 10 minutes path is expanded by default even with no document, has eight location hints, and completed on a real 1.000-inch circle at the origin, a 0.500-inch Mid Plane boss, and a saved file. It cannot verify a student's last name. Stuck v2 passed the two-minute boundary, four-undo threshold, cancellation matching/expiry/reset, and three real Line start/cancel events. Native cancellation is -1, not the custom PropertyManager enum. First-body telemetry excludes parts already containing a body when first observed.
+
+The wording review covers article instructions, diagnosis guidance, lesson steps, status/rescue/error text and pane labels; docs/wording.md records 261 changed groups. Native tool names remain exact and difficult terms receive short explanations where used. This is an editorial sixth-grade target, not a validated reading-grade result. A teacher/student wording review is still owed. One final control check exposed an incomplete test fixture (BodyCount defaulted to unknown instead of zero); that fixture and a stale checklist reference in the new Undo test were corrected, and the complete rerun passed. Both paths now guard against a sketch removed by Undo; the real-host undo-to-empty-sketch check passed. The preceding 48 PASS / 1 FAIL output is retained, not counted as a pass. The new start-sketch diagnosis button now has its correct label.
+
+Teacher-summary synthetic checks: **2 PASS, 0 FAIL**, covering aggregation, duplicate exports, malformed lines, median, initials-only output, and exclusion of file/feature names. Actual overnight inputs produced **3820 unique events, 0 malformed lines, 6 first-body samples**, median **1.734 seconds**. These are development fixtures, not student performance. The exported old-host log and current SelfTest log were combined; exact duplicate lines were removed. HTML and JSON evidence are in verification/overnight-teacher-summary.*. Browser security rejected file: URLs, so visual/one-page print-layout verification is NOT RUN. No alternate access path was used.
+
+The **installed copy remains v0.1**. Its baseline health was connected with zero caught exceptions at the check, but that does not validate the v0.2 pane. Current installed-host visual interaction, 500-operation chaos, 45-minute soak, and lifecycle cycles remain blocked on an admin installation. No UAC prompt was launched. Search adds no network access or product modal; polling remains 1500 ms.
+
+### Overnight run counts (including historical failures and skips)
+
+These are separate runs, often repeating the same cases. Earlier failed outputs are retained for traceability.
+
+| Evidence file in verification/ | Final count |
+| --- | --- |
+| overnight-chaos-preflight.txt | TOTAL PASS=20 FAIL=0 SKIP=1 |
+| overnight-filter-repair.txt | TOTAL PASS=1 FAIL=0 |
+| overnight-full-final.txt | TOTAL PASS=49 FAIL=0 SKIP=0 |
+| overnight-phase1-final.txt | TOTAL PASS=34 FAIL=0 |
+| overnight-phase1-unit.txt | TOTAL PASS=19 FAIL=0 |
+| overnight-phase1.txt | TOTAL PASS=31 FAIL=1 |
+| overnight-phase2-final.txt | TOTAL PASS=27 FAIL=1 |
+| overnight-phase2-passing.txt | TOTAL PASS=28 FAIL=0 |
+| overnight-phase3-edges.txt | TOTAL PASS=27 FAIL=0 SKIP=1 |
+| overnight-phase4-before-undo-guard.txt | TOTAL PASS=49 FAIL=0 SKIP=0 |
+| overnight-phase4-final.txt | TOTAL PASS=49 FAIL=0 SKIP=0 |
+| overnight-phase4-fixture-failure.txt | TOTAL PASS=48 FAIL=1 SKIP=0 |
+| overnight-phase4-learning.txt | TOTAL PASS=25 FAIL=0 SKIP=0 |
+| overnight-phase4-undo-fixture-failure.txt | TOTAL PASS=48 FAIL=1 SKIP=0 |
+| overnight-soak-preflight.txt | TOTAL PASS=20 FAIL=0 SKIP=1 |
+| overnight-summary-test.txt | SUMMARY TEST PASS=2 FAIL=0 |
+| overnight-summary-windowsps.txt | SUMMARY TEST PASS=2 FAIL=0 |
+
 ## Overnight phase 3
 
 Edge suite: **27 PASS, 0 FAIL, 1 SKIP** (20 logic/control + 7 edge cases; school network share skipped). A 20-sketch part had 43 total features and a 2616 ms external COM read. A 300-sketch-feature part had 323 total features and a 4654 ms external COM read. These are **out-of-process full reads, not in-host poll tick timings**. Renamed non-English sketches/planes, a read-only file, drawing/no-document messages, and cut/fillet fixtures passed. The original live assembly case passed in phase 1. Evidence: verification/overnight-phase3-edges.txt.
@@ -22,9 +58,9 @@ Search completion: **34 PASS, 0 FAIL** on real SOLIDWORKS 2026 (19 logic/control
 
 Date: September 27, 2026 (local time). This is a **pilot build, not a fully accepted lab installation**.
 
-## Search update: current pilot code
+## Historical v0.1 search update (superseded by overnight results)
 
-The supplied `kb.json` is embedded unchanged in Core (SHA-256 `57A914539723922D0D7D8BBD91DC0C9D58DE3B39E4D0CEBC481C95A1678BAD2F`). The pane now provides local ranked search, up to five title links, inline fix/steps/why/related articles, and mapped diagnosis More help links. The 1500 ms poll remains unchanged; no network call or modal was added.
+At v0.1, the supplied `kb.json` was embedded unchanged in Core (SHA-256 `57A914539723922D0D7D8BBD91DC0C9D58DE3B39E4D0CEBC481C95A1678BAD2F`). The pane now provides local ranked search, up to five title links, inline fix/steps/why/related articles, and mapped diagnosis More help links. The 1500 ms poll remains unchanged; no network call or modal was added.
 
 - Build: **0 warnings, 0 errors**. [search-build.txt](verification/search-build.txt).
 - Logic SelfTest: **17 PASS, 0 FAIL** (11 existing plus 6 help cases). Both requested queries return the expected first result. Tests cover all **49 entries, 79 related links, and 12 diagnosis mappings**, plus scoring, all four single-edit typo operations, OR matching, normalization, and result limits. [search-unit.txt](verification/search-unit.txt).
@@ -39,7 +75,7 @@ dotnet build IdeaUnstuck.sln -c Release
 .\release\IdeaUnstuck.SelfTest.exe --addin --inspect
 ```
 
-**Not completed for this update:** the full 15 live-case regression rerun and visible search/article/related-link/More help interaction checks. The automation-created host reported a connected pane but the visible task pane showed Import Model; this was not counted as a visual pass. It was closed after confirming zero open documents and SOLIDWORKS was launched normally for visual inspection. The user then stopped Computer Use with Escape. At the user's direction, work moved immediately to private GitHub publication. Resume these checks before classroom acceptance. Historical successful runs below describe the previous build and do not substitute for these remaining checks.
+**Historical omissions at v0.1 publication (the overnight full regression now supersedes that omission):** the full 15 live-case regression rerun and visible search/article/related-link/More help interaction checks. The automation-created host reported a connected pane but the visible task pane showed Import Model; this was not counted as a visual pass. It was closed after confirming zero open documents and SOLIDWORKS was launched normally for visual inspection. The user then stopped Computer Use with Escape. At the user's direction, work moved immediately to private GitHub publication. Resume these checks before classroom acceptance. Historical successful runs below describe the previous build and do not substitute for these remaining checks.
 
 ## Previous pilot verification (before search)
 

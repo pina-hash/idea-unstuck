@@ -20,9 +20,15 @@ No Visual Studio, SDK, or targeting pack is needed on student PCs. Those tools a
 
 ## Search for help
 
-Type a student question into **Search for help**. Up to five titles appear; select one for a bold fix, numbered **Step by step** instructions, a **Why** explanation, and related help links. **More help** on a mapped diagnosis opens its matching article. **Back to search** returns to the existing query. Polling does not replace the query or an open article.
+Type a student question into **Search for help**. Up to five titles appear; select one for a bold fix, numbered **Step by step** instructions, a **Why** explanation, and related help links. **More help** on every diagnosis opens its matching article. **Back to search** returns to the existing query. Polling does not replace the query or an open article.
 
-The supplied 49-entry `IdeaUnstuck.Core/kb.json` is embedded in the Core DLL, so help works offline with no separate data file. Search uses title and student-phrasing words: exact = 3, query prefix = 2, one insertion/deletion/substitution/adjacent transposition = 1.5 for words of at least four letters. Each distinct query word contributes its best match; any matching word qualifies. Each complete semicolon-separated phrasing contained in the normalized query adds 4. Case, punctuation, and apostrophes are normalized; ties retain file order. Related links stay inside the pane. The 1500 ms SOLIDWORKS poll is unchanged.
+The 49-entry `IdeaUnstuck.Core/kb.json` is embedded in the Core DLL, so help works offline with no separate data file. Search uses title and student-phrasing words: exact = 3, query prefix = 2, one insertion/deletion/substitution/adjacent transposition = 1.5 for words of at least four letters. Each distinct query word contributes its best match; any matching word qualifies. Each complete semicolon-separated phrasing contained in the normalized query adds 4. Case, punctuation, and apostrophes are normalized; ties retain file order. Related links stay inside the pane. The 1500 ms SOLIDWORKS poll is unchanged. The overnight wording review updates article instructions while preserving IDs, student search phrasings, and related links.
+
+## First 10 minutes
+
+The expanded first path leads through a new part, inches, Front Plane, a circle at the origin, a 1.000-inch diameter, Exit Sketch, a 0.500-inch Mid Plane extrusion, and saving with a last name. Each step has an inline **Show me where** hint. Ticks require observed model state; saving verifies a saved file, not the student's last name. Four additional paths cover a first rectangular part, changing a size, cutting a face, and rounding an edge.
+
+The help card offers a next step and Copy for AI after unchanged diagnoses for two minutes, four undos within 60 seconds, or three matched starts and cancellations of the same command within two minutes. Successful completion clears that command's cancel streak. Document switches reset these counters.
 
 ## Rescue buttons
 
@@ -50,6 +56,16 @@ The helper does not highlight open ends automatically, since changing the select
 3. Find the new `IDEA-Unstuck-...zip` on that Windows user's Desktop. It contains today's log for that user.
 
 Logs are local at `%LOCALAPPDATA%\IDEA\Unstuck\log-YYYYMMDD.jsonl`. Nothing uploads them. Each Windows login has its own folder. Collecting another student's log requires that student's login or normal school IT access. Logs include the Windows user name at session start/end, file names, and error messages. Keep exports under the school's normal rules for student records.
+
+## Teacher summary
+
+Put exported ZIPs or JSONL files in one folder. Run this locally:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\summarize-logs.ps1 -InputFolder C:\ClassLogs -OutputPath C:\ClassLogs\teacher-summary.html
+```
+
+The HTML report and JSON sidecar include the top ten diagnoses by count and completed minutes, median time to first body, stuck counts using initials, and button counts. Duplicate exported lines are counted once. The first-body clock starts when an empty part is first observed in the current visit; parts already containing a body are excluded. Old logs without this event show no median. Initials can combine different students, and open intervals from crashes are not counted as completed minutes. HTML targets one landscape page; print pagination still needs a visual check. It has no external assets or network calls.
 
 ## Uninstall
 
@@ -121,8 +137,9 @@ Each UTF-8 JSON Lines record has `schema: 1`, UTC ISO-8601 `utc`, a random `sess
 | diagnosis_cleared | id, seconds (duration) |
 | button_pressed | action: find, units, edit, exit, roll, undo, front, copy, export, or path_toggle (also path) |
 | rescue_result | action, success |
-| guided_step_completed | id (a1-a9, b1-b4, c1-c4, d1-d2), document |
-| stuck_triggered | reason (three_minutes or five_undos), errors |
+| guided_step_completed | id (a1-a9, b1-b4, c1-c4, d1-d2, e1-e8), document |
+| stuck_triggered | reason (two_minutes, four_undos, or three_cancels), errors |
+| first_body | seconds since first observed empty part, existingBody=false |
 | exception | operation, type, Message, StackTrace |
 | selftest_failure | name, Message |
 | startup_error | message |
@@ -133,4 +150,10 @@ Diagnosis durations close on clearing, document change, or normal disconnect. A 
 
 The API member inventory and links to the 2025 API Help are in [API_AVAILABILITY.md](API_AVAILABILITY.md). Each verified entry records its Availability line. Entries whose official page lacks that line are explicitly marked unconfirmed. No call is intentionally based on a 2026-only member. Embedding interop types removes the reference-version dependency, but does not replace testing on a real 2025 lab installation.
 
-The first-availability line could not be confirmed for these used members: `ISldWorks.ActiveDoc`, `RevisionNumber`, `CloseDoc`, `ExitApp`, `Visible`, `LoadAddIn`, `AllowFailedFeatureCreation`; `IFeature.GetNextFeature`, `GetFirstSubFeature`, `GetNextSubFeature`, `GetDefinition`, `Name`, `GetNextDisplayDimension`; `IDimension.SystemValue`, `FullName`; `IPartDoc.FeatureByName`; and the `FileNewNotify2` event delegate. Their reference pages were checked in the 2025 API Help, and those lacking the line are not assigned an invented release date.
+The original audit could not confirm first availability for these members (the overnight additions and their uncertainties are listed separately in API_AVAILABILITY.md): `ISldWorks.ActiveDoc`, `RevisionNumber`, `CloseDoc`, `ExitApp`, `Visible`, `LoadAddIn`, `AllowFailedFeatureCreation`; `IFeature.GetNextFeature`, `GetFirstSubFeature`, `GetNextSubFeature`, `GetDefinition`, `Name`, `GetNextDisplayDimension`; `IDimension.SystemValue`, `FullName`; `IPartDoc.FeatureByName`; and the `FileNewNotify2` event delegate. Their reference pages were checked in the 2025 API Help, and those lacking the line are not assigned an invented release date.
+
+## Overnight stress modes
+
+After installing the exact release build and closing all documents, use `release\IdeaUnstuck.SelfTest.exe --chaos` for 500 seeded legal operations or `--soak` for 45 minutes of modeling. Both refuse to attribute metrics from a different installed build to this release. Reports go to `release\test-results`. Soak checks a 50 ms poll p95 and flags more than 256 MiB of growth after warm-up; a finite test cannot prove an unlimited memory bound. `--edges`, `--traps`, and `--learning` select their smaller live suites. A skipped prerequisite returns exit code 2; failure returns 1; a complete pass returns 0.
+
+The development PC still has the older v0.1 add-in installed. The overnight run did not prompt for elevation. Install v0.2 before using the current host checks. See HANDOFF.md for the exact remaining acceptance work.

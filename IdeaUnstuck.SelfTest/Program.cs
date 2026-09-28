@@ -83,8 +83,9 @@ namespace IdeaUnstuck.SelfTest
                     if (args.Contains("--addin")) AddinCases(args.Contains("--startup"));
                     else if (args.Contains("--traps")) TrapCases();
                     else if (args.Contains("--edges")) EdgeCases();
+                    else if (args.Contains("--learning")) LearningCases();
                     else if (args.Contains("--chaos") || args.Contains("--soak")) StressCases(args.Contains("--soak"));
-                    else { LiveCases(); TrapCases(); }
+                    else { LiveCases(); TrapCases(); LearningCases(); }
                 }
             }
             catch (Exception ex) { Log.Exception("SelfTest.Main", ex); failed++; Console.WriteLine("FAIL runner: " + ex.Message); }
@@ -274,6 +275,31 @@ namespace IdeaUnstuck.SelfTest
         }
         static void UnitCases()
         {
+            Case("stuck v2: two-minute boundary and four undos", () => {
+                var now=DateTime.UtcNow; var s=new StateSnapshot{DocumentType=1,DocumentKey="v2",LengthUnit=0}; var t=new DiagnosisTracker(Log);
+                t.Update(s,new Rules().Evaluate(s),now); var list=new Rules().Evaluate(s); t.Update(s,list,now.AddSeconds(119)); Require(!list.Any(d=>d.Id=="stuck"),"Too early.");
+                list=new Rules().Evaluate(s);t.Update(s,list,now.AddSeconds(120));Require(list.Any(d=>d.Id=="stuck"),"Two-minute boundary failed.");
+                t.Reset(now);t.Update(s,new System.Collections.Generic.List<Diagnosis>(),now);
+                for(int i=0;i<3;i++)t.Undo(now); list=new System.Collections.Generic.List<Diagnosis>();t.Update(s,list,now);Require(list.Count==0,"Three undos triggered.");
+                t.Undo(now);list=new System.Collections.Generic.List<Diagnosis>();t.Update(s,list,now);Require(list.Any(d=>d.Id=="stuck"),"Four undos did not trigger.");
+            });
+            Case("stuck v2: matched starts and cancels only, expiry and reset", () => {
+                var now=DateTime.UtcNow;var s=new StateSnapshot{DocumentType=1,DocumentKey="commands"};var t=new DiagnosisTracker(Log);t.Update(s,new List<Diagnosis>(),now);
+                for(int i=0;i<3;i++)t.CommandClosed(43,-1,now);var list=new List<Diagnosis>();t.Update(s,list,now);Require(list.Count==0,"Unmatched closes counted.");
+                for(int i=0;i<3;i++){t.CommandOpened(43);t.CommandClosed(43,-1,now);}list=new List<Diagnosis>();t.Update(s,list,now);Require(list.Any(d=>d.Id=="stuck"),"Cancel streak missing.");
+                list=new List<Diagnosis>();t.Update(s,list,now.AddSeconds(121));Require(list.Count==0,"Old cancel streak did not expire.");
+                t.Reset(now);list=new List<Diagnosis>();t.Update(s,list,now);Require(list.Count==0,"Reset kept the streak.");
+            });
+            Case("First 10 minutes: hints present and wrong size cannot complete", () => {
+                var p=new GuidedPaths(Log);var path=p.Paths.Single(x=>x.Title=="First 10 minutes");Require(path.Steps.Count==8 && path.Steps.All(x=>!string.IsNullOrWhiteSpace(x.Hint)),"Hints missing.");
+                p.Update(new StateSnapshot{DocumentType=1,DocumentKey="wrong-size",BodyCount=1,Path="saved.SLDPRT",LastSketch=new SketchState{FullCircleCount=1,EntityCount=1,DiameterDimensionCount=1}});
+                Require(!p.Paths.Single(x=>x.Title=="First 10 minutes").Steps.Last().Done,"Existing/wrong-size body completed lesson.");
+                p.Update(new StateSnapshot{DocumentType=1,DocumentKey="undo-sketch",InSketch=true,Sketch=new SketchState{SupportKind="plane",Support="Front Plane",EntityCount=1,FullCircleCount=1,CircleAtOrigin=true,ClosedContours=1}});
+                path=p.Paths.Single(x=>x.Title=="First 10 minutes");
+                Require(path.Steps[3].Done, "Circle step did not tick before Undo.");
+                p.Update(new StateSnapshot{DocumentType=1,DocumentKey="undo-sketch",BodyCount=0});
+                Require(!path.Steps[4].Done,"Removing the sketch completed its size step.");
+            });
             Case("poll metrics: bounded samples and overlap guard", () => {
                 var stats = new PollStatistics();
                 Require(stats.Enter() && !stats.Enter(), "Overlap was allowed."); stats.Leave(1);
@@ -305,6 +331,12 @@ namespace IdeaUnstuck.SelfTest
                     Require(All(pane).OfType<LinkLabel>().First().Text == KnowledgeBase.Embedded.Find("toolbar-gone").Title, "Toolbar UI result missing.");
                     Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == "More help"));
                     Require(All(pane).Any(c => c.Text == KnowledgeBase.Embedded.Find("units-mm").Fix), "Diagnosis link opened the wrong entry.");
+                    var empty = new StateSnapshot();
+                    pane.Render(empty, new Rules().Evaluate(empty), new GuidedPaths(Log).Paths);
+                    Require(All(pane).Any(c => c.Text == "Hide: First 10 minutes") && All(pane).OfType<LinkLabel>().Count(c => c.Text == "Show me where") == 8, "Empty-document lesson is not expanded with all hints.");
+                    state.EmptyPartSeconds = 300; state.LengthUnit = 3; state.BodyCount = 0;
+                    pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
+                    Require(All(pane).OfType<Button>().Count(c => c.Text == "Start a sketch on the Front Plane") == 2, "Start-sketch diagnosis button has the wrong label.");
                 }
             });
             Case("help: generic diagnosis cards also have links", () => {

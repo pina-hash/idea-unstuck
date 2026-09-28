@@ -6,30 +6,30 @@
    "kind": "wrong",
    "title": "My shape is not closed",
    "q": "open contour; not closed; gap; wont extrude; cannot extrude; extrude error; sketch has open; broken outline; ends not touching",
-   "fix": "Find the gap in your outline and drag one loose end onto the other until it snaps.",
+   "fix": "Find the gap. Drag one loose end onto the other end until it snaps.",
    "steps": [
     {
-     "t": "Zoom in on every corner with the scroll wheel. A gap can be too small to see from far away.",
+     "t": "Zoom in on each corner with the scroll wheel. Small gaps can be hard to see.",
      "w": "mouse"
     },
     {
-     "t": "Open the Tools menu, then Sketch Tools, then Check Sketch for Feature. Click Check. It tells you where the open ends are.",
+     "t": "Click Tools > Sketch Tools > Check Sketch for Feature. Click Check. Read the result.",
      "w": "menu"
     },
     {
-     "t": "Click and drag one loose end onto the other end. Let go when a small orange square appears. That square means the two ends are joined.",
+     "t": "Drag one loose end onto the other end. Check that the ends join.",
      "w": "graphics"
     },
     {
-     "t": "Delete any tiny extra line you find. Click it, press Delete.",
+     "t": "Click an extra line you do not need. Press Delete.",
      "w": "keyboard"
     },
     {
-     "t": "Try the extrude again.",
+     "t": "Click Features > Extruded Boss/Base again.",
      "w": "ribbon"
     }
    ],
-   "why": "An extrude pushes your outline into 3D, like pouring plastic into a mold. If the outline has a gap, the plastic leaks out, so SolidWorks refuses. Every outline must be one closed loop.",
+   "why": "A solid extrude makes a 3D shape from a closed outline. A gap can stop this lesson’s extrude.",
    "related": [
     "multi-contour",
     "extrude",
@@ -41,30 +41,30 @@
    "kind": "wrong",
    "title": "It says my sketch has multiple contours or lines crossing",
    "q": "multiple contours; self intersecting; lines crossing; overlapping lines; two outlines; contour error; intersect",
-   "fix": "Erase the extra pieces so there is one outline. Circles inside it are fine: they become holes.",
+   "fix": "Check which outlines you need. Remove only the extra lines. Keep any holes you meant to draw.",
    "steps": [
     {
-     "t": "Look for lines that cross each other or stick out past a corner.",
+     "t": "Look for lines that cross or stick out past a corner.",
      "w": "graphics"
     },
     {
-     "t": "On the Sketch tab, click Trim Entities. Choose Power trim.",
+     "t": "Click Sketch > Trim Entities. Choose Power trim.",
      "w": "ribbon"
     },
     {
-     "t": "Hold the left mouse button and drag across the extra pieces. They disappear as you cross them.",
+     "t": "Drag across each extra piece with the left mouse button held down.",
      "w": "mouse"
     },
     {
-     "t": "Look for a line drawn twice on top of itself: drag a line away and see if another one is under it. Delete the copy.",
+     "t": "Check for lines drawn on top of each other. Ask a TA before removing a line you are unsure about.",
      "w": "graphics"
     },
     {
-     "t": "Run Tools, Sketch Tools, Check Sketch for Feature to confirm.",
+     "t": "Click Tools > Sketch Tools > Check Sketch for Feature. Click Check.",
      "w": "menu"
     }
    ],
-   "why": "A hook is one outline with holes inside it. Two outlines side by side, or lines that cross, give SolidWorks more than one possible shape and it cannot guess which one you mean.",
+   "why": "An outline inside another can make a hole. Side-by-side outlines can make separate bodies. Crossing or extra lines may stop the tool.",
    "related": [
     "open-contour",
     "trim",
@@ -76,30 +76,30 @@
    "kind": "wrong",
    "title": "I left my sketch and cannot get back in",
    "q": "exited sketch; get back into sketch; edit sketch; left sketch; cant edit sketch; sketch gone; change my sketch; go back to sketch",
-   "fix": "Click the sketch in the tree on the left, then click Edit Sketch (the pencil).",
+   "fix": "Click the sketch in the left tree. Click Edit Sketch.",
    "steps": [
     {
-     "t": "Find the list on the left side of the screen. That is the tree: every step of your part, in order.",
+     "t": "Find the tree: the step list on the left.",
      "w": "tree"
     },
     {
-     "t": "If you already extruded, click the small arrow next to Boss-Extrude1. Your sketch (Sketch1) is inside it.",
+     "t": "Click the arrow next to Boss-Extrude1 if you already made a 3D shape. Look for Sketch1 inside it.",
      "w": "tree"
     },
     {
-     "t": "Click Sketch1. A small bar of icons pops up next to your mouse.",
+     "t": "Click Sketch1 in the tree.",
      "w": "tree"
     },
     {
-     "t": "Click Edit Sketch, the icon with a pencil. Your sketch lines light up and you can change them.",
+     "t": "Click Edit Sketch, the pencil icon.",
      "w": "graphics"
     },
     {
-     "t": "When you finish, click the Exit Sketch icon in the top-right corner of the part area.",
+     "t": "Click Exit Sketch when you finish.",
      "w": "corner"
     }
    ],
-   "why": "Leaving a sketch does not lock it. Every sketch and feature stays editable forever. Editing is how you change a part, which is why you never need to start over.",
+   "why": "Exit Sketch ends drawing mode. Edit Sketch lets you change the drawing later.",
    "related": [
     "exit-sketch",
     "edit-feature",
@@ -111,26 +111,26 @@
    "kind": "wrong",
    "title": "I messed up so badly I want to delete everything and start over",
    "q": "start over; delete everything; delete part; messed up; ruined; new part again; restart",
-   "fix": "Do not delete it. Press Ctrl+Z to undo, or edit the step that went wrong. It is almost always faster.",
+   "fix": "Press Ctrl+Z once. Check what changed. You can also edit the step that went wrong.",
    "steps": [
     {
-     "t": "Press Ctrl+Z. Each press undoes one step. Keep going until it looks right again.",
+     "t": "Press Ctrl+Z once. Check the result before pressing it again.",
      "w": "keyboard"
     },
     {
-     "t": "If one feature is wrong, right-click it in the tree and pick Edit Feature.",
+     "t": "Right-click the wrong feature, a step in your part. Click Edit Feature.",
      "w": "tree"
     },
     {
-     "t": "If the shape is wrong, click the sketch in the tree and pick Edit Sketch.",
+     "t": "Right-click the sketch if its lines need changes. Click Edit Sketch.",
      "w": "tree"
     },
     {
-     "t": "Still stuck after that? Ask a TA before you delete anything.",
+     "t": "Ask a TA before deleting work you may still need.",
      "w": "keyboard"
     }
    ],
-   "why": "Starting over throws away every correct step with the one wrong one. In CAD you fix the step that broke. The tree is there so you can go back to any step.",
+   "why": "Undo or Edit Feature can keep the steps that already work.",
    "related": [
     "undo",
     "left-sketch",
@@ -142,26 +142,26 @@
    "kind": "wrong",
    "title": "My numbers are huge or weird, like 25.4",
    "q": "millimeters; mm; wrong units; numbers huge; 25.4; metric; inches; units; decimals",
-   "fix": "You are in millimeters. Click the units at the bottom-right corner and pick IPS.",
+   "fix": "Click the units in the bottom-right corner. Choose IPS for inches.",
    "steps": [
     {
-     "t": "Look at the bottom-right corner of the SolidWorks window. It shows the unit system, like MMGS.",
+     "t": "Find the unit label at the bottom-right. MMGS uses millimeters.",
      "w": "units"
     },
     {
-     "t": "Click it and pick IPS (inch, pound, second).",
+     "t": "Click the unit label. Choose IPS, which uses inches.",
      "w": "units"
     },
     {
-     "t": "Your part does not change size. Only the numbers change to inches.",
+     "t": "Check the sizes shown. Changing units does not scale your shape.",
      "w": "graphics"
     },
     {
-     "t": "If you typed numbers while in millimeters, they are wrong now. Retype them in inches.",
+     "t": "Check each size against your assignment. Change only values that do not match.",
      "w": "graphics"
     },
     {
-     "t": "To make three decimal places show: Options (the gear at the top), Document Properties tab, Units, set Length decimals to .123.",
+     "t": "Click Options, the gear icon. Click Document Properties > Units. Set Length decimals to .123.",
      "w": "menu"
     }
    ],
@@ -175,22 +175,22 @@
    "kind": "wrong",
    "title": "My sketch turned red or yellow, or says Over Defined",
    "q": "red lines; yellow lines; over defined; overdefined; conflict; sketch red; cannot solve; sketchxpert",
-   "fix": "Press Ctrl+Z to undo the last dimension or relation you added.",
+   "fix": "Press Ctrl+Z to undo the last size or drawing rule. Check whether the red marks clear.",
    "steps": [
     {
-     "t": "Look at the bottom of the screen. It says Over Defined when two rules are fighting.",
+     "t": "Look for Over Defined at the bottom. It means some drawing rules conflict.",
      "w": "status"
     },
     {
-     "t": "Press Ctrl+Z once. That usually removes the rule that caused it.",
+     "t": "Press Ctrl+Z once. Check whether the red lines clear.",
      "w": "keyboard"
     },
     {
-     "t": "Or find the red or yellow dimension and delete it.",
+     "t": "Check the red or yellow size labels. Ask a TA which rule to remove.",
      "w": "graphics"
     },
     {
-     "t": "For help finding it: click the words Over Defined at the bottom. SketchXpert opens. Click Diagnose, pick a solution, click Accept.",
+     "t": "Click Tools > Sketch Tools > SketchXpert. Click Diagnose. Review a proposed change before clicking Accept.",
      "w": "status"
     }
    ],
@@ -205,22 +205,22 @@
    "kind": "wrong",
    "title": "What do blue and black lines mean?",
    "q": "blue lines; black lines; under defined; fully defined; line colors; why blue",
-   "fix": "Blue means the line can still move. Black means dimensions lock it in place. Both are fine.",
+   "fix": "Blue lines can still move. Black lines have fixed sizes and positions. Either color can work.",
    "steps": [
     {
-     "t": "Drag a blue line. It moves, because nothing locks it yet.",
+     "t": "A blue line can still move. Check its size before dragging it.",
      "w": "graphics"
     },
     {
-     "t": "Add dimensions until the lines turn black. Black lines stay put when you change other things.",
+     "t": "Add needed sizes with Smart Dimension. Black lines have their size and position set.",
      "w": "ribbon"
     },
     {
-     "t": "The bottom of the screen says Under Defined or Fully Defined.",
+     "t": "Read Under Defined or Fully Defined at the bottom. These words describe how much can still move.",
      "w": "status"
     }
    ],
-   "why": "A fully defined sketch (all black) behaves predictably when you change a number. It is good practice, not a requirement for your first part.",
+   "why": "Dimensions and relations are drawing rules. They hold sizes and positions in place.",
    "related": [
     "red-sketch",
     "smart-dim"
@@ -231,26 +231,26 @@
    "kind": "wrong",
    "title": "My part disappeared or I cannot find it",
    "q": "cant see part; disappeared; lost; gone; zoomed out; blank screen; where is my part; nothing there",
-   "fix": "Put your mouse over the part area and press F. It zooms to fit your whole part.",
+   "fix": "Move the mouse over the drawing area. Press F to fit the part in the view.",
    "steps": [
     {
-     "t": "Move the mouse over the big part area and press F.",
+     "t": "Move the pointer over the part area. Press F to fit the view.",
      "w": "keyboard"
     },
     {
-     "t": "Still nothing? Press the spacebar and double-click Isometric.",
+     "t": "Press the spacebar if the view is still unclear. Double-click Isometric, a view from a corner.",
      "w": "keyboard"
     },
     {
-     "t": "Look in the tree for a gray line with a yellow-and-black bar above your features. Right-click the bar and pick Roll to End.",
+     "t": "Find the rollback bar in the left tree. Right-click it. Click Roll to End.",
      "w": "rollback"
     },
     {
-     "t": "Open the Solid Bodies folder in the tree. If your body is hidden, right-click it and pick Show.",
+     "t": "Open Solid Bodies in the tree. Right-click a hidden body. Click Show.",
      "w": "tree"
     }
    ],
-   "why": "The part is almost never gone. The view moved, the rollback bar hid it, or the body was hidden. None of those delete anything.",
+   "why": "Zoom, a hidden body, or the rollback bar can hide a part from view. Check the left tree if F does not help.",
    "related": [
     "move-view",
     "rollback"
@@ -261,26 +261,26 @@
    "kind": "wrong",
    "title": "There is a red X or a yellow triangle in the tree",
    "q": "red x; error; yellow triangle; warning; rebuild error; feature failed; fillet failed; cut failed; failed; what wrong; exclamation",
-   "fix": "Hover over the first one from the top to read what it says, then right-click it and pick Edit Feature.",
+   "fix": "Point at the first warning in the left tree. Read its message. Right-click that step. Choose Edit Feature.",
    "steps": [
     {
-     "t": "Find the FIRST feature with a mark, counting from the top of the tree. Fix that one first: it often causes the others.",
+     "t": "Find the first marked feature from the top of the tree. Start there.",
      "w": "tree"
     },
     {
-     "t": "Hover the mouse over it and read the message.",
+     "t": "Hold the pointer over its mark. Read the message.",
      "w": "tree"
     },
     {
-     "t": "Right-click it. Pick Edit Feature to change its settings, or Edit Sketch to change its shape.",
+     "t": "Right-click the feature. Choose Edit Feature for settings or Edit Sketch for lines.",
      "w": "tree"
     },
     {
-     "t": "A yellow triangle is a warning: the part still works. A red X means that feature failed.",
+     "t": "A yellow triangle is a warning to check. A red X means the step failed.",
      "w": "tree"
     },
     {
-     "t": "Common cause: a Fillet radius that is too big. Make it smaller.",
+     "t": "Check the Fillet size if the error names a fillet. Try a smaller radius, the size of the round.",
      "w": "property"
     }
    ],
@@ -296,18 +296,18 @@
    "kind": "wrong",
    "title": "Things in my tree are gray, or there is a yellow and black line in the middle",
    "q": "grayed out; gray features; rollback bar; yellow black line; features missing; part went back",
-   "fix": "Right-click the yellow and black bar and pick Roll to End.",
+   "fix": "Right-click the yellow-and-black bar in the left tree. Choose Roll to End.",
    "steps": [
     {
-     "t": "Find the yellow and black bar in the tree.",
+     "t": "Find the rollback bar in the left tree. It marks where the part stops building.",
      "w": "rollback"
     },
     {
-     "t": "Right-click it and pick Roll to End. Or drag it to the very bottom.",
+     "t": "Right-click the bar. Click Roll to End.",
      "w": "rollback"
     }
    ],
-   "why": "That bar is a time machine. Everything below it is switched off, so you can see the part as it was earlier. Somebody dragged it by accident.",
+   "why": "The rollback bar marks how far the model is built. Steps below it are paused.",
    "related": [
     "lost-part"
    ]
@@ -317,14 +317,14 @@
    "kind": "wrong",
    "title": "It keeps drawing lines every time I click",
    "q": "keeps drawing; cant stop drawing; line tool; extra lines; stop tool",
-   "fix": "Press Esc. That stops the tool.",
+   "fix": "Press Esc to stop the drawing tool.",
    "steps": [
     {
-     "t": "Press Esc once or twice.",
+     "t": "Press Esc. Press it again if the drawing tool stays on.",
      "w": "keyboard"
     },
     {
-     "t": "Delete any extra lines: click one, press Delete.",
+     "t": "Click an extra line you do not need. Press Delete.",
      "w": "keyboard"
     }
    ],
@@ -338,14 +338,14 @@
    "kind": "wrong",
    "title": "A tool opened that I did not choose",
    "q": "tool opened by itself; random tool; enter key; repeat command; popped up",
-   "fix": "Press Esc to close it. Pressing Enter repeats the last tool you used.",
+   "fix": "Press Esc to stop the tool. Enter can repeat the last tool.",
    "steps": [
     {
-     "t": "Press Esc.",
+     "t": "Press Esc to stop the tool.",
      "w": "keyboard"
     },
     {
-     "t": "If a panel opened on the left, click the red X at its top.",
+     "t": "Click the red X on the open settings panel if you want to cancel that tool.",
      "w": "property"
     }
    ],
@@ -357,22 +357,22 @@
    "kind": "wrong",
    "title": "I cannot click the face or edge I want",
    "q": "cant select; wrong face; clicks wrong thing; select edge; select face; behind; hidden face",
-   "fix": "Right-click near it, choose Select Other, and pick the one you want from the list.",
+   "fix": "Press F6 if a selection filter is on. Otherwise, right-click near the item. Choose Select Other.",
    "steps": [
     {
-     "t": "Rotate the view so the face or edge is facing you: hold the middle mouse button and drag.",
+     "t": "Turn the view by dragging with the middle mouse button held down.",
      "w": "mouse"
     },
     {
-     "t": "Or right-click near it and choose Select Other. Move through the list until the right one lights up, and click it.",
+     "t": "Right-click near the item. Choose Select Other. Click the item you want in the list.",
      "w": "graphics"
     },
     {
-     "t": "Zoom in with the scroll wheel so edges are farther apart.",
+     "t": "Zoom in with the scroll wheel to separate nearby edges.",
      "w": "mouse"
     }
    ],
-   "why": "SolidWorks picks whatever is closest to the mouse. Thin parts put faces and edges very close together.",
+   "why": "A selection filter limits what you can click. Select Other helps when faces and edges overlap in the view.",
    "related": [
     "move-view"
    ]
@@ -382,18 +382,18 @@
    "kind": "wrong",
    "title": "The buttons or tabs at the top disappeared",
    "q": "toolbar gone; tabs missing; commandmanager; buttons gone; sketch tab missing; features tab missing; ribbon gone",
-   "fix": "Right-click on any tab at the top (like Features) and turn on the tab you are missing.",
+   "fix": "Right-click near the top tabs. Check Enable CommandManager. Turn on the missing tab.",
    "steps": [
     {
-     "t": "Right-click on a tab at the top, like Features or Sketch.",
+     "t": "Right-click a top tab, such as Features or Sketch.",
      "w": "tabs"
     },
     {
-     "t": "In the menu, point at Tabs and check the one that is missing.",
+     "t": "Point to Tabs. Check the missing tab.",
      "w": "tabs"
     },
     {
-     "t": "If there are no tabs at all: right-click any empty spot at the top and check CommandManager.",
+     "t": "Right-click an empty spot at the top if all tabs are gone. Check CommandManager, the top tool panel.",
      "w": "ribbon"
     }
    ],
@@ -405,18 +405,18 @@
    "kind": "wrong",
    "title": "The list on the left disappeared",
    "q": "tree gone; left panel gone; featuremanager missing; list missing; side panel",
-   "fix": "Press F9.",
+   "fix": "Press F9 to show the list on the left.",
    "steps": [
     {
-     "t": "Press F9. It shows or hides the tree.",
+     "t": "Press F9 to show the left tree.",
      "w": "keyboard"
     },
     {
-     "t": "If the left side shows settings instead of the tree, a tool is still open. Click the green check to finish it or the red X to cancel.",
+     "t": "Finish or cancel the open tool if settings cover the tree. Use the green check to finish or the red X to cancel.",
      "w": "property"
     }
    ],
-   "why": "The left panel shares its space. When a tool is open, its settings replace the tree until you finish.",
+   "why": "F9 hides or shows the left panel. A tool’s settings can also cover the tree until you finish the tool.",
    "related": []
   },
   {
@@ -424,18 +424,18 @@
    "kind": "wrong",
    "title": "My view is tilted and I cannot draw straight",
    "q": "tilted; sideways; rotated; crooked; cant see sketch flat; view wrong; upside down",
-   "fix": "Press Ctrl+8 to look straight at the sketch, or press the spacebar and pick Front.",
+   "fix": "Press Ctrl+8 while editing the sketch. This looks straight at the sketch.",
    "steps": [
     {
-     "t": "Inside a sketch, press Ctrl+8. The view turns to face the sketch.",
+     "t": "Press Ctrl+8 while editing a sketch. This faces the sketch straight on.",
      "w": "keyboard"
     },
     {
-     "t": "Or press the spacebar and double-click Front.",
+     "t": "Press the spacebar for other views. Double-click Front.",
      "w": "keyboard"
     }
    ],
-   "why": "Drawing on a tilted view makes lines land at angles you did not mean. Always look straight at the sketch while you draw.",
+   "why": "Looking straight at the sketch makes its shapes easier to see. Turning the view does not tilt the sketch plane.",
    "related": [
     "move-view"
    ]
@@ -445,18 +445,18 @@
    "kind": "wrong",
    "title": "My extrude went the wrong way, or only to one side",
    "q": "wrong direction; one side; not centered; mid plane; flip; reverse; extrude backwards",
-   "fix": "Edit the extrude and change Blind to Mid Plane.",
+   "fix": "Right-click the Extrude in the left tree. Choose Edit Feature. Change Direction 1 to Mid Plane.",
    "steps": [
     {
-     "t": "Right-click Boss-Extrude1 in the tree and pick Edit Feature.",
+     "t": "Right-click Boss-Extrude1 in the tree. Click Edit Feature.",
      "w": "tree"
     },
     {
-     "t": "Under Direction 1, open the drop-down that says Blind and pick Mid Plane.",
+     "t": "Open the end-setting list under Direction 1. Choose Mid Plane.",
      "w": "property"
     },
     {
-     "t": "Type the full thickness, for example 0.500. Half goes each way.",
+     "t": "Type the full thickness, such as 0.500 inches. Half extends each way.",
      "w": "property"
     },
     {
@@ -475,22 +475,22 @@
    "kind": "wrong",
    "title": "My part has two bodies (Solid Bodies(2))",
    "q": "two bodies; solid bodies 2; separate pieces; not connected; merge result; floating",
-   "fix": "Edit the last extrude and check Merge result, or change it so it touches the rest of the part.",
+   "fix": "Edit the last Extrude. Check Merge result. The new shape must touch the old shape to join it.",
    "steps": [
     {
-     "t": "Open the Solid Bodies folder in the tree. If it says (2), you have two separate pieces.",
+     "t": "Open Solid Bodies in the tree. A count of 2 means two separate 3D shapes.",
      "w": "tree"
     },
     {
-     "t": "Right-click the last extrude, pick Edit Feature, and check Merge result.",
+     "t": "Right-click the last Extrude. Click Edit Feature. Check Merge result.",
      "w": "property"
     },
     {
-     "t": "If it still makes two, the new piece does not touch the old one. Edit its sketch so they overlap.",
+     "t": "Check whether the new shape touches the old shape. Edit its sketch if the two should touch.",
      "w": "tree"
     }
    ],
-   "why": "A hook must be one solid piece. Two bodies that only look connected will print as two parts that fall apart.",
+   "why": "This lesson needs one solid body: one connected 3D shape. Two separate bodies may be correct in other projects.",
    "related": [
     "edit-feature"
    ]
@@ -500,22 +500,22 @@
    "kind": "wrong",
    "title": "My circle dimension shows R instead of a diameter",
    "q": "radius; diameter; R instead of; circle dimension; show diameter",
-   "fix": "Right-click the dimension, open Display Options, and pick Display As Diameter.",
+   "fix": "Right-click the size label. Choose Display Options > Display as Diameter.",
    "steps": [
     {
-     "t": "Right-click the dimension.",
+     "t": "Right-click the size label.",
      "w": "graphics"
     },
     {
-     "t": "Point at Display Options and click Display As Diameter.",
+     "t": "Point to Display Options. Click Display As Diameter, which shows full width.",
      "w": "graphics"
     },
     {
-     "t": "Next time, click a full circle, not an arc. A circle gets a diameter automatically.",
+     "t": "Click a full circle when adding its size with Smart Dimension. Check for the diameter symbol.",
      "w": "graphics"
     }
    ],
-   "why": "Arcs are measured by radius and full circles by diameter. The hook rules are written as diameters, so show them that way.",
+   "why": "Radius is half the full width. Diameter is the full width. This lesson gives the circle’s diameter.",
    "related": [
     "smart-dim"
    ]
@@ -525,26 +525,26 @@
    "kind": "wrong",
    "title": "SolidWorks froze or closed",
    "q": "froze; crashed; not responding; closed; lost my work; recover",
-   "fix": "Wait 30 seconds. If it closed, open SolidWorks again and look for Document Recovery on the right.",
+   "fix": "Wait briefly if SOLIDWORKS is busy. If it closed, reopen it. Look for Document Recovery.",
    "steps": [
     {
-     "t": "Give it 30 seconds before clicking anything. It may be thinking.",
+     "t": "Wait 30 seconds. SOLIDWORKS may still be working.",
      "w": "graphics"
     },
     {
-     "t": "If it closed, reopen SolidWorks. A Document Recovery panel appears on the right side with your last autosave.",
+     "t": "Reopen SOLIDWORKS if it closed. Look for Document Recovery; a saved recovery copy may be available.",
      "w": "taskpane"
     },
     {
-     "t": "Open it and immediately use Save As to save it with your name.",
+     "t": "Open a recovery copy if one is listed. Use File > Save As to keep it.",
      "w": "menu"
     },
     {
-     "t": "From now on press Ctrl+S every few minutes.",
+     "t": "Press Ctrl+S every few minutes as you work.",
      "w": "keyboard"
     }
    ],
-   "why": "Autosave keeps copies every few minutes, but only a real save is safe.",
+   "why": "Recovery copies may be available. They depend on the backup settings. Save often with Ctrl+S.",
    "related": [
     "save"
    ]
@@ -554,18 +554,18 @@
    "kind": "wrong",
    "title": "When I typed a dimension, the whole shape jumped or flipped",
    "q": "shape jumped; flipped; went crazy; distorted; dimension moved everything; exploded",
-   "fix": "Press Ctrl+Z. Then drag the shape close to the right size first and dimension it again.",
+   "fix": "Press Ctrl+Z. Move the shape close to the size you need. Add the size label again.",
    "steps": [
     {
-     "t": "Press Ctrl+Z to undo the jump.",
+     "t": "Press Ctrl+Z once. Check the shape.",
      "w": "keyboard"
     },
     {
-     "t": "Drag the lines so they are already close to the size you want.",
+     "t": "Place lines near the size you want before adding sizes.",
      "w": "graphics"
     },
     {
-     "t": "Dimension the big sizes first, then the small ones.",
+     "t": "Set the large sizes first. Set the small sizes next.",
      "w": "ribbon"
     }
    ],
@@ -580,18 +580,18 @@
    "kind": "wrong",
    "title": "The box to type my dimension did not pop up",
    "q": "no box; cant type number; dimension box; modify box; type value",
-   "fix": "Double-click the dimension number. The box opens.",
+   "fix": "Double-click the size label to edit its value.",
    "steps": [
     {
-     "t": "Double-click the number.",
+     "t": "Double-click the size number.",
      "w": "graphics"
     },
     {
-     "t": "Type the value and press Enter.",
+     "t": "Type the value. Press Enter.",
      "w": "keyboard"
     }
    ],
-   "why": "The box opens automatically only when a setting is on. Double-clicking always works.",
+   "why": "The automatic value box depends on a setting. A size label can usually be edited by double-clicking it.",
    "related": [
     "smart-dim"
    ]
@@ -601,18 +601,18 @@
    "kind": "wrong",
    "title": "My sketch is on the wrong plane",
    "q": "wrong plane; lying flat; top plane; sideways part; edit sketch plane",
-   "fix": "Right-click the sketch in the tree, pick Edit Sketch Plane, then click Front Plane.",
+   "fix": "Exit the sketch. Right-click it in the left tree. Choose Edit Sketch Plane. Select Front Plane.",
    "steps": [
     {
      "t": "Right-click the sketch in the tree.",
      "w": "tree"
     },
     {
-     "t": "Pick Edit Sketch Plane.",
+     "t": "Click Edit Sketch Plane.",
      "w": "tree"
     },
     {
-     "t": "Click Front Plane in the tree, then the green check.",
+     "t": "Click Front Plane in the tree. Click the green check.",
      "w": "property"
     }
    ],
@@ -626,14 +626,14 @@
    "kind": "wrong",
    "title": "It says rebuild, or there is a traffic light icon",
    "q": "rebuild; traffic light; needs rebuild; not updated",
-   "fix": "Press Ctrl+B.",
+   "fix": "Press Ctrl+B to update the part.",
    "steps": [
     {
-     "t": "Press Ctrl+B to rebuild.",
+     "t": "Press Ctrl+B to update the part.",
      "w": "keyboard"
     },
     {
-     "t": "Still marked? Press Ctrl+Q to rebuild everything.",
+     "t": "Press Ctrl+Q if it still needs a full update.",
      "w": "keyboard"
     }
    ],
@@ -647,14 +647,14 @@
    "kind": "wrong",
    "title": "I dragged an arrow and my part changed size",
    "q": "dragged arrow; changed size by accident; blue arrow; instant3d",
-   "fix": "Press Ctrl+Z.",
+   "fix": "Press Ctrl+Z once. Check the size again.",
    "steps": [
     {
-     "t": "Press Ctrl+Z.",
+     "t": "Press Ctrl+Z once. Check the size.",
      "w": "keyboard"
     },
     {
-     "t": "To change a size on purpose, double-click its number and type it.",
+     "t": "Double-click a size number to change it on purpose. Type the new value. Press Enter.",
      "w": "graphics"
     }
    ],
@@ -668,22 +668,22 @@
    "kind": "how",
    "title": "Start a new part",
    "q": "new part; new file; start; begin; create part; open solidworks",
-   "fix": "File, New, Part, OK. Then switch to inches and save it with your name.",
+   "fix": "Click File > New. Choose Part. Click OK. Set inches. Save with your last name.",
    "steps": [
     {
-     "t": "Click File, then New (or the blank page icon at the top).",
+     "t": "Click File > New.",
      "w": "menu"
     },
     {
-     "t": "Pick Part and click OK.",
+     "t": "Choose Part. Click OK.",
      "w": "menu"
     },
     {
-     "t": "Check the bottom-right corner says IPS. If not, click it and pick IPS.",
+     "t": "Check for IPS at the bottom-right. Click the unit label to choose IPS if needed.",
      "w": "units"
     },
     {
-     "t": "Save it now: Ctrl+S, name it with your last name.",
+     "t": "Press Ctrl+S. Put your last name in the file name. Click Save.",
      "w": "keyboard"
     }
    ],
@@ -699,18 +699,18 @@
    "kind": "how",
    "title": "Switch to inches",
    "q": "inches; units; ips; change units; set units",
-   "fix": "Click the units at the bottom-right corner and pick IPS.",
+   "fix": "Click the units in the bottom-right corner. Choose IPS.",
    "steps": [
     {
-     "t": "Click the unit label at the bottom-right corner of the window.",
+     "t": "Click the unit label at the bottom-right.",
      "w": "units"
     },
     {
-     "t": "Pick IPS (inch, pound, second).",
+     "t": "Choose IPS, which uses inches.",
      "w": "units"
     },
     {
-     "t": "For three decimals: Options (gear), Document Properties, Units, Length decimals .123.",
+     "t": "Click Options, the gear icon. Click Document Properties > Units. Set Length decimals to .123.",
      "w": "menu"
     }
    ],
@@ -724,26 +724,26 @@
    "kind": "how",
    "title": "Start a sketch",
    "q": "start sketch; new sketch; draw; begin drawing; front plane; sketch plane",
-   "fix": "Click Front Plane in the tree, then click the Sketch icon that pops up.",
+   "fix": "Click Front Plane in the left tree. Click Sketch.",
    "steps": [
     {
-     "t": "In the tree on the left, click Front Plane.",
+     "t": "Click Front Plane in the left tree.",
      "w": "tree"
     },
     {
-     "t": "Click the Sketch icon in the small bar that pops up. Or use the Sketch tab, then Sketch.",
+     "t": "Click Sketch on the small bar or the top Sketch tab.",
      "w": "ribbon"
     },
     {
-     "t": "The view turns to face the plane. If it does not, press Ctrl+8.",
+     "t": "Press Ctrl+8 if the view does not face the sketch.",
      "w": "keyboard"
     },
     {
-     "t": "The origin (two small red arrows) is the center of your part. Start your first circle there.",
+     "t": "Find the origin, the red starting point. Start your first circle there.",
      "w": "graphics"
     }
    ],
-   "why": "A sketch is a flat drawing on a plane. The Front Plane is the one you look straight at, so the hook outline goes there.",
+   "why": "A sketch is a flat drawing. A plane is a flat guide. This lesson uses Front Plane.",
    "related": [
     "draw",
     "wrong-plane"
@@ -754,22 +754,22 @@
    "kind": "how",
    "title": "Draw lines, circles and arcs",
    "q": "draw line; circle; arc; rectangle; draw shape; sketch tools; curve",
-   "fix": "Sketch tab: Line, Circle, or an Arc. Click to start, click to end, Esc to stop.",
+   "fix": "Choose Line, Circle, or Arc on the Sketch tab. Click to draw. Press Esc to stop.",
    "steps": [
     {
-     "t": "Circle: on the Sketch tab click Circle, click the center, move out, click again.",
+     "t": "Click Circle on the Sketch tab. Click the center. Move outward. Click to set the edge.",
      "w": "ribbon"
     },
     {
-     "t": "Line: click Line, click a start point, click each corner. Double-click or press Esc to stop.",
+     "t": "Click Line. Click a start point. Click each corner. Press Esc to stop.",
      "w": "ribbon"
     },
     {
-     "t": "Curve that flows from a line: while drawing a line, move the mouse back onto the last point and out again. It switches to an arc. Or use Tangent Arc.",
+     "t": "Click Tangent Arc for a smooth curve from a line. Click the line end to start it.",
      "w": "graphics"
     },
     {
-     "t": "Start and end points should snap onto each other. An orange square means they joined.",
+     "t": "Check that the ends join where you want a closed outline.",
      "w": "graphics"
     }
    ],
@@ -785,26 +785,26 @@
    "kind": "how",
    "title": "Set an exact size (Smart Dimension)",
    "q": "dimension; size; exact size; smart dimension; measure in sketch; set length; diameter; center to center",
-   "fix": "Sketch tab, Smart Dimension, click the thing, click to place, type the number, Enter.",
+   "fix": "Click Smart Dimension on the Sketch tab. Click an item. Place the label. Type the size. Press Enter.",
    "steps": [
     {
-     "t": "Click Smart Dimension on the Sketch tab (the icon with a ruler and a diameter sign).",
+     "t": "Click Smart Dimension on the Sketch tab.",
      "w": "ribbon"
     },
     {
-     "t": "Line length: click the line. Circle diameter: click the circle. Center to center: click one circle, then the other.",
+     "t": "Click a line for its length or a circle for its full width. Click two circles for the space between their centers.",
      "w": "graphics"
     },
     {
-     "t": "Move the mouse to where the number should sit and click.",
+     "t": "Move the pointer to place the size label. Click.",
      "w": "graphics"
     },
     {
-     "t": "Type the value in inches and press Enter.",
+     "t": "Type the value in inches. Press Enter.",
      "w": "keyboard"
     },
     {
-     "t": "Press Esc when you are done dimensioning.",
+     "t": "Press Esc when you finish adding sizes.",
      "w": "keyboard"
     }
    ],
@@ -820,10 +820,10 @@
    "kind": "how",
    "title": "Change a size after I extruded",
    "q": "change size; change dimension; edit dimension; resize; make bigger; make smaller; modify",
-   "fix": "Double-click the part to show its numbers, double-click the number, type the new value, press Enter.",
+   "fix": "Double-click the part to show its sizes. Double-click a size label. Type the new value. Press Enter.",
    "steps": [
     {
-     "t": "Double-click the feature in the tree, or on the part. Its dimensions appear.",
+     "t": "Double-click the feature in the tree. Its size labels appear.",
      "w": "graphics"
     },
     {
@@ -831,11 +831,11 @@
      "w": "graphics"
     },
     {
-     "t": "Type the new value and press Enter.",
+     "t": "Type the new value. Press Enter.",
      "w": "keyboard"
     },
     {
-     "t": "Press Ctrl+B to rebuild.",
+     "t": "Press Ctrl+B to update the shape.",
      "w": "keyboard"
     }
    ],
@@ -850,14 +850,14 @@
    "kind": "how",
    "title": "Leave the sketch",
    "q": "exit sketch; leave sketch; finish sketch; done sketching; close sketch",
-   "fix": "Click the Exit Sketch icon in the top-right corner of the part area.",
+   "fix": "Click Exit Sketch on the Sketch tab.",
    "steps": [
     {
-     "t": "Look at the top-right corner of the part area.",
+     "t": "Find Exit Sketch on the Sketch tab.",
      "w": "corner"
     },
     {
-     "t": "Click the icon with the sketch and the check mark to keep your sketch. Do NOT click the red X: it throws away your changes.",
+     "t": "Click Exit Sketch to finish drawing.",
      "w": "corner"
     }
    ],
@@ -871,22 +871,22 @@
    "kind": "how",
    "title": "Make it 3D (Extruded Boss/Base)",
    "q": "extrude; make 3d; thickness; boss; turn sketch into part; extruded boss base",
-   "fix": "Features tab, Extruded Boss/Base, Mid Plane, type the thickness, green check.",
+   "fix": "Click Extruded Boss/Base on the Features tab. Choose Mid Plane. Type the depth. Click the green check.",
    "steps": [
     {
      "t": "Click the Features tab.",
      "w": "tabs"
     },
     {
-     "t": "Click Extruded Boss/Base.",
+     "t": "Click Extruded Boss/Base to give the sketch thickness.",
      "w": "ribbon"
     },
     {
-     "t": "If it asks for a sketch, click your sketch.",
+     "t": "Click your sketch if asked to choose one.",
      "w": "tree"
     },
     {
-     "t": "Under Direction 1 pick Mid Plane and type the thickness (0.750 is the most allowed).",
+     "t": "Choose Mid Plane under Direction 1. Type the thickness your assignment asks for.",
      "w": "property"
     },
     {
@@ -894,7 +894,7 @@
      "w": "property"
     }
    ],
-   "why": "An extrude pushes a closed outline straight out to make a solid. Mid Plane keeps it centered.",
+   "why": "Extruded Boss/Base adds depth to a closed outline. Mid Plane adds equal depth on each side.",
    "related": [
     "open-contour",
     "extrude-direction",
@@ -906,22 +906,22 @@
    "kind": "how",
    "title": "Sketch on a face of my part",
    "q": "sketch on face; draw on part; face sketch; add to face",
-   "fix": "Click a flat face of the part, then click the Sketch icon that pops up.",
+   "fix": "Click a flat face on the part. Click Sketch.",
    "steps": [
     {
-     "t": "Click a flat face. It turns blue.",
+     "t": "Click a flat face on the part.",
      "w": "graphics"
     },
     {
-     "t": "Click Sketch in the bar that pops up.",
+     "t": "Click Sketch on the small bar.",
      "w": "graphics"
     },
     {
-     "t": "Press Ctrl+8 to look straight at it.",
+     "t": "Press Ctrl+8 to face the sketch.",
      "w": "keyboard"
     },
     {
-     "t": "Draw a closed outline, then use Extruded Boss/Base to add or Extruded Cut to remove.",
+     "t": "Draw a closed outline. Use Extruded Boss/Base to add material or Extruded Cut to remove it.",
      "w": "ribbon"
     }
    ],
@@ -937,22 +937,22 @@
    "kind": "how",
    "title": "Cut a hole or a pocket (Extruded Cut)",
    "q": "cut; hole; pocket; remove material; extruded cut; subtract",
-   "fix": "Sketch the shape on a face, then Features tab, Extruded Cut, set the depth, green check.",
+   "fix": "Draw a closed shape on a flat face. Exit the sketch. Click Extruded Cut on the Features tab. Set the depth. Click the green check.",
    "steps": [
     {
-     "t": "Sketch a closed shape on a face.",
+     "t": "Draw a closed outline in a sketch on the face.",
      "w": "graphics"
     },
     {
-     "t": "Features tab, Extruded Cut.",
+     "t": "Click Features > Extruded Cut.",
      "w": "ribbon"
     },
     {
-     "t": "Pick Through All for a hole all the way through, or Blind and type a depth for a pocket.",
+     "t": "Choose Through All for a hole through the part. For a pocket, choose Blind. Type its depth.",
      "w": "property"
     },
     {
-     "t": "Nothing cut? Click the arrow next to the depth to flip the direction.",
+     "t": "Check the preview. Click the direction arrow if the cut points away from the part.",
      "w": "property"
     },
     {
@@ -971,26 +971,26 @@
    "kind": "how",
    "title": "Round an edge (Fillet)",
    "q": "fillet; round edge; round corner; smooth edge; radius edge",
-   "fix": "Features tab, Fillet, type a radius, click the edges, green check.",
+   "fix": "Click Fillet on the Features tab. Type a small radius. Select the edges. Click the green check.",
    "steps": [
     {
-     "t": "Features tab, Fillet.",
+     "t": "Click Features > Fillet to round an edge.",
      "w": "ribbon"
     },
     {
-     "t": "Type a radius, like 0.060.",
+     "t": "Type the radius, the size of the round. For example, try 0.060 inches.",
      "w": "property"
     },
     {
-     "t": "Click each edge to round. They list on the left.",
+     "t": "Click the edges you want to round.",
      "w": "graphics"
     },
     {
-     "t": "Green check. If it fails, make the radius smaller.",
+     "t": "Click the green check. Try a smaller radius if it fails.",
      "w": "property"
     }
    ],
-   "why": "Sharp inside corners are where cracks start. Rounding them makes the hook stronger.",
+   "why": "A fillet rounds an edge. Radius sets how large that round is.",
    "related": [
     "chamfer",
     "red-x"
@@ -1001,22 +1001,22 @@
    "kind": "how",
    "title": "Bevel an edge (Chamfer)",
    "q": "chamfer; bevel; angled edge; 45 degree edge",
-   "fix": "Features tab, click the small arrow under Fillet, Chamfer, type a distance, click edges, green check.",
+   "fix": "Open the arrow next to Fillet. Click Chamfer. Type a distance. Select the edges. Click the green check.",
    "steps": [
     {
-     "t": "Features tab. Click the small arrow under Fillet and pick Chamfer.",
+     "t": "Open the arrow under Fillet on the Features tab. Click Chamfer to make a sloped edge.",
      "w": "ribbon"
     },
     {
-     "t": "Type a distance and click the edges.",
+     "t": "Type a distance. Click the edges.",
      "w": "property"
     },
     {
-     "t": "Green check.",
+     "t": "Click the green check.",
      "w": "property"
     }
    ],
-   "why": "A 45 degree chamfer on an edge that faces down on the printer prints without support.",
+   "why": "A chamfer is a flat bevel. Some downward-facing bevels need less print support; check the printer settings.",
    "related": [
     "fillet"
    ]
@@ -1026,22 +1026,22 @@
    "kind": "how",
    "title": "Make both sides match (Mirror)",
    "q": "mirror; symmetric; both sides; copy to other side; match",
-   "fix": "Features tab, Mirror, pick Front Plane as the mirror, pick the feature to copy, green check.",
+   "fix": "Click Mirror on the Features tab. Choose Front Plane. Pick the step to copy. Click the green check.",
    "steps": [
     {
-     "t": "Features tab, Mirror.",
+     "t": "Click Features > Mirror to copy across a plane.",
      "w": "ribbon"
     },
     {
-     "t": "Mirror Face/Plane: click Front Plane in the tree (click the small arrow at the top of the left panel to show it).",
+     "t": "Click the Mirror Face/Plane box. Click Front Plane in the tree.",
      "w": "tree"
     },
     {
-     "t": "Features to Mirror: click the cut or boss you made on one side.",
+     "t": "Click the Features to Mirror box. Click the cut or boss to copy.",
      "w": "tree"
     },
     {
-     "t": "Green check. In a sketch, use Mirror Entities with a centerline instead.",
+     "t": "Click the green check. Use Mirror Entities for lines inside a sketch.",
      "w": "property"
     }
    ],
@@ -1056,26 +1056,26 @@
    "kind": "how",
    "title": "Copy an outline inside itself (Offset Entities)",
    "q": "offset; wall; rim; copy outline; inside outline; border",
-   "fix": "Sketch tab, Offset Entities, type a distance, click the edges, flip inward if needed, green check.",
+   "fix": "Click Offset Entities on the Sketch tab. Type the gap size. Select the edges. Check the direction. Click the green check.",
    "steps": [
     {
      "t": "Start a sketch on the face.",
      "w": "graphics"
     },
     {
-     "t": "Sketch tab, Offset Entities.",
+     "t": "Click Sketch > Offset Entities to copy edges nearby.",
      "w": "ribbon"
     },
     {
-     "t": "Type a distance and click the outer edges.",
+     "t": "Type a distance. Click the edges to copy.",
      "w": "property"
     },
     {
-     "t": "Check Reverse if it went outward. Green check.",
+     "t": "Check Reverse if the copy goes the wrong way. Click the green check.",
      "w": "property"
     }
    ],
-   "why": "An offset keeps an even wall, which is how you make a raised rim: offset inward, then cut the pocket.",
+   "why": "Offset Entities copies edges at a fixed gap. It helps make walls with an even width.",
    "related": [
     "sketch-face",
     "cut"
@@ -1086,22 +1086,22 @@
    "kind": "how",
    "title": "Erase part of a line (Trim)",
    "q": "trim; erase part of line; cut line; remove extra; power trim",
-   "fix": "Sketch tab, Trim Entities, Power trim, drag across the pieces you do not want.",
+   "fix": "Click Trim Entities on the Sketch tab. Choose Power trim. Drag across only the pieces you want to remove.",
    "steps": [
     {
-     "t": "Sketch tab, Trim Entities.",
+     "t": "Click Sketch > Trim Entities.",
      "w": "ribbon"
     },
     {
-     "t": "Pick Power trim.",
+     "t": "Choose Power trim.",
      "w": "property"
     },
     {
-     "t": "Hold the left mouse button and drag across the pieces. They disappear.",
+     "t": "Drag across unwanted pieces with the left mouse button held down.",
      "w": "mouse"
     },
     {
-     "t": "Esc when done.",
+     "t": "Press Esc when finished.",
      "w": "keyboard"
     }
    ],
@@ -1115,18 +1115,18 @@
    "kind": "how",
    "title": "Draw a centerline",
    "q": "centerline; center line; construction; dashed line; symmetry line",
-   "fix": "Sketch tab, click the small arrow next to Line, Centerline.",
+   "fix": "Open the arrow next to Line on the Sketch tab. Click Centerline.",
    "steps": [
     {
-     "t": "Click the arrow next to Line and pick Centerline.",
+     "t": "Open the arrow next to Line. Click Centerline, a guide for your drawing.",
      "w": "ribbon"
     },
     {
-     "t": "Draw it like a normal line.",
+     "t": "Click a start point. Click an end point. Press Esc.",
      "w": "graphics"
     }
    ],
-   "why": "A centerline is a guide. It never becomes plastic, and Mirror Entities uses it as the mirror.",
+   "why": "A centerline is a drawing guide. It does not become part of the solid shape.",
    "related": [
     "mirror"
    ]
@@ -1136,22 +1136,22 @@
    "kind": "how",
    "title": "Make two things touch, line up, or be tangent",
    "q": "tangent; smooth; coincident; line up; horizontal; vertical; equal; relation",
-   "fix": "Hold Ctrl and click both items, then pick the relation on the left.",
+   "fix": "Hold Ctrl while clicking two items. Choose a drawing rule in the left panel.",
    "steps": [
     {
-     "t": "Hold Ctrl and click the two items.",
+     "t": "Select two items while holding Ctrl.",
      "w": "graphics"
     },
     {
-     "t": "On the left, under Add Relations, pick one: Tangent (smooth join), Coincident (touching), Horizontal, Equal.",
+     "t": "Choose a rule under Add Relations on the left. Tangent means a smooth join. Coincident means touching. Equal means the same size. Horizontal means level.",
      "w": "property"
     },
     {
-     "t": "Press Esc.",
+     "t": "Press Esc when finished.",
      "w": "keyboard"
     }
    ],
-   "why": "Relations lock how shapes connect. Tangent makes an arc flow into a line with no corner, which is stronger.",
+   "why": "Relations are rules between drawing items. Tangent joins a curve smoothly, without a sharp corner.",
    "related": [
     "colors"
    ]
@@ -1161,26 +1161,26 @@
    "kind": "how",
    "title": "Measure my part",
    "q": "measure; how big; check size; distance; diameter; thickness; center distance",
-   "fix": "Evaluate tab, Measure, click what you want to measure.",
+   "fix": "Click Measure on the Evaluate tab. Click the items you want to check.",
    "steps": [
     {
-     "t": "Click the Evaluate tab, then Measure.",
+     "t": "Click Evaluate > Measure.",
      "w": "tabs"
     },
     {
-     "t": "Two circle edges: shows the center to center distance.",
+     "t": "Select two circle edges to check their center distance.",
      "w": "graphics"
     },
     {
-     "t": "One circle edge: shows its diameter.",
+     "t": "Select one circle edge to check its full width.",
      "w": "graphics"
     },
     {
-     "t": "Two faces: shows the distance between them, like the thickness.",
+     "t": "Select two faces to check the distance between them.",
      "w": "graphics"
     },
     {
-     "t": "Click in empty space to clear, and close the box when done.",
+     "t": "Click empty space to clear the selection. Close Measure when finished.",
      "w": "graphics"
     }
    ],
@@ -1194,22 +1194,22 @@
    "kind": "how",
    "title": "Turn, zoom and move the view",
    "q": "rotate; turn; spin; zoom; pan; move view; look around; view",
-   "fix": "Hold the middle mouse button to turn. Scroll to zoom. Ctrl + middle button to slide.",
+   "fix": "Hold the middle mouse button to turn the view. Scroll to zoom. Hold Ctrl and the middle button to slide the view.",
    "steps": [
     {
-     "t": "Turn: hold the middle mouse button (the scroll wheel) and drag.",
+     "t": "Drag with the middle mouse button held down to turn the view.",
      "w": "mouse"
     },
     {
-     "t": "Zoom: roll the scroll wheel.",
+     "t": "Roll the scroll wheel to zoom.",
      "w": "mouse"
     },
     {
-     "t": "Slide: hold Ctrl and the middle mouse button and drag.",
+     "t": "Drag while holding Ctrl and the middle mouse button to slide the view.",
      "w": "mouse"
     },
     {
-     "t": "Fit everything: F. Pick a view: spacebar.",
+     "t": "Press F to fit the part. Press the spacebar to choose a view.",
      "w": "keyboard"
     }
    ],
@@ -1224,18 +1224,18 @@
    "kind": "how",
    "title": "Undo a mistake",
    "q": "undo; go back; oops; mistake; ctrl z; redo",
-   "fix": "Ctrl+Z. Ctrl+Y puts it back.",
+   "fix": "Press Ctrl+Z to undo one change. Press Ctrl+Y to redo it.",
    "steps": [
     {
-     "t": "Press Ctrl+Z. Each press undoes one step.",
+     "t": "Press Ctrl+Z once. Check what changed.",
      "w": "keyboard"
     },
     {
-     "t": "Went too far? Ctrl+Y redoes.",
+     "t": "Press Ctrl+Y if you need to redo the change.",
      "w": "keyboard"
     }
    ],
-   "why": "Undo is always safer than deleting.",
+   "why": "Undo can reverse a recent change. Check the result; not every view or editing action can be undone.",
    "related": [
     "delete-part"
    ]
@@ -1245,18 +1245,18 @@
    "kind": "how",
    "title": "Change an extrude, cut or fillet",
    "q": "edit feature; change extrude; change depth; change thickness; thicker; thinner; change fillet; edit cut",
-   "fix": "Right-click the feature in the tree and pick Edit Feature.",
+   "fix": "Right-click a step in the left tree. Click Edit Feature.",
    "steps": [
     {
-     "t": "Right-click the feature in the tree.",
+     "t": "Right-click the feature, a step in your part.",
      "w": "tree"
     },
     {
-     "t": "Pick Edit Feature (the icon with a pencil and a box).",
+     "t": "Click Edit Feature.",
      "w": "tree"
     },
     {
-     "t": "Change the settings and click the green check.",
+     "t": "Change a setting. Click the green check.",
      "w": "property"
     }
    ],
@@ -1271,18 +1271,18 @@
    "kind": "how",
    "title": "Find what is wrong with my sketch",
    "q": "check sketch; what is wrong; find gap; find error; sketch problem",
-   "fix": "Tools menu, Sketch Tools, Check Sketch for Feature, then Check.",
+   "fix": "Click Tools > Sketch Tools > Check Sketch for Feature. Choose the tool you plan to use. Click Check.",
    "steps": [
     {
-     "t": "While in the sketch, open the Tools menu.",
+     "t": "Open the Tools menu while editing the sketch.",
      "w": "menu"
     },
     {
-     "t": "Sketch Tools, then Check Sketch for Feature.",
+     "t": "Click Sketch Tools > Check Sketch for Feature.",
      "w": "menu"
     },
     {
-     "t": "Click Check. It lists and highlights the problems.",
+     "t": "Click Check. Read the result.",
      "w": "property"
     }
    ],
@@ -1297,30 +1297,30 @@
    "kind": "how",
    "title": "Save my part with the right name",
    "q": "save; save as; name file; filename; lastname; where to save",
-   "fix": "File, Save As, type the name you were given with your last name, Save.",
+   "fix": "Click File > Save As. Type a name with your last name. Choose your class folder. Click Save.",
    "steps": [
     {
-     "t": "Click File, then Save As.",
+     "t": "Click File > Save As.",
      "w": "menu"
     },
     {
-     "t": "Type the name your assignment asks for, like V1_SMITH.",
+     "t": "Type the name your assignment asks for, such as V1_SMITH.",
      "w": "menu"
     },
     {
-     "t": "Save as type should be Part (*.sldprt).",
+     "t": "Choose Part (*.sldprt) in Save as type.",
      "w": "menu"
     },
     {
-     "t": "Save it where Mr. Pina told the class.",
+     "t": "Choose your class folder. Click Save.",
      "w": "menu"
     },
     {
-     "t": "After that, Ctrl+S saves again.",
+     "t": "Press Ctrl+S to save later changes.",
      "w": "keyboard"
     }
    ],
-   "why": "The .SLDPRT file is what you hand in. A drawing, a STEP or a screenshot is not the part.",
+   "why": "Save a SOLIDWORKS part as .SLDPRT. Keep it in your class folder so you can edit it later.",
    "related": [
     "crashed"
    ]
@@ -1330,10 +1330,10 @@
    "kind": "how",
    "title": "Hide or show the planes",
    "q": "planes; hide planes; show planes; squares in the way; plane clutter",
-   "fix": "View menu, Hide/Show, Planes.",
+   "fix": "Click View > Hide/Show > Planes.",
    "steps": [
     {
-     "t": "Click View, then Hide/Show, then Planes.",
+     "t": "Click View > Hide/Show > Planes to show or hide the flat drawing guides.",
      "w": "menu"
     }
    ],

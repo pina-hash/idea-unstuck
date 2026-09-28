@@ -150,7 +150,7 @@ namespace IdeaUnstuck.Core
                     sk.FullCircleCount++;
                     var center = Read("ISketchArc.GetCenterPoint2", () => arc.GetCenterPoint2() as ISketchPoint);
                     double radius = Read("ISketchArc.GetRadius", () => arc.GetRadius());
-                    if (center != null && Math.Abs(radius - .0127) < 1e-7 && Math.Abs(Read("ISketchPoint.X", () => center.X)) < 1e-7 && Math.Abs(Read("ISketchPoint.Y", () => center.Y)) < 1e-7) sk.InchCircleAtOrigin = true;
+                    if (center != null && Math.Abs(Read("ISketchPoint.X", () => center.X)) < 1e-7 && Math.Abs(Read("ISketchPoint.Y", () => center.Y)) < 1e-7) { sk.CircleAtOrigin = true; if (Math.Abs(radius - .0127) < 1e-7) sk.InchCircleAtOrigin = true; }
                 }
             }
             var contours = Read("ISketch.GetSketchContours", () => sketch.GetSketchContours() as object[]) ?? new object[0];

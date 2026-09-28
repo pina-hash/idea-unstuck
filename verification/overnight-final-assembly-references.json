@@ -1,0 +1,14 @@
+﻿[
+    {
+        "Name":  "IdeaUnstuck.Core",
+        "Version":  "0.2.0.0",
+        "InteropReferences":  0,
+        "SHA256":  "2D10A7CB6A5D972E90150406F458E596C64CF1599335D7ECF8662D68DDF3713D"
+    },
+    {
+        "Name":  "IdeaUnstuck.AddIn",
+        "Version":  "0.2.0.0",
+        "InteropReferences":  0,
+        "SHA256":  "2694F2DF3CC57E3F733DF3CE78D12E6E0F76CEDDD9A926184E47C2BEB9681CCB"
+    }
+]

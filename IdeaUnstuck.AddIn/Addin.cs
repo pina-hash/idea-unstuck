@@ -38,6 +38,7 @@ namespace IdeaUnstuck.AddIn
         StateReader reader;
         DiagnosisTracker diagnoses;
         GuidedPaths paths;
+        ProgressTelemetry progress;
         bool connected;
         int documentType, renderCount;
         readonly PollStatistics polls = new PollStatistics();
@@ -59,6 +60,7 @@ namespace IdeaUnstuck.AddIn
                 if (!api.Get("ISldWorks.SetAddinCallbackInfo2", () => app.SetAddinCallbackInfo2(0, this, Cookie))) { log.Write("connect_failed", new { reason = "Callback registration returned false." }); DisconnectFromSW(); return false; }
                 log.Write("session_start", new { user = Environment.UserName, solidworks = api.Get("ISldWorks.RevisionNumber", () => app.RevisionNumber(), "unknown"), addin = typeof(Addin).Assembly.GetName().Version.ToString() });
                 reader = new StateReader(log); diagnoses = new DiagnosisTracker(log); paths = new GuidedPaths(log);
+                progress = new ProgressTelemetry(log);
                 taskpane = api.Get("ISldWorks.CreateTaskpaneView2", () => app.CreateTaskpaneView2("", "IDEA Unstuck") as ITaskpaneView);
                 if (taskpane == null) { DisconnectFromSW(); return false; }
                 pane = api.Get("ITaskpaneView.AddControl", () => taskpane.AddControl("IdeaUnstuck.Pane", "") as UnstuckPane);
@@ -71,6 +73,8 @@ namespace IdeaUnstuck.AddIn
                 api.Run("subscribe.ActiveDocChangeNotify", () => appEvents.ActiveDocChangeNotify += ActiveChanged);
                 api.Run("subscribe.FileNewNotify2", () => appEvents.FileNewNotify2 += FileNew);
                 api.Run("subscribe.FileOpenPostNotify", () => appEvents.FileOpenPostNotify += FileOpened);
+                api.Run("subscribe.CommandOpenPreNotify", () => appEvents.CommandOpenPreNotify += CommandOpened);
+                api.Run("subscribe.CommandCloseNotify", () => appEvents.CommandCloseNotify += CommandClosed);
                 RefreshBinding();
                 connected = true;
                 return true;
@@ -91,6 +95,8 @@ namespace IdeaUnstuck.AddIn
                     api.Run("unsubscribe.ActiveDocChangeNotify", () => appEvents.ActiveDocChangeNotify -= ActiveChanged);
                     api.Run("unsubscribe.FileNewNotify2", () => appEvents.FileNewNotify2 -= FileNew);
                     api.Run("unsubscribe.FileOpenPostNotify", () => appEvents.FileOpenPostNotify -= FileOpened);
+                    api.Run("unsubscribe.CommandOpenPreNotify", () => appEvents.CommandOpenPreNotify -= CommandOpened);
+                    api.Run("unsubscribe.CommandCloseNotify", () => appEvents.CommandCloseNotify -= CommandClosed);
                 }
                 diagnoses?.Reset(DateTime.UtcNow);
                 if (taskpane != null) api.Get("ITaskpaneView.DeleteView", () => taskpane.DeleteView());
@@ -106,6 +112,8 @@ namespace IdeaUnstuck.AddIn
         int FileOpened(string name) { try { log.Write("document_opened", new { name }); QueueRefresh(); } catch (Exception ex) { log.Exception("FileOpened", ex); } return 0; }
         int FileSaved(int saveType, string name) { try { log.Write("document_saved", new { saveType, name }); } catch (Exception ex) { log.Exception("FileSaved", ex); } return 0; }
         int UndoHappened() { try { diagnoses.Undo(DateTime.UtcNow); } catch (Exception ex) { log.Exception("UndoHappened", ex); } return 0; }
+        int CommandOpened(int command, int userCommand) { try { if (!disposed && boundPart != null) diagnoses.CommandOpened(command); } catch(Exception ex) { log.Exception("CommandOpened",ex); } return 0; }
+        int CommandClosed(int command, int reason) { try { if (!disposed && boundPart != null) diagnoses.CommandClosed(command,reason,DateTime.UtcNow); } catch(Exception ex) { log.Exception("CommandClosed",ex); } return 0; }
         void QueueRefresh()
         {
             if (disposed || refreshQueued || pane == null || pane.IsDisposed) return;
@@ -167,6 +175,7 @@ namespace IdeaUnstuck.AddIn
                 if (disposed || pane == null || pane.IsDisposed) return;
                 var list = new Rules().Evaluate(state);
                 diagnoses.Update(state, list, DateTime.UtcNow); paths.Update(state);
+                progress.Observe(state);
                 foreach (var card in list) if (string.IsNullOrWhiteSpace(card.Title) || string.IsNullOrWhiteSpace(card.Meaning) || string.IsNullOrWhiteSpace(card.NextClick)) blankCards++;
                 pane.Render(state, list, paths.Paths);
                 documentType = state.DocumentType;
@@ -185,7 +194,7 @@ namespace IdeaUnstuck.AddIn
                     log.Write("button_pressed", new { action });
                     var state = reader.Read(app);
                     Clipboard.SetText(RescueActions.AiPrompt(state, new Rules().Evaluate(state)));
-                    pane.ShowMessage("Now press Windows+Shift+S, drag over the whole SOLIDWORKS window, and paste it into the same chat.");
+                    pane.ShowMessage("Press Windows+Shift+S. Drag over the whole SOLIDWORKS window. Paste the screenshot into the same chat.");
                 }
                 else if (action == "export")
                 {

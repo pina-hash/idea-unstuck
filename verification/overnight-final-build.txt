@@ -1,0 +1,14 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  IdeaUnstuck.Core -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.Core\bin\Release\net48\IdeaUnstuck.Core.dll
+C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\UnstuckPane.cs(92,23): warning CS0108: 'UnstuckPane.Region(string)' hides inherited member 'Control.Region'. Use the new keyword if hiding was intended. [C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj]
+  IdeaUnstuck.AddIn -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\bin\Release\net48\IdeaUnstuck.AddIn.dll
+  IdeaUnstuck.SelfTest -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe
+
+Build succeeded.
+
+C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\UnstuckPane.cs(92,23): warning CS0108: 'UnstuckPane.Region(string)' hides inherited member 'Control.Region'. Use the new keyword if hiding was intended. [C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.31

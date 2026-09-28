@@ -1,0 +1,2 @@
+Report: C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\verification\overnight-teacher-summary.html
+Events=3820; malformed=0; first-body samples=6
