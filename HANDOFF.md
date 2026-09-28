@@ -1,5 +1,16 @@
 # IDEA Unstuck handoff
 
+## Needs Mr. Pina
+
+- Install the final overnight build as administrator after saving work and closing SOLIDWORKS. This unattended session has a non-elevated token and read-only access to the installed program directory. No UAC prompt will be launched or awaited.
+- Validate the new installed DLL in the real Task Pane after that install. Core live tests and managed-control tests do not replace installed-host UI checks.
+- Supply a SOLIDWORKS 2025 school PC, a second Windows login, and a DPI check at 100%, 125%, and 150%.
+- Perform the physical Ctrl-click Teacher export reveal and the 30-minute student-style modeling acceptance check.
+
+## Overnight run in progress
+
+Phase 0 verified `pina-hash` authentication, private visibility, and a clean remote main before changes. Search completion now gives all diagnosis types a More help target and checks managed article navigation, related links, bold fix, and query/article persistence across render updates. The first regression exposed the missing assembly help link (31 pass, 1 fail); it was fixed and the final rerun is in progress. The control/logic run now has 19 pass, 0 fail. Final results below will supersede these interim notes.
+
 Private repository: https://github.com/pina-hash/idea-unstuck
 
 Pilot release: https://github.com/pina-hash/idea-unstuck/releases/tag/v0.1.0-pilot

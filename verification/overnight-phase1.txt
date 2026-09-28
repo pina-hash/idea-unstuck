@@ -1,0 +1,39 @@
+PASS help: it wont let me extrud returns open-contour first
+PASS help: buttons dissapeared returns toolbar-gone first
+Help entries=49; related links=79
+PASS help: every related id resolves
+Diagnosis links=12
+PASS help: every diagnosis link resolves to its expected entry
+PASS help: exact prefix phrase and all four single-typo scores
+PASS help: OR matching normalization top five and blank queries
+PASS stuck after three unchanged minutes, then clears
+PASS five undos in one minute, then expires
+PASS unknown feature and constraint codes retain raw values
+PASS all installed feature and contour enum codes have words
+PASS path does not complete from a body alone
+PASS document switch resets stuck detector
+PASS first-part path follows observed steps and survives Save As
+PASS change-size path tracks edit rollback and a rebuilt body
+PASS face-cut path requires a newly observed cut
+PASS fillet path does not tick failed features
+PASS incomplete reads do not invent document diagnoses
+SOLIDWORKS revision 34.4.1
+PASS millimeters diagnosis and inches/3-decimal rescue
+PASS start on Front Plane, exit, left-sketch diagnosis, re-enter
+PASS open contour diagnosis
+PASS two side-by-side outlines diagnosis
+PASS crossing sketch reports native contour error without changing selection
+PASS over-defined sketch diagnosis and Undo
+Default radius=0.001
+Edges=12
+Feature errors: Fillet1=1, suppressed=False, rolled=False
+PASS failed fillet diagnosis, large radius, Undo
+PASS rollback diagnosis and roll-to-end rescue
+PASS sketch without body diagnosis
+PASS never saved diagnosis and saved-state detection
+FAIL assembly diagnosis and rescue refusal: Missing More help: wrong-document
+PASS two solid bodies diagnosis
+PASS zoomed-away part and Find my part rescue
+PASS state reading leaves document contents unchanged
+PASS Copy for AI contains version, state, causes, and screenshot instruction
+TOTAL PASS=31 FAIL=1

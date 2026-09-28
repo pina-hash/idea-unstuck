@@ -114,6 +114,10 @@ namespace IdeaUnstuck.SelfTest
             var state = Reader.Read(app);
             File.WriteAllText(System.IO.Path.Combine(Output, "last-snapshot.json"), new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(state));
             Require(state.ReadIssues.Count == 0, "State read issues: " + string.Join(", ", state.ReadIssues));
+            foreach (var diagnosis in new Rules().Evaluate(state)) {
+                Require(!string.IsNullOrWhiteSpace(diagnosis.Title) && !string.IsNullOrWhiteSpace(diagnosis.Meaning) && !string.IsNullOrWhiteSpace(diagnosis.NextClick), "Blank diagnosis: " + diagnosis.Id);
+                Require(KnowledgeBase.Embedded.ForDiagnosis(diagnosis.Id) != null, "Missing More help: " + diagnosis.Id);
+            }
             return state;
         }
         static bool Has(string id) => new Rules().Evaluate(Read()).Any(d => d.Id == id || d.Id.StartsWith(id + ":", StringComparison.Ordinal));
@@ -265,6 +269,34 @@ namespace IdeaUnstuck.SelfTest
         }
         static void UnitCases()
         {
+            Case("help pane: search article related links and refresh preserve reading", () => {
+                using (var pane = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => { })) {
+                    IEnumerable<Control> All(Control c) => c.Controls.Cast<Control>().SelectMany(child => new[] { child }.Concat(All(child)));
+                    void Follow(LinkLabel link) => typeof(LinkLabel).GetMethod("OnLinkClicked", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(link, new object[] { new LinkLabelLinkClickedEventArgs(link.Links[0]) });
+                    var search = (TextBox)pane.Controls.Find("HelpSearch", true).Single();
+                    search.Text = "it wont let me extrud";
+                    var first = All(pane).OfType<LinkLabel>().First();
+                    Require(first.Text == KnowledgeBase.Embedded.Find("open-contour").Title, "Wrong first UI result."); Follow(first);
+                    var entry = KnowledgeBase.Embedded.Find("open-contour");
+                    Require(All(pane).OfType<Label>().Any(l => l.Text == entry.Fix && l.Font.Bold), "Fix is missing or not bold.");
+                    Require(All(pane).Any(c => c.Text == "Step by step") && All(pane).Any(c => c.Text == "Why: " + entry.Why), "Article sections missing.");
+                    var state = new StateSnapshot { DocumentType = 1, DocumentKey = "ui", LengthUnit = 0 };
+                    pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
+                    state.FileName = "Changed.SLDPRT"; pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
+                    Require(search.Text == "it wont let me extrud" && All(pane).Any(c => c.Text == entry.Fix), "Polling replaced the query or article.");
+                    var related = KnowledgeBase.Embedded.Find(entry.Related.First());
+                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == related.Title));
+                    Require(All(pane).Any(c => c.Text == related.Fix), "Related navigation failed.");
+                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == "Back to search"));
+                    search.Text = "buttons dissapeared";
+                    Require(All(pane).OfType<LinkLabel>().First().Text == KnowledgeBase.Embedded.Find("toolbar-gone").Title, "Toolbar UI result missing.");
+                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == "More help"));
+                    Require(All(pane).Any(c => c.Text == KnowledgeBase.Embedded.Find("units-mm").Fix), "Diagnosis link opened the wrong entry.");
+                }
+            });
+            Case("help: generic diagnosis cards also have links", () => {
+                foreach (var id in new[] { "no-document", "wrong-document", "read-incomplete", "other-units", "stuck" }) Require(KnowledgeBase.Embedded.ForDiagnosis(id) != null, "Missing " + id);
+            });
             Case("help: it wont let me extrud returns open-contour first", () => {
                 Require(KnowledgeBase.Embedded.Search("it wont let me extrud").FirstOrDefault()?.Entry.Id == "open-contour", "Wrong first extrusion result.");
             });
@@ -283,7 +315,7 @@ namespace IdeaUnstuck.SelfTest
                 var expected = new[] { "open-contour|open-contour", "multiple-outlines|multi-contour", "sketch-error:7|multi-contour", "left-sketch|left-sketch", "millimeters|units-mm", "over-defined|red-sketch", "feature:Fillet1:18|red-x", "rollback|rollback", "no-body|extrude", "multiple-bodies|two-bodies", "unsaved|save", "lost-part|lost-part" };
                 foreach (var pair in expected) { var fields = pair.Split('|'); Require(kb.ForDiagnosis(fields[0])?.Id == fields[1], "Wrong help for " + fields[0]); }
                 foreach (var pair in KnowledgeBase.DiagnosisLinks) Require(kb.Find(pair.Value) != null, "Missing diagnosis target " + pair.Value);
-                Require(kb.ForDiagnosis("read-incomplete") == null && kb.ForDiagnosis(null) == null, "Unmapped diagnoses must not invent help.");
+                Require(kb.ForDiagnosis("unknown-diagnosis") == null && kb.ForDiagnosis(null) == null, "Unmapped diagnoses must not invent help.");
                 Console.WriteLine("Diagnosis links=" + expected.Length);
             });
             Case("help: exact prefix phrase and all four single-typo scores", () => {

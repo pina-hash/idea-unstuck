@@ -1,5 +1,9 @@
 # Verification report
 
+## Overnight phase 1
+
+Search completion: **34 PASS, 0 FAIL** on real SOLIDWORKS 2026 (19 logic/control tests plus 15 live cases). Managed-control tests exercised first-result navigation, bold fix, Step by step, Why, related navigation, More help, and preserving query/article across state refreshes. All diagnosis types now have help targets. Initial run found a missing assembly-card link (31 pass, 1 fail); the fixed complete rerun passed. Evidence: verification/overnight-phase1-final.txt and verification/overnight-phase1-unit.txt. Native installed-host visual checks still require installation of the changed DLL with administrator approval.
+
 Date: September 27, 2026 (local time). This is a **pilot build, not a fully accepted lab installation**.
 
 ## Search update: current pilot code

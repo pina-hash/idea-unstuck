@@ -1,0 +1,22 @@
+PASS help pane: search article related links and refresh preserve reading
+PASS help: generic diagnosis cards also have links
+PASS help: it wont let me extrud returns open-contour first
+PASS help: buttons dissapeared returns toolbar-gone first
+Help entries=49; related links=79
+PASS help: every related id resolves
+Diagnosis links=12
+PASS help: every diagnosis link resolves to its expected entry
+PASS help: exact prefix phrase and all four single-typo scores
+PASS help: OR matching normalization top five and blank queries
+PASS stuck after three unchanged minutes, then clears
+PASS five undos in one minute, then expires
+PASS unknown feature and constraint codes retain raw values
+PASS all installed feature and contour enum codes have words
+PASS path does not complete from a body alone
+PASS document switch resets stuck detector
+PASS first-part path follows observed steps and survives Save As
+PASS change-size path tracks edit rollback and a rebuilt body
+PASS face-cut path requires a newly observed cut
+PASS fillet path does not tick failed features
+PASS incomplete reads do not invent document diagnoses
+TOTAL PASS=19 FAIL=0
