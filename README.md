@@ -80,13 +80,18 @@ Run tests on a licensed PC with standard templates:
 .\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe
 .\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe --unit
 .\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe --addin
+.\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe --addin --startup
 ```
+
+`--addin` checks the installed connection, live pane polling, and teacher ZIP export. For `--addin --startup`, first launch SOLIDWORKS normally and wait until startup is complete. This mode attaches to the running instance and checks it without calling LoadAddIn. `--diagnose` prints the installed add-in health; adding `--export` creates a teacher ZIP through the same export function used by the button.
 
 The release ZIP also includes `release\IdeaUnstuck.SelfTest.exe`. The live runner creates its own test parts through `SldWorks.Application`. It closes only the documents it created. It saves a test part and its last snapshot in `test-results` beside the executable. Use `--filter=fillet` to run one named case. `--inspect` holds the test instance for up to five minutes for inspection. Do not use the test runner during class modeling. A case fails if an API exception is caught, an expected state is missing, or a rescue does not produce its expected state. No unperformed check is counted as a pass.
 
 ## Behavior and limits
 
 All SOLIDWORKS calls use a catch-and-log guard. Event handlers and button handlers are guarded too. No helper code calls MessageBox or opens a modal dialog. Installer failures are printed to the console. The live test runner disables SOLIDWORKS feature error dialogs in its own test documents.
+
+The pane is a registered WinForms UserControl (`IdeaUnstuck.Pane`, CLSID `{73B7229D-3403-4476-B3D0-67B7A5781BA2}`) hosted with `ITaskpaneView.AddControl`. RegAsm installs and removes both COM classes. The add-in provides an explicit IDispatch interface for host callbacks and health checks.
 
 COM work and the WinForms timer stay on SOLIDWORKS' UI thread. The timer runs at 1500 ms only for an active part. A busy flag prevents overlapping reads. Assemblies, drawings, and no-document state refresh on application events. It does not launch background threads that access SOLIDWORKS. Exceptions cannot protect against a native SOLIDWORKS crash or an API call that never returns. The requested 30-minute normal-modeling check is still required; an absolute no-freeze guarantee would be misleading.
 

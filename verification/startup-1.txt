@@ -1,0 +1,20 @@
+PASS stuck after three unchanged minutes, then clears
+PASS five undos in one minute, then expires
+PASS unknown feature and constraint codes retain raw values
+PASS all installed feature and contour enum codes have words
+PASS path does not complete from a body alone
+PASS document switch resets stuck detector
+PASS first-part path follows observed steps and survives Save As
+PASS change-size path tracks edit rollback and a rebuilt body
+PASS face-cut path requires a newly observed cut
+PASS fillet path does not tick failed features
+PASS incomplete reads do not invent document diagnoses
+SOLIDWORKS revision 34.4.1
+Add-in status=connected|0|1|0
+Log: C:\Users\aleja\AppData\Local\IDEA\Unstuck; error: ; pane visible: True; child controls: 1; pane: {Width=328, Height=1054}
+PASS installed add-in loads automatically at startup
+Add-in part status=connected|1|7|0
+PASS installed pane renders a new part and polls without exceptions
+Teacher export=C:\Users\aleja\OneDrive\Desktop\IDEA-Unstuck-20260927-194901-bd3ebb.zip
+PASS installed add-in exports its teaching log
+TOTAL PASS=14 FAIL=0

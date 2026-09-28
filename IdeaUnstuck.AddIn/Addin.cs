@@ -10,8 +10,17 @@ using Environment = System.Environment;
 [assembly: ComVisible(false)]
 namespace IdeaUnstuck.AddIn
 {
-    [ComVisible(true), Guid("962CE2F1-BF2C-46F3-A8A5-DC6081767E13"), ProgId("IdeaUnstuck.AddIn"), ClassInterface(ClassInterfaceType.None)]
-    public sealed class Addin : ISwAddin
+    [ComVisible(true), Guid("F46F5028-B3A7-4C13-A604-440A672589B0"), InterfaceType(ComInterfaceType.InterfaceIsDual)]
+    public interface IUnstuckAutomation
+    {
+        [DispId(1)] string GetStatus();
+        [DispId(2)] string GetDiagnostics();
+        [DispId(3)] bool ShowPane();
+        [DispId(4)] string ExportLog();
+    }
+
+    [ComVisible(true), Guid("962CE2F1-BF2C-46F3-A8A5-DC6081767E13"), ProgId("IdeaUnstuck.AddIn"), ClassInterface(ClassInterfaceType.None), ComDefaultInterface(typeof(IUnstuckAutomation))]
+    public sealed class Addin : ISwAddin, IUnstuckAutomation
     {
         public const string Id = "{962CE2F1-BF2C-46F3-A8A5-DC6081767E13}";
         readonly Telemetry log = new Telemetry();
@@ -27,17 +36,28 @@ namespace IdeaUnstuck.AddIn
         StateReader reader;
         DiagnosisTracker diagnoses;
         GuidedPaths paths;
+        bool connected;
+        int documentType, renderCount;
+        // Read-only automation endpoint; also supplies the IDispatch required by the host.
+        public string GetStatus() => (connected && !disposed ? "connected" : "disconnected") + "|" + documentType + "|" + renderCount + "|" + log.ExceptionCount;
+        public string GetDiagnostics() => "Log: " + log.Folder + "; error: " + log.LastWriteError + "; pane visible: " + pane?.Visible + "; child controls: " + pane?.Controls.Count + "; pane: " + pane?.Size;
+        public bool ShowPane() => api != null && taskpane != null && api.Get("ITaskpaneView.ShowView", () => taskpane.ShowView());
+        public string ExportLog() { log.Write("button_pressed", new { action = "export" }); return log.ExportToday() ?? ""; }
         public bool ConnectToSW(object ThisSW, int Cookie)
         {
             try
             {
+                disposed = false;
+                log.Write("connect_requested", new { Cookie });
                 api = new ApiGuard(log); app = (ISldWorks)ThisSW;
-                if (!api.Get("ISldWorks.SetAddinCallbackInfo2", () => app.SetAddinCallbackInfo2(0, this, Cookie))) return false;
+                if (!api.Get("ISldWorks.SetAddinCallbackInfo2", () => app.SetAddinCallbackInfo2(0, this, Cookie))) { log.Write("connect_failed", new { reason = "Callback registration returned false." }); DisconnectFromSW(); return false; }
                 log.Write("session_start", new { user = Environment.UserName, solidworks = api.Get("ISldWorks.RevisionNumber", () => app.RevisionNumber(), "unknown"), addin = typeof(Addin).Assembly.GetName().Version.ToString() });
                 reader = new StateReader(log); diagnoses = new DiagnosisTracker(log); paths = new GuidedPaths(log);
-                pane = new UnstuckPane(log, OnAction);
                 taskpane = api.Get("ISldWorks.CreateTaskpaneView2", () => app.CreateTaskpaneView2("", "IDEA Unstuck") as ITaskpaneView);
-                if (taskpane == null || !api.Get("ITaskpaneView.DisplayWindowFromHandlex64", () => taskpane.DisplayWindowFromHandlex64(pane.Handle.ToInt64()))) { DisconnectFromSW(); return false; }
+                if (taskpane == null) { DisconnectFromSW(); return false; }
+                pane = api.Get("ITaskpaneView.AddControl", () => taskpane.AddControl("IdeaUnstuck.Pane", "") as UnstuckPane);
+                if (pane == null) { log.Write("connect_failed", new { reason = "Task pane control could not be created." }); DisconnectFromSW(); return false; }
+                pane.Initialize(log, OnAction);
                 api.Get("ITaskpaneView.ShowView", () => taskpane.ShowView());
                 timer = new Timer { Interval = 1500 };
                 timer.Tick += Tick;
@@ -46,6 +66,7 @@ namespace IdeaUnstuck.AddIn
                 api.Run("subscribe.FileNewNotify2", () => appEvents.FileNewNotify2 += FileNew);
                 api.Run("subscribe.FileOpenPostNotify", () => appEvents.FileOpenPostNotify += FileOpened);
                 RefreshBinding();
+                connected = true;
                 return true;
             }
             catch (Exception ex) { log.Exception("ConnectToSW", ex); DisconnectFromSW(); return false; }
@@ -56,6 +77,7 @@ namespace IdeaUnstuck.AddIn
             {
                 if (disposed) return true;
                 disposed = true;
+                connected = false;
                 if (timer != null) { timer.Stop(); timer.Tick -= Tick; timer.Dispose(); }
                 DetachPart();
                 if (appEvents != null)
@@ -135,6 +157,8 @@ namespace IdeaUnstuck.AddIn
                 var list = new Rules().Evaluate(state);
                 diagnoses.Update(state, list, DateTime.UtcNow); paths.Update(state);
                 pane.Render(state, list, paths.Paths);
+                documentType = state.DocumentType;
+                renderCount++;
             }
             catch (Exception ex) { log.Exception("ReadAndRender", ex); }
             finally { busy = false; }
@@ -153,9 +177,8 @@ namespace IdeaUnstuck.AddIn
                 }
                 else if (action == "export")
                 {
-                    log.Write("button_pressed", new { action });
-                    var file = log.ExportToday();
-                    pane.ShowMessage(file == null ? "The log export did not finish. Ask a TA." : "Today's logs are on your Desktop: " + System.IO.Path.GetFileName(file));
+                    var file = ExportLog();
+                    pane.ShowMessage(string.IsNullOrEmpty(file) ? "The log export did not finish. Ask a TA." : "Today's logs are on your Desktop: " + System.IO.Path.GetFileName(file));
                 }
                 else { pane.ShowMessage(new RescueActions(log).Run(app, action)); ReadAndRender(); }
             }

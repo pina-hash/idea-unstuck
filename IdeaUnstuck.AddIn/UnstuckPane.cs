@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using IdeaUnstuck.Core;
 
 namespace IdeaUnstuck.AddIn
 {
+    [ComVisible(true), Guid("73B7229D-3403-4476-B3D0-67B7A5781BA2"), ProgId("IdeaUnstuck.Pane"), ClassInterface(ClassInterfaceType.AutoDispatch)]
     public sealed class UnstuckPane : UserControl
     {
-        readonly Telemetry log;
-        readonly Action<string> action;
+        Telemetry log;
+        Action<string> action;
         readonly FlowLayoutPanel root = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(8) };
         readonly Label status, message;
         readonly FlowLayoutPanel cards, checklist;
@@ -18,6 +20,8 @@ namespace IdeaUnstuck.AddIn
         readonly HashSet<string> expanded = new HashSet<string> { "My first 3D part" };
         string fingerprint;
         List<GuidedPath> paths;
+        public UnstuckPane() : this(new Telemetry(), id => { }) { }
+        internal void Initialize(Telemetry logger, Action<string> handler) { log = logger; action = handler; }
         public UnstuckPane(Telemetry log, Action<string> action)
         {
             this.log = log; this.action = action;

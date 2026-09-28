@@ -33,6 +33,17 @@ namespace IdeaUnstuck.SelfTest
                 Directory.CreateDirectory(Output);
                 Filter = args.FirstOrDefault(a => a.StartsWith("--filter="))?.Substring(9) ?? "";
                 KeepOpen = args.Contains("--inspect");
+                if (args.Contains("--diagnose"))
+                {
+                    var host = Api.Get("COM.GetActiveObject", () => Marshal.GetActiveObject("SldWorks.Application") as ISldWorks);
+                    object instance = host == null ? null : Api.Get("ISldWorks.GetAddInObject", () => host.GetAddInObject("IdeaUnstuck.AddIn"));
+                    Console.WriteLine("Object="+instance?.GetType().FullName+"; COM="+(instance != null && Marshal.IsComObject(instance)));
+                    Console.WriteLine("Proxy="+System.Runtime.Remoting.RemotingServices.IsTransparentProxy(instance));
+                    if (instance != null) Console.WriteLine((string)((dynamic)instance).GetDiagnostics());
+                    if (instance != null) Console.WriteLine("Status="+(string)((dynamic)instance).GetStatus());
+                    if (instance != null && args.Contains("--export")) Console.WriteLine("Export="+(string)((dynamic)instance).ExportLog());
+                    return instance != null && Log.ExceptionCount == 0 ? 0 : 1;
+                }
                 if (args.Contains("--pane-preview"))
                 {
                     Application.EnableVisualStyles();
@@ -45,13 +56,19 @@ namespace IdeaUnstuck.SelfTest
                 if (args.Contains("--shutdown-if-empty"))
                 {
                     var running = Api.Get("COM.GetActiveObject", () => Marshal.GetActiveObject("SldWorks.Application") as ISldWorks);
-                    if (running != null && Api.Get("ISldWorks.GetDocumentCount", () => running.GetDocumentCount(), -1) == 0) Api.Run("ISldWorks.ExitApp", () => running.ExitApp());
-                    return 0;
+                    int count = running == null ? -1 : Api.Get("ISldWorks.GetDocumentCount", () => running.GetDocumentCount(), -1);
+                    Console.WriteLine("Open documents="+count);
+                    if (count != 0) return 1;
+                    bool exited = Api.Run("ISldWorks.ExitApp", () => running.ExitApp());
+                    Api.Get("COM.FinalReleaseComObject", () => Marshal.FinalReleaseComObject(running));
+                    return exited ? 0 : 1;
                 }
                 UnitCases();
                 if (!args.Contains("--unit"))
                 {
-                    app = Api.Get("COM.SldWorks.Application", () => (ISldWorks)Activator.CreateInstance(Type.GetTypeFromProgID("SldWorks.Application", true)));
+                    app = args.Contains("--startup")
+                        ? Api.Get("COM.GetActiveObject", () => Marshal.GetActiveObject("SldWorks.Application") as ISldWorks)
+                        : Api.Get("COM.SldWorks.Application", () => (ISldWorks)Activator.CreateInstance(Type.GetTypeFromProgID("SldWorks.Application", true)));
                     if (app == null) { Case("SOLIDWORKS starts through COM", () => Require(false, "COM activation failed. See telemetry.")); return Finish(); }
                     Api.Run("ISldWorks.Visible", () => app.Visible = true);
                     string revision = Api.Get("ISldWorks.RevisionNumber", () => app.RevisionNumber(), "unknown");
@@ -62,7 +79,7 @@ namespace IdeaUnstuck.SelfTest
                     if (!File.Exists(partTemplate)) partTemplate = @"C:\ProgramData\SOLIDWORKS\SOLIDWORKS " + year + @"\templates\Part.PRTDOT";
                     if (!File.Exists(assemblyTemplate)) assemblyTemplate = @"C:\ProgramData\SOLIDWORKS\SOLIDWORKS " + year + @"\templates\Assembly.ASMDOT";
                     Require(File.Exists(partTemplate), "Part template missing: " + partTemplate);
-                    if (args.Contains("--addin")) AddinCases(); else LiveCases();
+                    if (args.Contains("--addin")) AddinCases(args.Contains("--startup")); else LiveCases();
                 }
             }
             catch (Exception ex) { Log.Exception("SelfTest.Main", ex); failed++; Console.WriteLine("FAIL runner: " + ex.Message); }
@@ -291,15 +308,39 @@ namespace IdeaUnstuck.SelfTest
                 var s=new StateSnapshot{DocumentType=1,BodyCount=0,LengthUnit=0};s.ReadIssues.Add("API unavailable");var ds=new Rules().Evaluate(s);Require(ds.Count==1 && ds[0].Id=="read-incomplete","Unknown data produced misleading diagnoses.");
             });
         }
-        static void AddinCases()
+        static void AddinCases(bool startup)
         {
             string dll = @"C:\Program Files\IDEA\Unstuck\IdeaUnstuck.AddIn.dll";
-            Case("installed add-in loads through SOLIDWORKS", () => {
-                int result = Api.Get("ISldWorks.LoadAddIn", () => app.LoadAddIn(dll), -1);
-                Console.WriteLine("LoadAddIn="+result); Require(result == 0 || result == 1, "LoadAddIn error " + result);
-                Require(Api.Get("ISldWorks.GetAddInObject", () => app.GetAddInObject("IdeaUnstuck.AddIn")) != null, "Add-in object missing.");
+            dynamic addin = null;
+            Case(startup ? "installed add-in loads automatically at startup" : "installed add-in loads through SOLIDWORKS", () => {
+                if (!startup) {
+                    int result = Api.Get("ISldWorks.LoadAddIn", () => app.LoadAddIn(dll), -1);
+                    Console.WriteLine("LoadAddIn="+result); Require(result == 0 || result == 2, "LoadAddIn error " + result);
+                }
+                addin = Api.Get("ISldWorks.GetAddInObject", () => app.GetAddInObject("IdeaUnstuck.AddIn"));
+                Require(addin != null, "Add-in object missing.");
+                string status = addin.GetStatus(); Console.WriteLine("Add-in status="+status);
+                Console.WriteLine((string)addin.GetDiagnostics());
+                Require(status.StartsWith("connected|"), "Add-in did not connect.");
             });
-            Case("pane handles new part and document close", () => { NewPart(); Begin(); Rect(); Rescue.Run(app,"exit"); for(int i=0;i<25;i++){Application.DoEvents();System.Threading.Thread.Sleep(100);} Require(Read().BodyCount==0,"Unexpected state."); });
+            Case("installed pane renders a new part and polls without exceptions", () => {
+                Require(addin != null, "Add-in unavailable.");
+                string[] before = ((string)addin.GetStatus()).Split('|');
+                NewPart(); Begin(); Rect(); Rescue.Run(app,"exit");
+                for(int i=0;i<25;i++){Application.DoEvents();System.Threading.Thread.Sleep(100);}
+                string status = addin.GetStatus(); Console.WriteLine("Add-in part status="+status);
+                string[] after = status.Split('|');
+                Require(after[0]=="connected" && after[1]=="1" && int.Parse(after[2])>int.Parse(before[2]), "Pane did not render the new part.");
+                Require(after[3]=="0", "An exception occurred in the installed add-in.");
+                Require(Read().BodyCount==0,"Unexpected state.");
+                Require((bool)addin.ShowPane(), "The pane could not be shown.");
+            });
+            Case("installed add-in exports its teaching log", () => {
+                Require(addin != null, "Add-in unavailable.");
+                string path = addin.ExportLog();
+                Require(!string.IsNullOrEmpty(path) && File.Exists(path), "Teacher export did not produce a ZIP.");
+                Console.WriteLine("Teacher export="+path);
+            });
         }
     }
 }

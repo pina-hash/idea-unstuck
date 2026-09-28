@@ -1,0 +1,40 @@
+{
+  "session": "8c7bdeb14dfb4832b877b79dccb4cfe6",
+  "start": "2026-09-28T02:39:18.6385548Z",
+  "events": [
+    {
+      "Name": "button_pressed",
+      "Count": 2
+    },
+    {
+      "Name": "connect_requested",
+      "Count": 1
+    },
+    {
+      "Name": "diagnosis_appeared",
+      "Count": 43
+    },
+    {
+      "Name": "diagnosis_cleared",
+      "Count": 42
+    },
+    {
+      "Name": "document_created",
+      "Count": 14
+    },
+    {
+      "Name": "document_saved",
+      "Count": 1
+    },
+    {
+      "Name": "guided_step_completed",
+      "Count": 39
+    },
+    {
+      "Name": "session_start",
+      "Count": 1
+    }
+  ],
+  "exceptions": 0,
+  "source": "Teacher ZIP exported by the installed add-in after the full live test run"
+}

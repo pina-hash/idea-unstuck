@@ -18,7 +18,7 @@ Use disposable parts and standard English templates. Tests change only their own
 | Two solid bodies | multiple-bodies | Student edits last Extrude; choose Merge result if shapes touch | Detection live; correction manual |
 | Part zoomed away | Geometry unchanged; no invented off-screen diagnosis | Find my part restores useful view scale | Live SelfTest; framing visual |
 | Front Plane sketch | In sketch, correct support name | Start sketch and Exit sketch change mode as expected | Live SelfTest |
-| Copy for AI | Correct year, snapshot, causes request, screenshot sentence | Clipboard receives prompt when button is pressed | Prompt live; clipboard UI check |
+| Copy for AI | Correct year, snapshot, causes request, screenshot sentence | Clipboard receives prompt when button is pressed | Live SelfTest and installed-pane UI check |
 | Error for 3 minutes | stuck | Fix error and stuck card clears | Deterministic clock test |
 | Five undos in 1 minute | stuck | After old undos expire, stuck clears | Deterministic clock test; native event manual |
 | Unknown codes | Raw value and Ask a TA | No empty text | Deterministic test |
