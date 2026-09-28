@@ -25,6 +25,12 @@ Use disposable parts and standard English templates. Tests change only their own
 | Automatic reads | No changed geometry, features, or edit mode | Five reads agree | Live SelfTest |
 | Checklists | No completion from button presses alone | Dimensions, feature state, bodies, saved state provide evidence | Deterministic negative test and manual full lessons |
 
+## Local help regression checks
+
+- `--unit`: both requested student queries rank the expected entry first; all 49 entries load, all 79 related links and all 12 diagnosis mappings resolve; exact, prefix, whole-phrase and four typo operations have the specified scores; OR matching, normalization, repeated words, empty queries and the five-result cap behave correctly.
+- `--addin`: the installed pane reports all 49 embedded entries, connects, polls a fixture without exceptions, and exports its teaching log.
+- In the installed pane, enter `it wont let me extrud` and `buttons dissapeared`. Open the first result, verify bold fix / numbered steps / Why / related links, follow a related link, and use Back to search. Open a diagnosis's More help link. Leave the article open across polling and a state change; query and article must remain intact. No modal or network request should occur.
+
 ## Required classroom acceptance checks
 
 1. **Second Windows user:** Install once as an administrator. Sign out. Sign into a different student Windows account. Wait for logon initialization, open SOLIDWORKS, and verify both add-in checkboxes and the pane. Repeat with an account that had never used SOLIDWORKS. Record whether school policy blocked the logon program.

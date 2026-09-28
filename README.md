@@ -18,7 +18,13 @@ This is a classroom pilot. See [TEST_RESULTS.md](TEST_RESULTS.md) for the checks
 
 No Visual Studio, SDK, or targeting pack is needed on student PCs. Those tools are for building the add-in. Copying the DLL by itself does not install it.
 
-## What the buttons do
+## Search for help
+
+Type a student question into **Search for help**. Up to five titles appear; select one for a bold fix, numbered **Step by step** instructions, a **Why** explanation, and related help links. **More help** on a mapped diagnosis opens its matching article. **Back to search** returns to the existing query. Polling does not replace the query or an open article.
+
+The supplied 49-entry `IdeaUnstuck.Core/kb.json` is embedded in the Core DLL, so help works offline with no separate data file. Search uses title and student-phrasing words: exact = 3, query prefix = 2, one insertion/deletion/substitution/adjacent transposition = 1.5 for words of at least four letters. Each distinct query word contributes its best match; any matching word qualifies. Each complete semicolon-separated phrasing contained in the normalized query adds 4. Case, punctuation, and apostrophes are normalized; ties retain file order. Related links stay inside the pane. The 1500 ms SOLIDWORKS poll is unchanged.
+
+## Rescue buttons
 
 | Button | Result |
 | --- | --- |

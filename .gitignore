@@ -2,6 +2,10 @@
 **/obj/
 .vs/
 artifacts/
-release/
+release/*
+!release/IdeaUnstuck.AddIn.dll
+!release/IdeaUnstuck.Core.dll
+!release/IdeaUnstuck.SelfTest.exe
+!release/IdeaUnstuck.SelfTest.exe.config
 *.user
 *.suo

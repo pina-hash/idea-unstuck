@@ -41,6 +41,7 @@ namespace IdeaUnstuck.SelfTest
                     Console.WriteLine("Proxy="+System.Runtime.Remoting.RemotingServices.IsTransparentProxy(instance));
                     if (instance != null) Console.WriteLine((string)((dynamic)instance).GetDiagnostics());
                     if (instance != null) Console.WriteLine("Status="+(string)((dynamic)instance).GetStatus());
+                    if (instance != null && args.Contains("--show-pane")) Console.WriteLine("ShowPane="+(bool)((dynamic)instance).ShowPane());
                     if (instance != null && args.Contains("--export")) Console.WriteLine("Export="+(string)((dynamic)instance).ExportLog());
                     return instance != null && Log.ExceptionCount == 0 ? 0 : 1;
                 }
@@ -264,6 +265,45 @@ namespace IdeaUnstuck.SelfTest
         }
         static void UnitCases()
         {
+            Case("help: it wont let me extrud returns open-contour first", () => {
+                Require(KnowledgeBase.Embedded.Search("it wont let me extrud").FirstOrDefault()?.Entry.Id == "open-contour", "Wrong first extrusion result.");
+            });
+            Case("help: buttons dissapeared returns toolbar-gone first", () => {
+                Require(KnowledgeBase.Embedded.Search("buttons dissapeared").FirstOrDefault()?.Entry.Id == "toolbar-gone", "Wrong first toolbar result.");
+            });
+            Case("help: every related id resolves", () => {
+                var kb = KnowledgeBase.Embedded;
+                Require(kb.Entries.Count == 49, "Expected all 49 supplied entries.");
+                int count = 0;
+                foreach (var entry in kb.Entries) foreach (var id in entry.Related) { Require(kb.Find(id) != null, entry.Id + " links to missing " + id); count++; }
+                Console.WriteLine("Help entries=" + kb.Entries.Count + "; related links=" + count);
+            });
+            Case("help: every diagnosis link resolves to its expected entry", () => {
+                var kb = KnowledgeBase.Embedded;
+                var expected = new[] { "open-contour|open-contour", "multiple-outlines|multi-contour", "sketch-error:7|multi-contour", "left-sketch|left-sketch", "millimeters|units-mm", "over-defined|red-sketch", "feature:Fillet1:18|red-x", "rollback|rollback", "no-body|extrude", "multiple-bodies|two-bodies", "unsaved|save", "lost-part|lost-part" };
+                foreach (var pair in expected) { var fields = pair.Split('|'); Require(kb.ForDiagnosis(fields[0])?.Id == fields[1], "Wrong help for " + fields[0]); }
+                foreach (var pair in KnowledgeBase.DiagnosisLinks) Require(kb.Find(pair.Value) != null, "Missing diagnosis target " + pair.Value);
+                Require(kb.ForDiagnosis("read-incomplete") == null && kb.ForDiagnosis(null) == null, "Unmapped diagnoses must not invent help.");
+                Console.WriteLine("Diagnosis links=" + expected.Length);
+            });
+            Case("help: exact prefix phrase and all four single-typo scores", () => {
+                var kb = KnowledgeBase.Embedded;
+                double Score(string query) => kb.Search(query).Single(r => r.Entry.Id == "open-contour").Score;
+                Require(Score("open contour") == 10, "Exact words plus whole phrase should score 10.");
+                Require(Score("extrud") == 2, "Prefix should score 2.");
+                foreach (var query in new[] { "opne", "closd", "clozed", "cloosed" }) Require(Score(query) == 1.5, "Single typo should score 1.5: " + query);
+                Require(Score("opne contoru") == 3, "Distinct typo words should accumulate.");
+                Require(kb.Search("oen").Count == 0, "Three-letter typo must not match.");
+            });
+            Case("help: OR matching normalization top five and blank queries", () => {
+                var kb = KnowledgeBase.Embedded;
+                Require(kb.Search("  ").Count == 0 && kb.Search("zzzzzzzzzz").Count == 0, "Empty or unknown query matched.");
+                Require(kb.Search("zzzzzzzzzz opne").First().Entry.Id == "open-contour", "OR matching failed.");
+                Require(kb.Search("IT WON'T LET ME EXTRUD!").First().Entry.Id == "open-contour", "Normalization failed.");
+                Require(kb.Search("sketch").Count == 5, "Expected five results.");
+                Require(kb.Search("opne opne").First().Score == kb.Search("opne").First().Score, "Repeated word inflated score.");
+                Require(kb.Search("open cont").First(r => r.Entry.Id == "open-contour").Score == 5, "Partial phrase received a whole-phrase bonus.");
+            });
             Case("stuck after three unchanged minutes, then clears", () => {
                 var tracker = new DiagnosisTracker(Log); var s = new StateSnapshot { DocumentType = 1, DocumentKey = "test", LengthUnit = 0 };
                 var time = new DateTime(2026, 1, 1); var ds = new Rules().Evaluate(s); tracker.Update(s, ds, time); Require(ds.All(d => d.Id != "stuck"), "Triggered too soon.");
@@ -334,6 +374,10 @@ namespace IdeaUnstuck.SelfTest
                 Require(after[3]=="0", "An exception occurred in the installed add-in.");
                 Require(Read().BodyCount==0,"Unexpected state.");
                 Require((bool)addin.ShowPane(), "The pane could not be shown.");
+            });
+            Case("installed pane loads all embedded help entries", () => {
+                Require(addin != null, "Add-in unavailable.");
+                Require(((string)addin.GetDiagnostics()).Contains("; help entries: 49"), "Installed pane did not load the embedded knowledge base.");
             });
             Case("installed add-in exports its teaching log", () => {
                 Require(addin != null, "Add-in unavailable.");

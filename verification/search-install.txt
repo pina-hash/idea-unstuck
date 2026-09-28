@@ -1,0 +1,31 @@
+**********************
+Windows PowerShell transcript start
+Start time: 20260927201112
+Username: DESKTOP-QH30N35\aleja
+RunAs User: DESKTOP-QH30N35\aleja
+Configuration Name:
+Machine: DESKTOP-QH30N35 (Microsoft Windows NT 10.0.26200.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\aleja\Documents\Codex\2026-09-27\prop\work\install-search-update.ps1
+Process ID: 17736
+PSVersion: 5.1.26100.9444
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9444
+BuildVersion: 10.0.26100.9444
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+RegAsm : warning RA0000 : Registering an unsigned assembly with /codebase can cause your assembly to interfere with othe
+r applications that may be installed on the same computer. The /codebase switch is intended to be used only with signed
+assemblies. Please give your assembly a strong name and re-register it.
+Types registered successfully
+Verified program files, COM registration, and per-user logon initialization.
+SUCCESS: IDEA Unstuck is installed for this PC.
+PASS installed hash: IdeaUnstuck.AddIn.dll 547A5319D27836C1D4BC667471AD2BAEF9B53754CF6E5E02F2954DEF4200B6CC
+PASS installed hash: IdeaUnstuck.Core.dll 4567F34286EC2673BDF9E53A6DE76336F3233A2EA5044301104E56A603F26A6F
+PASS search update installed
+**********************
+Windows PowerShell transcript end
+End time: 20260927201113
+**********************

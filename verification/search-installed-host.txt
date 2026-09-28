@@ -1,0 +1,31 @@
+PASS help: it wont let me extrud returns open-contour first
+PASS help: buttons dissapeared returns toolbar-gone first
+Help entries=49; related links=79
+PASS help: every related id resolves
+Diagnosis links=12
+PASS help: every diagnosis link resolves to its expected entry
+PASS help: exact prefix phrase and all four single-typo scores
+PASS help: OR matching normalization top five and blank queries
+PASS stuck after three unchanged minutes, then clears
+PASS five undos in one minute, then expires
+PASS unknown feature and constraint codes retain raw values
+PASS all installed feature and contour enum codes have words
+PASS path does not complete from a body alone
+PASS document switch resets stuck detector
+PASS first-part path follows observed steps and survives Save As
+PASS change-size path tracks edit rollback and a rebuilt body
+PASS face-cut path requires a newly observed cut
+PASS fillet path does not tick failed features
+PASS incomplete reads do not invent document diagnoses
+SOLIDWORKS revision 34.4.1
+LoadAddIn=0
+Add-in status=connected|0|1|0
+Log: C:\Users\aleja\AppData\Local\IDEA\Unstuck; error: ; pane visible: True; child controls: 1; pane: {Width=328, Height=1054}; help entries: 49
+PASS installed add-in loads through SOLIDWORKS
+Add-in part status=connected|1|7|0
+PASS installed pane renders a new part and polls without exceptions
+PASS installed pane loads all embedded help entries
+Teacher export=C:\Users\aleja\OneDrive\Desktop\IDEA-Unstuck-20260927-201156-2f1265.zip
+PASS installed add-in exports its teaching log
+Inspection window is open. Waiting up to 5 minutes or for inspect.stop.
+TOTAL PASS=21 FAIL=0

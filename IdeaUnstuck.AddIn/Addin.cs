@@ -40,7 +40,7 @@ namespace IdeaUnstuck.AddIn
         int documentType, renderCount;
         // Read-only automation endpoint; also supplies the IDispatch required by the host.
         public string GetStatus() => (connected && !disposed ? "connected" : "disconnected") + "|" + documentType + "|" + renderCount + "|" + log.ExceptionCount;
-        public string GetDiagnostics() => "Log: " + log.Folder + "; error: " + log.LastWriteError + "; pane visible: " + pane?.Visible + "; child controls: " + pane?.Controls.Count + "; pane: " + pane?.Size;
+        public string GetDiagnostics() => "Log: " + log.Folder + "; error: " + log.LastWriteError + "; pane visible: " + pane?.Visible + "; child controls: " + pane?.Controls.Count + "; pane: " + pane?.Size + "; help entries: " + pane?.HelpEntryCount;
         public bool ShowPane() => api != null && taskpane != null && api.Get("ITaskpaneView.ShowView", () => taskpane.ShowView());
         public string ExportLog() { log.Write("button_pressed", new { action = "export" }); return log.ExportToday() ?? ""; }
         public bool ConnectToSW(object ThisSW, int Cookie)

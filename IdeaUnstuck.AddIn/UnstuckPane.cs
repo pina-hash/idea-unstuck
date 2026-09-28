@@ -17,6 +17,10 @@ namespace IdeaUnstuck.AddIn
         readonly Label status, message;
         readonly FlowLayoutPanel cards, checklist;
         readonly Button export;
+        readonly TextBox search = new TextBox { Name = "HelpSearch", AccessibleName = "Search for help", MaxLength = 512, Margin = new Padding(4, 3, 4, 3) };
+        readonly FlowLayoutPanel results, article;
+        KnowledgeBase help;
+        internal int HelpEntryCount => help?.Entries.Count ?? 0;
         readonly HashSet<string> expanded = new HashSet<string> { "My first 3D part" };
         string fingerprint;
         List<GuidedPath> paths;
@@ -32,6 +36,12 @@ namespace IdeaUnstuck.AddIn
             title.Click += (s, e) => Guard("teacher_reveal", () => { if ((ModifierKeys & Keys.Control) != 0) export.Visible = !export.Visible; });
             root.Controls.Add(title);
             status = TextLabel(""); root.Controls.Add(status);
+            root.Controls.Add(TextLabel("Search for help", true)); root.Controls.Add(search);
+            results = Stack(); root.Controls.Add(results);
+            article = Stack(); article.Visible = false; root.Controls.Add(article);
+            Guard("help_load", () => help = KnowledgeBase.Embedded);
+            if (help == null) { search.Enabled = false; results.Controls.Add(TextLabel("Help could not load. Ask your TA.")); }
+            search.TextChanged += (s, e) => Guard("help_search", SearchHelp);
             message = TextLabel(""); message.BackColor = Color.FromArgb(225, 242, 255); message.Visible = false; root.Controls.Add(message);
             cards = Stack(); root.Controls.Add(cards);
             root.Controls.Add(TextLabel("One next click", true));
@@ -51,6 +61,34 @@ namespace IdeaUnstuck.AddIn
             return button;
         }
         void Guard(string name, Action call) { try { call(); } catch (Exception ex) { log.Exception(name, ex); } }
+        LinkLabel HelpLink(string text, Action follow)
+        {
+            var link = new LinkLabel { Text = text, AutoSize = true, Padding = new Padding(4), Margin = new Padding(0, 4, 0, 4), UseMnemonic = false, AccessibleName = text };
+            link.LinkClicked += (s, e) => Guard("help_link", follow);
+            return link;
+        }
+        void SearchHelp()
+        {
+            Clear(article); article.Visible = false; results.Visible = true; Clear(results);
+            if (help == null) return;
+            var found = help.Search(search.Text);
+            foreach (var result in found) { var entry = result.Entry; results.Controls.Add(HelpLink(entry.Title, () => OpenHelp(entry))); }
+            if (found.Count == 0 && !string.IsNullOrWhiteSpace(search.Text)) results.Controls.Add(TextLabel("No match. Try a different word, such as sketch or extrude."));
+            FitWidths();
+        }
+        void OpenHelp(HelpEntry entry)
+        {
+            Clear(article); results.Visible = false;
+            article.Controls.Add(HelpLink("Back to search", () => { SearchHelp(); search.Focus(); }));
+            article.Controls.Add(TextLabel(entry.Title, true));
+            article.Controls.Add(TextLabel(entry.Fix, true));
+            article.Controls.Add(TextLabel("Step by step", true));
+            for (int i = 0; i < entry.Steps.Count; i++) article.Controls.Add(TextLabel((i + 1) + ". " + entry.Steps[i].T));
+            article.Controls.Add(TextLabel("Why: " + entry.Why));
+            if (entry.Related.Count > 0) article.Controls.Add(TextLabel("Related help", true));
+            foreach (var id in entry.Related) { var related = help.Find(id); article.Controls.Add(HelpLink(related.Title, () => OpenHelp(related))); }
+            article.Visible = true; FitWidths(); root.ScrollControlIntoView(article);
+        }
         public void ShowMessage(string text) { message.Text = text; message.Visible = true; FitWidths(); }
         public void Render(StateSnapshot state, List<Diagnosis> diagnoses, List<GuidedPath> guided)
         {
@@ -67,6 +105,8 @@ namespace IdeaUnstuck.AddIn
                     var card = Stack(); card.Padding = new Padding(6); card.BackColor = d.IsError ? Color.FromArgb(255, 236, 225) : Color.FromArgb(240, 244, 248);
                     card.Controls.Add(TextLabel(d.Title, true)); card.Controls.Add(TextLabel(d.Meaning)); card.Controls.Add(TextLabel(d.NextClick));
                     if (d.Action != null) card.Controls.Add(ActionButton(d.Action == "copy" ? "Copy for AI" : d.Action == "units" ? "Set units to inches" : d.Action == "roll" ? "Roll to end" : d.Action == "undo" ? "Undo" : "Get back into my sketch", d.Action));
+                    var entry = help?.ForDiagnosis(d.Id);
+                    if (entry != null) card.Controls.Add(HelpLink("More help", () => OpenHelp(entry)));
                     cards.Controls.Add(card);
                 }
                 RenderPaths(); FitWidths();

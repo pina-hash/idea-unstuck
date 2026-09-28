@@ -2,6 +2,27 @@
 
 Date: September 27, 2026 (local time). This is a **pilot build, not a fully accepted lab installation**.
 
+## Search update: current pilot code
+
+The supplied `kb.json` is embedded unchanged in Core (SHA-256 `57A914539723922D0D7D8BBD91DC0C9D58DE3B39E4D0CEBC481C95A1678BAD2F`). The pane now provides local ranked search, up to five title links, inline fix/steps/why/related articles, and mapped diagnosis More help links. The 1500 ms poll remains unchanged; no network call or modal was added.
+
+- Build: **0 warnings, 0 errors**. [search-build.txt](verification/search-build.txt).
+- Logic SelfTest: **17 PASS, 0 FAIL** (11 existing plus 6 help cases). Both requested queries return the expected first result. Tests cover all **49 entries, 79 related links, and 12 diagnosis mappings**, plus scoring, all four single-edit typo operations, OR matching, normalization, and result limits. [search-unit.txt](verification/search-unit.txt).
+- Installed-host SelfTest: **21 PASS, 0 FAIL** (the same 17 logic cases plus 4 host cases). Installed pane connected, advanced its reads for a real part, reported zero exceptions and 49 embedded entries, and exported its log. [search-installed-host.txt](verification/search-installed-host.txt).
+- Updated installation succeeded; installed Core and AddIn hashes match the tested build. [search-install.txt](verification/search-install.txt).
+
+Commands for these runs:
+
+```powershell
+dotnet build IdeaUnstuck.sln -c Release
+.\release\IdeaUnstuck.SelfTest.exe --unit
+.\release\IdeaUnstuck.SelfTest.exe --addin --inspect
+```
+
+**Not completed for this update:** the full 15 live-case regression rerun and visible search/article/related-link/More help interaction checks. The automation-created host reported a connected pane but the visible task pane showed Import Model; this was not counted as a visual pass. It was closed after confirming zero open documents and SOLIDWORKS was launched normally for visual inspection. The user then stopped Computer Use with Escape. At the user's direction, work moved immediately to private GitHub publication. Resume these checks before classroom acceptance. Historical successful runs below describe the previous build and do not substitute for these remaining checks.
+
+## Previous pilot verification (before search)
+
 ## Build
 
 Command, run from the `idea-unstuck` repository:
@@ -68,4 +89,4 @@ Some requested behavior is deliberately limited: no automatic endpoint highlight
 
 All used API members have been checked against the 2025 reference pages. Exact first-availability lines missing from older pages are listed in README.md and API_AVAILABILITY.md. Real 2025 testing remains necessary.
 
-Source and verification evidence are committed locally. Nothing has been pushed to a remote repository.
+Source, release binaries, and verification evidence are published in the private `pina-hash/idea-unstuck` repository. The `v0.1.0-pilot` release uses this report as its release notes. See HANDOFF.md on main for continuation instructions.

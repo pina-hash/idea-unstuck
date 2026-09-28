@@ -1,0 +1,1378 @@
+{
+ "version": 1,
+ "entries": [
+  {
+   "id": "open-contour",
+   "kind": "wrong",
+   "title": "My shape is not closed",
+   "q": "open contour; not closed; gap; wont extrude; cannot extrude; extrude error; sketch has open; broken outline; ends not touching",
+   "fix": "Find the gap in your outline and drag one loose end onto the other until it snaps.",
+   "steps": [
+    {
+     "t": "Zoom in on every corner with the scroll wheel. A gap can be too small to see from far away.",
+     "w": "mouse"
+    },
+    {
+     "t": "Open the Tools menu, then Sketch Tools, then Check Sketch for Feature. Click Check. It tells you where the open ends are.",
+     "w": "menu"
+    },
+    {
+     "t": "Click and drag one loose end onto the other end. Let go when a small orange square appears. That square means the two ends are joined.",
+     "w": "graphics"
+    },
+    {
+     "t": "Delete any tiny extra line you find. Click it, press Delete.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Try the extrude again.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "An extrude pushes your outline into 3D, like pouring plastic into a mold. If the outline has a gap, the plastic leaks out, so SolidWorks refuses. Every outline must be one closed loop.",
+   "related": [
+    "multi-contour",
+    "extrude",
+    "check-sketch"
+   ]
+  },
+  {
+   "id": "multi-contour",
+   "kind": "wrong",
+   "title": "It says my sketch has multiple contours or lines crossing",
+   "q": "multiple contours; self intersecting; lines crossing; overlapping lines; two outlines; contour error; intersect",
+   "fix": "Erase the extra pieces so there is one outline. Circles inside it are fine: they become holes.",
+   "steps": [
+    {
+     "t": "Look for lines that cross each other or stick out past a corner.",
+     "w": "graphics"
+    },
+    {
+     "t": "On the Sketch tab, click Trim Entities. Choose Power trim.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Hold the left mouse button and drag across the extra pieces. They disappear as you cross them.",
+     "w": "mouse"
+    },
+    {
+     "t": "Look for a line drawn twice on top of itself: drag a line away and see if another one is under it. Delete the copy.",
+     "w": "graphics"
+    },
+    {
+     "t": "Run Tools, Sketch Tools, Check Sketch for Feature to confirm.",
+     "w": "menu"
+    }
+   ],
+   "why": "A hook is one outline with holes inside it. Two outlines side by side, or lines that cross, give SolidWorks more than one possible shape and it cannot guess which one you mean.",
+   "related": [
+    "open-contour",
+    "trim",
+    "check-sketch"
+   ]
+  },
+  {
+   "id": "left-sketch",
+   "kind": "wrong",
+   "title": "I left my sketch and cannot get back in",
+   "q": "exited sketch; get back into sketch; edit sketch; left sketch; cant edit sketch; sketch gone; change my sketch; go back to sketch",
+   "fix": "Click the sketch in the tree on the left, then click Edit Sketch (the pencil).",
+   "steps": [
+    {
+     "t": "Find the list on the left side of the screen. That is the tree: every step of your part, in order.",
+     "w": "tree"
+    },
+    {
+     "t": "If you already extruded, click the small arrow next to Boss-Extrude1. Your sketch (Sketch1) is inside it.",
+     "w": "tree"
+    },
+    {
+     "t": "Click Sketch1. A small bar of icons pops up next to your mouse.",
+     "w": "tree"
+    },
+    {
+     "t": "Click Edit Sketch, the icon with a pencil. Your sketch lines light up and you can change them.",
+     "w": "graphics"
+    },
+    {
+     "t": "When you finish, click the Exit Sketch icon in the top-right corner of the part area.",
+     "w": "corner"
+    }
+   ],
+   "why": "Leaving a sketch does not lock it. Every sketch and feature stays editable forever. Editing is how you change a part, which is why you never need to start over.",
+   "related": [
+    "exit-sketch",
+    "edit-feature",
+    "delete-part"
+   ]
+  },
+  {
+   "id": "delete-part",
+   "kind": "wrong",
+   "title": "I messed up so badly I want to delete everything and start over",
+   "q": "start over; delete everything; delete part; messed up; ruined; new part again; restart",
+   "fix": "Do not delete it. Press Ctrl+Z to undo, or edit the step that went wrong. It is almost always faster.",
+   "steps": [
+    {
+     "t": "Press Ctrl+Z. Each press undoes one step. Keep going until it looks right again.",
+     "w": "keyboard"
+    },
+    {
+     "t": "If one feature is wrong, right-click it in the tree and pick Edit Feature.",
+     "w": "tree"
+    },
+    {
+     "t": "If the shape is wrong, click the sketch in the tree and pick Edit Sketch.",
+     "w": "tree"
+    },
+    {
+     "t": "Still stuck after that? Ask a TA before you delete anything.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Starting over throws away every correct step with the one wrong one. In CAD you fix the step that broke. The tree is there so you can go back to any step.",
+   "related": [
+    "undo",
+    "left-sketch",
+    "edit-feature"
+   ]
+  },
+  {
+   "id": "units-mm",
+   "kind": "wrong",
+   "title": "My numbers are huge or weird, like 25.4",
+   "q": "millimeters; mm; wrong units; numbers huge; 25.4; metric; inches; units; decimals",
+   "fix": "You are in millimeters. Click the units at the bottom-right corner and pick IPS.",
+   "steps": [
+    {
+     "t": "Look at the bottom-right corner of the SolidWorks window. It shows the unit system, like MMGS.",
+     "w": "units"
+    },
+    {
+     "t": "Click it and pick IPS (inch, pound, second).",
+     "w": "units"
+    },
+    {
+     "t": "Your part does not change size. Only the numbers change to inches.",
+     "w": "graphics"
+    },
+    {
+     "t": "If you typed numbers while in millimeters, they are wrong now. Retype them in inches.",
+     "w": "graphics"
+    },
+    {
+     "t": "To make three decimal places show: Options (the gear at the top), Document Properties tab, Units, set Length decimals to .123.",
+     "w": "menu"
+    }
+   ],
+   "why": "Every size in this project is in inches. A 2 you typed in millimeters is 2 mm, about the thickness of a coin. The unit system decides what your typed numbers mean.",
+   "related": [
+    "set-units"
+   ]
+  },
+  {
+   "id": "red-sketch",
+   "kind": "wrong",
+   "title": "My sketch turned red or yellow, or says Over Defined",
+   "q": "red lines; yellow lines; over defined; overdefined; conflict; sketch red; cannot solve; sketchxpert",
+   "fix": "Press Ctrl+Z to undo the last dimension or relation you added.",
+   "steps": [
+    {
+     "t": "Look at the bottom of the screen. It says Over Defined when two rules are fighting.",
+     "w": "status"
+    },
+    {
+     "t": "Press Ctrl+Z once. That usually removes the rule that caused it.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Or find the red or yellow dimension and delete it.",
+     "w": "graphics"
+    },
+    {
+     "t": "For help finding it: click the words Over Defined at the bottom. SketchXpert opens. Click Diagnose, pick a solution, click Accept.",
+     "w": "status"
+    }
+   ],
+   "why": "Each dimension is a rule. If a line is 2 inches long AND its two ends are dimensioned 2.5 inches apart, both cannot be true. SolidWorks shows the conflict in red.",
+   "related": [
+    "colors",
+    "smart-dim"
+   ]
+  },
+  {
+   "id": "colors",
+   "kind": "wrong",
+   "title": "What do blue and black lines mean?",
+   "q": "blue lines; black lines; under defined; fully defined; line colors; why blue",
+   "fix": "Blue means the line can still move. Black means dimensions lock it in place. Both are fine.",
+   "steps": [
+    {
+     "t": "Drag a blue line. It moves, because nothing locks it yet.",
+     "w": "graphics"
+    },
+    {
+     "t": "Add dimensions until the lines turn black. Black lines stay put when you change other things.",
+     "w": "ribbon"
+    },
+    {
+     "t": "The bottom of the screen says Under Defined or Fully Defined.",
+     "w": "status"
+    }
+   ],
+   "why": "A fully defined sketch (all black) behaves predictably when you change a number. It is good practice, not a requirement for your first part.",
+   "related": [
+    "red-sketch",
+    "smart-dim"
+   ]
+  },
+  {
+   "id": "lost-part",
+   "kind": "wrong",
+   "title": "My part disappeared or I cannot find it",
+   "q": "cant see part; disappeared; lost; gone; zoomed out; blank screen; where is my part; nothing there",
+   "fix": "Put your mouse over the part area and press F. It zooms to fit your whole part.",
+   "steps": [
+    {
+     "t": "Move the mouse over the big part area and press F.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Still nothing? Press the spacebar and double-click Isometric.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Look in the tree for a gray line with a yellow-and-black bar above your features. Right-click the bar and pick Roll to End.",
+     "w": "rollback"
+    },
+    {
+     "t": "Open the Solid Bodies folder in the tree. If your body is hidden, right-click it and pick Show.",
+     "w": "tree"
+    }
+   ],
+   "why": "The part is almost never gone. The view moved, the rollback bar hid it, or the body was hidden. None of those delete anything.",
+   "related": [
+    "move-view",
+    "rollback"
+   ]
+  },
+  {
+   "id": "red-x",
+   "kind": "wrong",
+   "title": "There is a red X or a yellow triangle in the tree",
+   "q": "red x; error; yellow triangle; warning; rebuild error; feature failed; fillet failed; cut failed; failed; what wrong; exclamation",
+   "fix": "Hover over the first one from the top to read what it says, then right-click it and pick Edit Feature.",
+   "steps": [
+    {
+     "t": "Find the FIRST feature with a mark, counting from the top of the tree. Fix that one first: it often causes the others.",
+     "w": "tree"
+    },
+    {
+     "t": "Hover the mouse over it and read the message.",
+     "w": "tree"
+    },
+    {
+     "t": "Right-click it. Pick Edit Feature to change its settings, or Edit Sketch to change its shape.",
+     "w": "tree"
+    },
+    {
+     "t": "A yellow triangle is a warning: the part still works. A red X means that feature failed.",
+     "w": "tree"
+    },
+    {
+     "t": "Common cause: a Fillet radius that is too big. Make it smaller.",
+     "w": "property"
+    }
+   ],
+   "why": "Features are built in order, top to bottom. If an early one changes, a later one can lose the edge or face it was attached to, and it fails.",
+   "related": [
+    "edit-feature",
+    "fillet",
+    "rebuild"
+   ]
+  },
+  {
+   "id": "rollback",
+   "kind": "wrong",
+   "title": "Things in my tree are gray, or there is a yellow and black line in the middle",
+   "q": "grayed out; gray features; rollback bar; yellow black line; features missing; part went back",
+   "fix": "Right-click the yellow and black bar and pick Roll to End.",
+   "steps": [
+    {
+     "t": "Find the yellow and black bar in the tree.",
+     "w": "rollback"
+    },
+    {
+     "t": "Right-click it and pick Roll to End. Or drag it to the very bottom.",
+     "w": "rollback"
+    }
+   ],
+   "why": "That bar is a time machine. Everything below it is switched off, so you can see the part as it was earlier. Somebody dragged it by accident.",
+   "related": [
+    "lost-part"
+   ]
+  },
+  {
+   "id": "still-drawing",
+   "kind": "wrong",
+   "title": "It keeps drawing lines every time I click",
+   "q": "keeps drawing; cant stop drawing; line tool; extra lines; stop tool",
+   "fix": "Press Esc. That stops the tool.",
+   "steps": [
+    {
+     "t": "Press Esc once or twice.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Delete any extra lines: click one, press Delete.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "The Line tool stays on so you can draw a chain of lines. Esc or a double-click ends the chain.",
+   "related": [
+    "draw"
+   ]
+  },
+  {
+   "id": "enter-repeat",
+   "kind": "wrong",
+   "title": "A tool opened that I did not choose",
+   "q": "tool opened by itself; random tool; enter key; repeat command; popped up",
+   "fix": "Press Esc to close it. Pressing Enter repeats the last tool you used.",
+   "steps": [
+    {
+     "t": "Press Esc.",
+     "w": "keyboard"
+    },
+    {
+     "t": "If a panel opened on the left, click the red X at its top.",
+     "w": "property"
+    }
+   ],
+   "why": "In SolidWorks the Enter key means do the last command again. That is handy once you know it and confusing until you do.",
+   "related": []
+  },
+  {
+   "id": "wrong-select",
+   "kind": "wrong",
+   "title": "I cannot click the face or edge I want",
+   "q": "cant select; wrong face; clicks wrong thing; select edge; select face; behind; hidden face",
+   "fix": "Right-click near it, choose Select Other, and pick the one you want from the list.",
+   "steps": [
+    {
+     "t": "Rotate the view so the face or edge is facing you: hold the middle mouse button and drag.",
+     "w": "mouse"
+    },
+    {
+     "t": "Or right-click near it and choose Select Other. Move through the list until the right one lights up, and click it.",
+     "w": "graphics"
+    },
+    {
+     "t": "Zoom in with the scroll wheel so edges are farther apart.",
+     "w": "mouse"
+    }
+   ],
+   "why": "SolidWorks picks whatever is closest to the mouse. Thin parts put faces and edges very close together.",
+   "related": [
+    "move-view"
+   ]
+  },
+  {
+   "id": "toolbar-gone",
+   "kind": "wrong",
+   "title": "The buttons or tabs at the top disappeared",
+   "q": "toolbar gone; tabs missing; commandmanager; buttons gone; sketch tab missing; features tab missing; ribbon gone",
+   "fix": "Right-click on any tab at the top (like Features) and turn on the tab you are missing.",
+   "steps": [
+    {
+     "t": "Right-click on a tab at the top, like Features or Sketch.",
+     "w": "tabs"
+    },
+    {
+     "t": "In the menu, point at Tabs and check the one that is missing.",
+     "w": "tabs"
+    },
+    {
+     "t": "If there are no tabs at all: right-click any empty spot at the top and check CommandManager.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "The tabs can be turned off with a right-click, so they are easy to lose by accident. Nothing is broken.",
+   "related": []
+  },
+  {
+   "id": "tree-gone",
+   "kind": "wrong",
+   "title": "The list on the left disappeared",
+   "q": "tree gone; left panel gone; featuremanager missing; list missing; side panel",
+   "fix": "Press F9.",
+   "steps": [
+    {
+     "t": "Press F9. It shows or hides the tree.",
+     "w": "keyboard"
+    },
+    {
+     "t": "If the left side shows settings instead of the tree, a tool is still open. Click the green check to finish it or the red X to cancel.",
+     "w": "property"
+    }
+   ],
+   "why": "The left panel shares its space. When a tool is open, its settings replace the tree until you finish.",
+   "related": []
+  },
+  {
+   "id": "view-tilted",
+   "kind": "wrong",
+   "title": "My view is tilted and I cannot draw straight",
+   "q": "tilted; sideways; rotated; crooked; cant see sketch flat; view wrong; upside down",
+   "fix": "Press Ctrl+8 to look straight at the sketch, or press the spacebar and pick Front.",
+   "steps": [
+    {
+     "t": "Inside a sketch, press Ctrl+8. The view turns to face the sketch.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Or press the spacebar and double-click Front.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Drawing on a tilted view makes lines land at angles you did not mean. Always look straight at the sketch while you draw.",
+   "related": [
+    "move-view"
+   ]
+  },
+  {
+   "id": "extrude-direction",
+   "kind": "wrong",
+   "title": "My extrude went the wrong way, or only to one side",
+   "q": "wrong direction; one side; not centered; mid plane; flip; reverse; extrude backwards",
+   "fix": "Edit the extrude and change Blind to Mid Plane.",
+   "steps": [
+    {
+     "t": "Right-click Boss-Extrude1 in the tree and pick Edit Feature.",
+     "w": "tree"
+    },
+    {
+     "t": "Under Direction 1, open the drop-down that says Blind and pick Mid Plane.",
+     "w": "property"
+    },
+    {
+     "t": "Type the full thickness, for example 0.500. Half goes each way.",
+     "w": "property"
+    },
+    {
+     "t": "Click the green check.",
+     "w": "property"
+    }
+   ],
+   "why": "Mid Plane grows the part equally both ways from the sketch, so the front and back of your hook match and it stays centered.",
+   "related": [
+    "extrude",
+    "edit-feature"
+   ]
+  },
+  {
+   "id": "two-bodies",
+   "kind": "wrong",
+   "title": "My part has two bodies (Solid Bodies(2))",
+   "q": "two bodies; solid bodies 2; separate pieces; not connected; merge result; floating",
+   "fix": "Edit the last extrude and check Merge result, or change it so it touches the rest of the part.",
+   "steps": [
+    {
+     "t": "Open the Solid Bodies folder in the tree. If it says (2), you have two separate pieces.",
+     "w": "tree"
+    },
+    {
+     "t": "Right-click the last extrude, pick Edit Feature, and check Merge result.",
+     "w": "property"
+    },
+    {
+     "t": "If it still makes two, the new piece does not touch the old one. Edit its sketch so they overlap.",
+     "w": "tree"
+    }
+   ],
+   "why": "A hook must be one solid piece. Two bodies that only look connected will print as two parts that fall apart.",
+   "related": [
+    "edit-feature"
+   ]
+  },
+  {
+   "id": "radius-not-dia",
+   "kind": "wrong",
+   "title": "My circle dimension shows R instead of a diameter",
+   "q": "radius; diameter; R instead of; circle dimension; show diameter",
+   "fix": "Right-click the dimension, open Display Options, and pick Display As Diameter.",
+   "steps": [
+    {
+     "t": "Right-click the dimension.",
+     "w": "graphics"
+    },
+    {
+     "t": "Point at Display Options and click Display As Diameter.",
+     "w": "graphics"
+    },
+    {
+     "t": "Next time, click a full circle, not an arc. A circle gets a diameter automatically.",
+     "w": "graphics"
+    }
+   ],
+   "why": "Arcs are measured by radius and full circles by diameter. The hook rules are written as diameters, so show them that way.",
+   "related": [
+    "smart-dim"
+   ]
+  },
+  {
+   "id": "crashed",
+   "kind": "wrong",
+   "title": "SolidWorks froze or closed",
+   "q": "froze; crashed; not responding; closed; lost my work; recover",
+   "fix": "Wait 30 seconds. If it closed, open SolidWorks again and look for Document Recovery on the right.",
+   "steps": [
+    {
+     "t": "Give it 30 seconds before clicking anything. It may be thinking.",
+     "w": "graphics"
+    },
+    {
+     "t": "If it closed, reopen SolidWorks. A Document Recovery panel appears on the right side with your last autosave.",
+     "w": "taskpane"
+    },
+    {
+     "t": "Open it and immediately use Save As to save it with your name.",
+     "w": "menu"
+    },
+    {
+     "t": "From now on press Ctrl+S every few minutes.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Autosave keeps copies every few minutes, but only a real save is safe.",
+   "related": [
+    "save"
+   ]
+  },
+  {
+   "id": "shape-jumped",
+   "kind": "wrong",
+   "title": "When I typed a dimension, the whole shape jumped or flipped",
+   "q": "shape jumped; flipped; went crazy; distorted; dimension moved everything; exploded",
+   "fix": "Press Ctrl+Z. Then drag the shape close to the right size first and dimension it again.",
+   "steps": [
+    {
+     "t": "Press Ctrl+Z to undo the jump.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Drag the lines so they are already close to the size you want.",
+     "w": "graphics"
+    },
+    {
+     "t": "Dimension the big sizes first, then the small ones.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "When you type a number, SolidWorks moves whatever lines are free to move. If the sketch was far from that size, a lot has to move and it can flip.",
+   "related": [
+    "smart-dim",
+    "colors"
+   ]
+  },
+  {
+   "id": "dim-box",
+   "kind": "wrong",
+   "title": "The box to type my dimension did not pop up",
+   "q": "no box; cant type number; dimension box; modify box; type value",
+   "fix": "Double-click the dimension number. The box opens.",
+   "steps": [
+    {
+     "t": "Double-click the number.",
+     "w": "graphics"
+    },
+    {
+     "t": "Type the value and press Enter.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "The box opens automatically only when a setting is on. Double-clicking always works.",
+   "related": [
+    "smart-dim"
+   ]
+  },
+  {
+   "id": "wrong-plane",
+   "kind": "wrong",
+   "title": "My sketch is on the wrong plane",
+   "q": "wrong plane; lying flat; top plane; sideways part; edit sketch plane",
+   "fix": "Right-click the sketch in the tree, pick Edit Sketch Plane, then click Front Plane.",
+   "steps": [
+    {
+     "t": "Right-click the sketch in the tree.",
+     "w": "tree"
+    },
+    {
+     "t": "Pick Edit Sketch Plane.",
+     "w": "tree"
+    },
+    {
+     "t": "Click Front Plane in the tree, then the green check.",
+     "w": "property"
+    }
+   ],
+   "why": "Build the hook outline on the Front Plane so Front view shows its shape and Mid Plane grows it evenly.",
+   "related": [
+    "start-sketch"
+   ]
+  },
+  {
+   "id": "rebuild",
+   "kind": "wrong",
+   "title": "It says rebuild, or there is a traffic light icon",
+   "q": "rebuild; traffic light; needs rebuild; not updated",
+   "fix": "Press Ctrl+B.",
+   "steps": [
+    {
+     "t": "Press Ctrl+B to rebuild.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Still marked? Press Ctrl+Q to rebuild everything.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "After a change, SolidWorks recalculates the part. Rebuild makes it catch up.",
+   "related": [
+    "red-x"
+   ]
+  },
+  {
+   "id": "dragged-arrow",
+   "kind": "wrong",
+   "title": "I dragged an arrow and my part changed size",
+   "q": "dragged arrow; changed size by accident; blue arrow; instant3d",
+   "fix": "Press Ctrl+Z.",
+   "steps": [
+    {
+     "t": "Press Ctrl+Z.",
+     "w": "keyboard"
+    },
+    {
+     "t": "To change a size on purpose, double-click its number and type it.",
+     "w": "graphics"
+    }
+   ],
+   "why": "Those arrows let you drag a feature bigger or smaller. Dragging by accident changes the real size.",
+   "related": [
+    "change-dim"
+   ]
+  },
+  {
+   "id": "new-part",
+   "kind": "how",
+   "title": "Start a new part",
+   "q": "new part; new file; start; begin; create part; open solidworks",
+   "fix": "File, New, Part, OK. Then switch to inches and save it with your name.",
+   "steps": [
+    {
+     "t": "Click File, then New (or the blank page icon at the top).",
+     "w": "menu"
+    },
+    {
+     "t": "Pick Part and click OK.",
+     "w": "menu"
+    },
+    {
+     "t": "Check the bottom-right corner says IPS. If not, click it and pick IPS.",
+     "w": "units"
+    },
+    {
+     "t": "Save it now: Ctrl+S, name it with your last name.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Saving first means autosave and Ctrl+S protect your work from the first minute.",
+   "related": [
+    "set-units",
+    "save",
+    "start-sketch"
+   ]
+  },
+  {
+   "id": "set-units",
+   "kind": "how",
+   "title": "Switch to inches",
+   "q": "inches; units; ips; change units; set units",
+   "fix": "Click the units at the bottom-right corner and pick IPS.",
+   "steps": [
+    {
+     "t": "Click the unit label at the bottom-right corner of the window.",
+     "w": "units"
+    },
+    {
+     "t": "Pick IPS (inch, pound, second).",
+     "w": "units"
+    },
+    {
+     "t": "For three decimals: Options (gear), Document Properties, Units, Length decimals .123.",
+     "w": "menu"
+    }
+   ],
+   "why": "Every hook rule is in inches, to three decimals.",
+   "related": [
+    "units-mm"
+   ]
+  },
+  {
+   "id": "start-sketch",
+   "kind": "how",
+   "title": "Start a sketch",
+   "q": "start sketch; new sketch; draw; begin drawing; front plane; sketch plane",
+   "fix": "Click Front Plane in the tree, then click the Sketch icon that pops up.",
+   "steps": [
+    {
+     "t": "In the tree on the left, click Front Plane.",
+     "w": "tree"
+    },
+    {
+     "t": "Click the Sketch icon in the small bar that pops up. Or use the Sketch tab, then Sketch.",
+     "w": "ribbon"
+    },
+    {
+     "t": "The view turns to face the plane. If it does not, press Ctrl+8.",
+     "w": "keyboard"
+    },
+    {
+     "t": "The origin (two small red arrows) is the center of your part. Start your first circle there.",
+     "w": "graphics"
+    }
+   ],
+   "why": "A sketch is a flat drawing on a plane. The Front Plane is the one you look straight at, so the hook outline goes there.",
+   "related": [
+    "draw",
+    "wrong-plane"
+   ]
+  },
+  {
+   "id": "draw",
+   "kind": "how",
+   "title": "Draw lines, circles and arcs",
+   "q": "draw line; circle; arc; rectangle; draw shape; sketch tools; curve",
+   "fix": "Sketch tab: Line, Circle, or an Arc. Click to start, click to end, Esc to stop.",
+   "steps": [
+    {
+     "t": "Circle: on the Sketch tab click Circle, click the center, move out, click again.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Line: click Line, click a start point, click each corner. Double-click or press Esc to stop.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Curve that flows from a line: while drawing a line, move the mouse back onto the last point and out again. It switches to an arc. Or use Tangent Arc.",
+     "w": "graphics"
+    },
+    {
+     "t": "Start and end points should snap onto each other. An orange square means they joined.",
+     "w": "graphics"
+    }
+   ],
+   "why": "Do not worry about exact sizes while drawing. Draw the shape roughly, then set exact sizes with Smart Dimension.",
+   "related": [
+    "smart-dim",
+    "still-drawing",
+    "trim"
+   ]
+  },
+  {
+   "id": "smart-dim",
+   "kind": "how",
+   "title": "Set an exact size (Smart Dimension)",
+   "q": "dimension; size; exact size; smart dimension; measure in sketch; set length; diameter; center to center",
+   "fix": "Sketch tab, Smart Dimension, click the thing, click to place, type the number, Enter.",
+   "steps": [
+    {
+     "t": "Click Smart Dimension on the Sketch tab (the icon with a ruler and a diameter sign).",
+     "w": "ribbon"
+    },
+    {
+     "t": "Line length: click the line. Circle diameter: click the circle. Center to center: click one circle, then the other.",
+     "w": "graphics"
+    },
+    {
+     "t": "Move the mouse to where the number should sit and click.",
+     "w": "graphics"
+    },
+    {
+     "t": "Type the value in inches and press Enter.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Press Esc when you are done dimensioning.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "The sketch is only rough until you dimension it. Dimensions are how you control the real size, and how you change it later.",
+   "related": [
+    "change-dim",
+    "red-sketch",
+    "shape-jumped"
+   ]
+  },
+  {
+   "id": "change-dim",
+   "kind": "how",
+   "title": "Change a size after I extruded",
+   "q": "change size; change dimension; edit dimension; resize; make bigger; make smaller; modify",
+   "fix": "Double-click the part to show its numbers, double-click the number, type the new value, press Enter.",
+   "steps": [
+    {
+     "t": "Double-click the feature in the tree, or on the part. Its dimensions appear.",
+     "w": "graphics"
+    },
+    {
+     "t": "Double-click the number you want to change.",
+     "w": "graphics"
+    },
+    {
+     "t": "Type the new value and press Enter.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Press Ctrl+B to rebuild.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "This is the whole point of CAD: one number changes and the part updates.",
+   "related": [
+    "left-sketch",
+    "rebuild"
+   ]
+  },
+  {
+   "id": "exit-sketch",
+   "kind": "how",
+   "title": "Leave the sketch",
+   "q": "exit sketch; leave sketch; finish sketch; done sketching; close sketch",
+   "fix": "Click the Exit Sketch icon in the top-right corner of the part area.",
+   "steps": [
+    {
+     "t": "Look at the top-right corner of the part area.",
+     "w": "corner"
+    },
+    {
+     "t": "Click the icon with the sketch and the check mark to keep your sketch. Do NOT click the red X: it throws away your changes.",
+     "w": "corner"
+    }
+   ],
+   "why": "You can go back in at any time with Edit Sketch.",
+   "related": [
+    "left-sketch"
+   ]
+  },
+  {
+   "id": "extrude",
+   "kind": "how",
+   "title": "Make it 3D (Extruded Boss/Base)",
+   "q": "extrude; make 3d; thickness; boss; turn sketch into part; extruded boss base",
+   "fix": "Features tab, Extruded Boss/Base, Mid Plane, type the thickness, green check.",
+   "steps": [
+    {
+     "t": "Click the Features tab.",
+     "w": "tabs"
+    },
+    {
+     "t": "Click Extruded Boss/Base.",
+     "w": "ribbon"
+    },
+    {
+     "t": "If it asks for a sketch, click your sketch.",
+     "w": "tree"
+    },
+    {
+     "t": "Under Direction 1 pick Mid Plane and type the thickness (0.750 is the most allowed).",
+     "w": "property"
+    },
+    {
+     "t": "Click the green check.",
+     "w": "property"
+    }
+   ],
+   "why": "An extrude pushes a closed outline straight out to make a solid. Mid Plane keeps it centered.",
+   "related": [
+    "open-contour",
+    "extrude-direction",
+    "cut"
+   ]
+  },
+  {
+   "id": "sketch-face",
+   "kind": "how",
+   "title": "Sketch on a face of my part",
+   "q": "sketch on face; draw on part; face sketch; add to face",
+   "fix": "Click a flat face of the part, then click the Sketch icon that pops up.",
+   "steps": [
+    {
+     "t": "Click a flat face. It turns blue.",
+     "w": "graphics"
+    },
+    {
+     "t": "Click Sketch in the bar that pops up.",
+     "w": "graphics"
+    },
+    {
+     "t": "Press Ctrl+8 to look straight at it.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Draw a closed outline, then use Extruded Boss/Base to add or Extruded Cut to remove.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "Any flat face can be a sketch plane. That is how you add a raised rim, a pocket or a boss.",
+   "related": [
+    "cut",
+    "extrude",
+    "offset"
+   ]
+  },
+  {
+   "id": "cut",
+   "kind": "how",
+   "title": "Cut a hole or a pocket (Extruded Cut)",
+   "q": "cut; hole; pocket; remove material; extruded cut; subtract",
+   "fix": "Sketch the shape on a face, then Features tab, Extruded Cut, set the depth, green check.",
+   "steps": [
+    {
+     "t": "Sketch a closed shape on a face.",
+     "w": "graphics"
+    },
+    {
+     "t": "Features tab, Extruded Cut.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Pick Through All for a hole all the way through, or Blind and type a depth for a pocket.",
+     "w": "property"
+    },
+    {
+     "t": "Nothing cut? Click the arrow next to the depth to flip the direction.",
+     "w": "property"
+    },
+    {
+     "t": "Click the green check.",
+     "w": "property"
+    }
+   ],
+   "why": "A cut is an extrude that removes material instead of adding it.",
+   "related": [
+    "sketch-face",
+    "mirror"
+   ]
+  },
+  {
+   "id": "fillet",
+   "kind": "how",
+   "title": "Round an edge (Fillet)",
+   "q": "fillet; round edge; round corner; smooth edge; radius edge",
+   "fix": "Features tab, Fillet, type a radius, click the edges, green check.",
+   "steps": [
+    {
+     "t": "Features tab, Fillet.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Type a radius, like 0.060.",
+     "w": "property"
+    },
+    {
+     "t": "Click each edge to round. They list on the left.",
+     "w": "graphics"
+    },
+    {
+     "t": "Green check. If it fails, make the radius smaller.",
+     "w": "property"
+    }
+   ],
+   "why": "Sharp inside corners are where cracks start. Rounding them makes the hook stronger.",
+   "related": [
+    "chamfer",
+    "red-x"
+   ]
+  },
+  {
+   "id": "chamfer",
+   "kind": "how",
+   "title": "Bevel an edge (Chamfer)",
+   "q": "chamfer; bevel; angled edge; 45 degree edge",
+   "fix": "Features tab, click the small arrow under Fillet, Chamfer, type a distance, click edges, green check.",
+   "steps": [
+    {
+     "t": "Features tab. Click the small arrow under Fillet and pick Chamfer.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Type a distance and click the edges.",
+     "w": "property"
+    },
+    {
+     "t": "Green check.",
+     "w": "property"
+    }
+   ],
+   "why": "A 45 degree chamfer on an edge that faces down on the printer prints without support.",
+   "related": [
+    "fillet"
+   ]
+  },
+  {
+   "id": "mirror",
+   "kind": "how",
+   "title": "Make both sides match (Mirror)",
+   "q": "mirror; symmetric; both sides; copy to other side; match",
+   "fix": "Features tab, Mirror, pick Front Plane as the mirror, pick the feature to copy, green check.",
+   "steps": [
+    {
+     "t": "Features tab, Mirror.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Mirror Face/Plane: click Front Plane in the tree (click the small arrow at the top of the left panel to show it).",
+     "w": "tree"
+    },
+    {
+     "t": "Features to Mirror: click the cut or boss you made on one side.",
+     "w": "tree"
+    },
+    {
+     "t": "Green check. In a sketch, use Mirror Entities with a centerline instead.",
+     "w": "property"
+    }
+   ],
+   "why": "A hook pulled in the middle should be the same on both faces, or it twists.",
+   "related": [
+    "cut",
+    "centerline"
+   ]
+  },
+  {
+   "id": "offset",
+   "kind": "how",
+   "title": "Copy an outline inside itself (Offset Entities)",
+   "q": "offset; wall; rim; copy outline; inside outline; border",
+   "fix": "Sketch tab, Offset Entities, type a distance, click the edges, flip inward if needed, green check.",
+   "steps": [
+    {
+     "t": "Start a sketch on the face.",
+     "w": "graphics"
+    },
+    {
+     "t": "Sketch tab, Offset Entities.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Type a distance and click the outer edges.",
+     "w": "property"
+    },
+    {
+     "t": "Check Reverse if it went outward. Green check.",
+     "w": "property"
+    }
+   ],
+   "why": "An offset keeps an even wall, which is how you make a raised rim: offset inward, then cut the pocket.",
+   "related": [
+    "sketch-face",
+    "cut"
+   ]
+  },
+  {
+   "id": "trim",
+   "kind": "how",
+   "title": "Erase part of a line (Trim)",
+   "q": "trim; erase part of line; cut line; remove extra; power trim",
+   "fix": "Sketch tab, Trim Entities, Power trim, drag across the pieces you do not want.",
+   "steps": [
+    {
+     "t": "Sketch tab, Trim Entities.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Pick Power trim.",
+     "w": "property"
+    },
+    {
+     "t": "Hold the left mouse button and drag across the pieces. They disappear.",
+     "w": "mouse"
+    },
+    {
+     "t": "Esc when done.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Overlapping circles and lines leave extra pieces inside your outline. Trim removes them so the outline is one loop.",
+   "related": [
+    "multi-contour"
+   ]
+  },
+  {
+   "id": "centerline",
+   "kind": "how",
+   "title": "Draw a centerline",
+   "q": "centerline; center line; construction; dashed line; symmetry line",
+   "fix": "Sketch tab, click the small arrow next to Line, Centerline.",
+   "steps": [
+    {
+     "t": "Click the arrow next to Line and pick Centerline.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Draw it like a normal line.",
+     "w": "graphics"
+    }
+   ],
+   "why": "A centerline is a guide. It never becomes plastic, and Mirror Entities uses it as the mirror.",
+   "related": [
+    "mirror"
+   ]
+  },
+  {
+   "id": "relations",
+   "kind": "how",
+   "title": "Make two things touch, line up, or be tangent",
+   "q": "tangent; smooth; coincident; line up; horizontal; vertical; equal; relation",
+   "fix": "Hold Ctrl and click both items, then pick the relation on the left.",
+   "steps": [
+    {
+     "t": "Hold Ctrl and click the two items.",
+     "w": "graphics"
+    },
+    {
+     "t": "On the left, under Add Relations, pick one: Tangent (smooth join), Coincident (touching), Horizontal, Equal.",
+     "w": "property"
+    },
+    {
+     "t": "Press Esc.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Relations lock how shapes connect. Tangent makes an arc flow into a line with no corner, which is stronger.",
+   "related": [
+    "colors"
+   ]
+  },
+  {
+   "id": "measure",
+   "kind": "how",
+   "title": "Measure my part",
+   "q": "measure; how big; check size; distance; diameter; thickness; center distance",
+   "fix": "Evaluate tab, Measure, click what you want to measure.",
+   "steps": [
+    {
+     "t": "Click the Evaluate tab, then Measure.",
+     "w": "tabs"
+    },
+    {
+     "t": "Two circle edges: shows the center to center distance.",
+     "w": "graphics"
+    },
+    {
+     "t": "One circle edge: shows its diameter.",
+     "w": "graphics"
+    },
+    {
+     "t": "Two faces: shows the distance between them, like the thickness.",
+     "w": "graphics"
+    },
+    {
+     "t": "Click in empty space to clear, and close the box when done.",
+     "w": "graphics"
+    }
+   ],
+   "why": "Measure checks the real part, which is what the inspection will check.",
+   "related": [
+    "set-units"
+   ]
+  },
+  {
+   "id": "move-view",
+   "kind": "how",
+   "title": "Turn, zoom and move the view",
+   "q": "rotate; turn; spin; zoom; pan; move view; look around; view",
+   "fix": "Hold the middle mouse button to turn. Scroll to zoom. Ctrl + middle button to slide.",
+   "steps": [
+    {
+     "t": "Turn: hold the middle mouse button (the scroll wheel) and drag.",
+     "w": "mouse"
+    },
+    {
+     "t": "Zoom: roll the scroll wheel.",
+     "w": "mouse"
+    },
+    {
+     "t": "Slide: hold Ctrl and the middle mouse button and drag.",
+     "w": "mouse"
+    },
+    {
+     "t": "Fit everything: F. Pick a view: spacebar.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Moving the view never changes the part.",
+   "related": [
+    "lost-part",
+    "view-tilted"
+   ]
+  },
+  {
+   "id": "undo",
+   "kind": "how",
+   "title": "Undo a mistake",
+   "q": "undo; go back; oops; mistake; ctrl z; redo",
+   "fix": "Ctrl+Z. Ctrl+Y puts it back.",
+   "steps": [
+    {
+     "t": "Press Ctrl+Z. Each press undoes one step.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Went too far? Ctrl+Y redoes.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "Undo is always safer than deleting.",
+   "related": [
+    "delete-part"
+   ]
+  },
+  {
+   "id": "edit-feature",
+   "kind": "how",
+   "title": "Change an extrude, cut or fillet",
+   "q": "edit feature; change extrude; change depth; change thickness; thicker; thinner; change fillet; edit cut",
+   "fix": "Right-click the feature in the tree and pick Edit Feature.",
+   "steps": [
+    {
+     "t": "Right-click the feature in the tree.",
+     "w": "tree"
+    },
+    {
+     "t": "Pick Edit Feature (the icon with a pencil and a box).",
+     "w": "tree"
+    },
+    {
+     "t": "Change the settings and click the green check.",
+     "w": "property"
+    }
+   ],
+   "why": "Every feature keeps its settings. You can change them any time.",
+   "related": [
+    "left-sketch",
+    "red-x"
+   ]
+  },
+  {
+   "id": "check-sketch",
+   "kind": "how",
+   "title": "Find what is wrong with my sketch",
+   "q": "check sketch; what is wrong; find gap; find error; sketch problem",
+   "fix": "Tools menu, Sketch Tools, Check Sketch for Feature, then Check.",
+   "steps": [
+    {
+     "t": "While in the sketch, open the Tools menu.",
+     "w": "menu"
+    },
+    {
+     "t": "Sketch Tools, then Check Sketch for Feature.",
+     "w": "menu"
+    },
+    {
+     "t": "Click Check. It lists and highlights the problems.",
+     "w": "property"
+    }
+   ],
+   "why": "It finds gaps, crossing lines and doubled lines faster than your eyes can.",
+   "related": [
+    "open-contour",
+    "multi-contour"
+   ]
+  },
+  {
+   "id": "save",
+   "kind": "how",
+   "title": "Save my part with the right name",
+   "q": "save; save as; name file; filename; lastname; where to save",
+   "fix": "File, Save As, type the name you were given with your last name, Save.",
+   "steps": [
+    {
+     "t": "Click File, then Save As.",
+     "w": "menu"
+    },
+    {
+     "t": "Type the name your assignment asks for, like V1_SMITH.",
+     "w": "menu"
+    },
+    {
+     "t": "Save as type should be Part (*.sldprt).",
+     "w": "menu"
+    },
+    {
+     "t": "Save it where Mr. Pina told the class.",
+     "w": "menu"
+    },
+    {
+     "t": "After that, Ctrl+S saves again.",
+     "w": "keyboard"
+    }
+   ],
+   "why": "The .SLDPRT file is what you hand in. A drawing, a STEP or a screenshot is not the part.",
+   "related": [
+    "crashed"
+   ]
+  },
+  {
+   "id": "hide-planes",
+   "kind": "how",
+   "title": "Hide or show the planes",
+   "q": "planes; hide planes; show planes; squares in the way; plane clutter",
+   "fix": "View menu, Hide/Show, Planes.",
+   "steps": [
+    {
+     "t": "Click View, then Hide/Show, then Planes.",
+     "w": "menu"
+    }
+   ],
+   "why": "Planes are guides. Hiding them clears the view and does not delete them.",
+   "related": []
+  }
+ ],
+ "keys": [
+  [
+   "Ctrl+Z",
+   "Undo"
+  ],
+  [
+   "Esc",
+   "Stop the tool"
+  ],
+  [
+   "F",
+   "Find my part"
+  ],
+  [
+   "Ctrl+8",
+   "Look straight at it"
+  ],
+  [
+   "Space",
+   "Pick a view"
+  ],
+  [
+   "Ctrl+B",
+   "Rebuild"
+  ],
+  [
+   "F9",
+   "Show the tree"
+  ],
+  [
+   "Ctrl+S",
+   "Save"
+  ]
+ ]
+}
