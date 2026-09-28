@@ -1,5 +1,11 @@
 # Verification report
 
+## Overnight phase 2
+
+Trap suite: **28 PASS, 0 FAIL** (19 logic/control + 9 live cases) in verification/overnight-phase2-passing.txt. New live cases cover hidden tree, selection filters, first sketch on Top Plane, one-sided extrusion plus zero dimensions, radius on a full circle, five minutes without a sketch using an injected clock, rebuild needed and clearing, active Line tool, and over-defined SketchXpert availability. No geometry changes occur in diagnosis reads. docs/trap-coverage.md inventories all 25 wrong entries and explains search-only limits, including CommandManager visibility.
+
+Test-fixture repairs: the initial radius fixture opened a Modify prompt. UI cancellation could not target its owned dialog; the blocked runner was stopped and its specific disposable Part27 was closed through the SOLIDWORKS API. The fixture now temporarily suppresses dimension input and restores the original setting in finally. A selection-filter cleanup call returned TYPE_E_ELEMENTNOTFOUND; restoring only the changed edge-filter flag fixed the test. Both repaired cases passed in the complete rerun. Initial failure records are retained separately and are not counted as passes.
+
 ## Overnight phase 1
 
 Search completion: **34 PASS, 0 FAIL** on real SOLIDWORKS 2026 (19 logic/control tests plus 15 live cases). Managed-control tests exercised first-result navigation, bold fix, Step by step, Why, related navigation, More help, and preserving query/article across state refreshes. All diagnosis types now have help targets. Initial run found a missing assembly-card link (31 pass, 1 fail); the fixed complete rerun passed. Evidence: verification/overnight-phase1-final.txt and verification/overnight-phase1-unit.txt. Native installed-host visual checks still require installation of the changed DLL with administrator approval.

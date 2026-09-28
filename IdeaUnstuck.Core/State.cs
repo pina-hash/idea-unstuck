@@ -16,6 +16,15 @@ namespace IdeaUnstuck.Core
         public int LengthUnit { get; set; } = -1;
         public int DecimalPlaces { get; set; } = -1;
         public bool InSketch { get; set; }
+        public int ActiveCommand { get; set; }
+        public string CommandTitle { get; set; } = "";
+        public bool CommandActive { get; set; }
+        public bool SketchXpertAvailable { get; set; }
+        public int RebuildStatus { get; set; }
+        public bool SelectionFilterActive { get; set; }
+        public int FeatureTreeWidth { get; set; } = -1;
+        public string FrontPlaneName { get; set; } = "";
+        public double EmptyPartSeconds { get; set; }
         public SketchState Sketch { get; set; }
         public SketchState LastSketch { get; set; }
         public bool Rollback { get; set; }
@@ -49,6 +58,10 @@ namespace IdeaUnstuck.Core
         public int UsageCode { get; set; }
         public string UsageMeaning { get; set; } = "";
         public int DimensionCount { get; set; }
+        public int RadialDimensionCount { get; set; }
+        public int DiameterDimensionCount { get; set; }
+        public int FullCircleCount { get; set; }
+        public bool InchCircleAtOrigin { get; set; }
         public string DimensionSignature { get; set; } = "";
         // Regions describe faces bounded by contours. A region with several loops can contain holes.
         public int RegionCount { get; set; }
@@ -64,6 +77,7 @@ namespace IdeaUnstuck.Core
         public bool Suppressed { get; set; }
         public bool RolledBack { get; set; }
         public bool MidPlane { get; set; }
+        public double Depth { get; set; }
     }
     public sealed class Diagnosis
     {

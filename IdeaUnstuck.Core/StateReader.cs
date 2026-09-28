@@ -10,10 +10,13 @@ namespace IdeaUnstuck.Core
     public sealed class StateReader
     {
         readonly ApiGuard api;
-        public StateReader(Telemetry log) { api = new ApiGuard(log); }
+        readonly Func<DateTime> clock;
+        string emptyDocument;
+        DateTime emptySince;
+        public StateReader(Telemetry log, Func<DateTime> clock = null) { api = new ApiGuard(log); this.clock = clock ?? (() => DateTime.UtcNow); }
         public StateSnapshot Read(ISldWorks app)
         {
-            var s = new StateSnapshot();
+            var s = new StateSnapshot { Utc = clock() };
             return api.Get("StateReader.Read", () => ReadInternal(app, s), s, s.ReadIssues);
         }
         StateSnapshot ReadInternal(ISldWorks app, StateSnapshot s)
@@ -27,13 +30,24 @@ namespace IdeaUnstuck.Core
             s.Path = Read("IModelDoc2.GetPathName", () => doc.GetPathName(), "");
             s.DocumentKey = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(doc).ToString(CultureInfo.InvariantCulture);
             if (s.DocumentType != 1) return s;
+            int command = 0; string commandTitle = ""; bool commandActive = false;
+            Read("ISldWorks.GetRunningCommandInfo", () => { app.GetRunningCommandInfo(out command, out commandTitle, out commandActive); return true; });
+            s.ActiveCommand = command; s.CommandTitle = commandTitle; s.CommandActive = commandActive;
+            s.FeatureTreeWidth = Read("IModelDoc2.GetFeatureManagerWidth", () => doc.GetFeatureManagerWidth(), -1);
+            s.SelectionFilterActive = Read("ISldWorks.GetApplySelectionFilter", () => app.GetApplySelectionFilter()) && (Read("ISldWorks.GetSelectionFilters", () => app.GetSelectionFilters() as int[])?.Length ?? 0) > 0;
+            var extension = Read("IModelDoc2.Extension", () => doc.Extension);
+            if (extension != null) s.RebuildStatus = Read("IModelDocExtension.NeedsRebuild2", () => extension.NeedsRebuild2, -1);
             s.UnitSystem = Read("IModelDoc2.GetUserPreferenceIntegerValue.swUnitSystem", () => doc.GetUserPreferenceIntegerValue((int)swUserPreferenceIntegerValue_e.swUnitSystem), -1);
             s.LengthUnit = Read("IModelDoc2.GetUserPreferenceIntegerValue.swUnitsLinear", () => doc.GetUserPreferenceIntegerValue((int)swUserPreferenceIntegerValue_e.swUnitsLinear), -1);
             s.DecimalPlaces = Read("IModelDoc2.GetUserPreferenceIntegerValue.swUnitsLinearDecimalPlaces", () => doc.GetUserPreferenceIntegerValue((int)swUserPreferenceIntegerValue_e.swUnitsLinearDecimalPlaces), -1);
             var manager = Read("IModelDoc2.SketchManager", () => doc.SketchManager);
             var sketch = manager == null ? null : Read("ISketchManager.ActiveSketch", () => manager.ActiveSketch as ISketch);
             s.InSketch = sketch != null;
-            if (sketch != null) s.Sketch = ReadSketch(sketch, s);
+            if (sketch != null) {
+                s.Sketch = ReadSketch(sketch, s);
+                if (s.Sketch.ConstraintCode >= 4 && s.Sketch.ConstraintCode <= 6)
+                    s.SketchXpertAvailable = Read("ISldWorks.IsCommandEnabled", () => app.IsCommandEnabled(2192));
+            }
             var seen = new HashSet<string>();
             int count = 0;
             void Walk(IFeature feature, bool sub, int depth)
@@ -43,6 +57,7 @@ namespace IdeaUnstuck.Core
                     var current = feature;
                     string name = Read("IFeature.Name", () => current.Name, "Unknown feature");
                     string kind = Read("IFeature.GetTypeName2", () => current.GetTypeName2(), "Unknown");
+                    if (!sub && kind == "RefPlane" && s.FrontPlaneName.Length == 0) s.FrontPlaneName = name;
                     if (seen.Add(name))
                     {
                         bool warning = false;
@@ -54,7 +69,7 @@ namespace IdeaUnstuck.Core
                         if (kind == "Boss" || kind == "Extrusion")
                         {
                             var data = Read("IFeature.GetDefinition", () => current.GetDefinition() as IExtrudeFeatureData2);
-                            if (data != null) f.MidPlane = Read("IExtrudeFeatureData2.GetEndCondition", () => data.GetEndCondition(true), -1) == (int)swEndConditions_e.swEndCondMidPlane;
+                            if (data != null) { f.MidPlane = Read("IExtrudeFeatureData2.GetEndCondition", () => data.GetEndCondition(true), -1) == (int)swEndConditions_e.swEndCondMidPlane; f.Depth = Read("IExtrudeFeatureData2.GetDepth", () => data.GetDepth(true)); }
                         }
                         s.Features.Add(f);
                         s.Rollback |= f.RolledBack;
@@ -72,6 +87,8 @@ namespace IdeaUnstuck.Core
             if (count >= 1500) s.ReadIssues.Add("This tree is too large for a complete check.");
             var bodies = Read("IPartDoc.GetBodies2", () => ((IPartDoc)doc).GetBodies2((int)swBodyType_e.swSolidBody, false) as object[], null);
             s.BodyCount = bodies?.Length ?? 0;
+            if (emptyDocument != s.DocumentKey || s.LastSketch != null || s.Sketch != null || s.BodyCount > 0) { emptyDocument = s.DocumentKey; emptySince = s.Utc; }
+            s.EmptyPartSeconds = Math.Max(0, (s.Utc - emptySince).TotalSeconds);
             s.BodySignature = string.Join(";", (bodies ?? new object[0]).Select(b => {
                 var box = Read("IBody2.GetBodyBox", () => ((IBody2)b).GetBodyBox() as double[]);
                 return string.Join(",", (box ?? new double[0]).Select(v => v.ToString("G9", CultureInfo.InvariantCulture)));
@@ -93,6 +110,9 @@ namespace IdeaUnstuck.Core
                 while (dim != null && values.Count < 200)
                 {
                     var current = dim;
+                    int dimensionType = Read("IDisplayDimension.Type2", () => current.Type2, -1);
+                    if (dimensionType == (int)swDimensionType_e.swRadialDimension) sk.RadialDimensionCount++;
+                    if (dimensionType == (int)swDimensionType_e.swDiameterDimension) sk.DiameterDimensionCount++;
                     var d = Read("IDisplayDimension.GetDimension2", () => current.GetDimension2(0) as IDimension);
                     if (d != null) values.Add(Read("IDimension.FullName", () => d.FullName, "?") + "=" + Read("IDimension.SystemValue", () => d.SystemValue).ToString("R", CultureInfo.InvariantCulture));
                     dim = Read("IFeature.GetNextDisplayDimension", () => feature.GetNextDisplayDimension(current) as IDisplayDimension);
@@ -118,6 +138,14 @@ namespace IdeaUnstuck.Core
             sk.ConstraintMeaning = ErrorWords.Constraint(sk.ConstraintCode);
             var segments = Read("ISketch.GetSketchSegments", () => sketch.GetSketchSegments() as object[]) ?? new object[0];
             sk.EntityCount = segments.Count(o => !Read("ISketchSegment.ConstructionGeometry", () => ((ISketchSegment)o).ConstructionGeometry));
+            foreach (var segment in segments) {
+                if (segment is ISketchArc arc && !Read("ISketchSegment.ConstructionGeometry", () => ((ISketchSegment)segment).ConstructionGeometry) && Read("ISketchArc.IsCircle", () => arc.IsCircle()) == 1) {
+                    sk.FullCircleCount++;
+                    var center = Read("ISketchArc.GetCenterPoint2", () => arc.GetCenterPoint2() as ISketchPoint);
+                    double radius = Read("ISketchArc.GetRadius", () => arc.GetRadius());
+                    if (center != null && Math.Abs(radius - .0127) < 1e-7 && Math.Abs(Read("ISketchPoint.X", () => center.X)) < 1e-7 && Math.Abs(Read("ISketchPoint.Y", () => center.Y)) < 1e-7) sk.InchCircleAtOrigin = true;
+                }
+            }
             var contours = Read("ISketch.GetSketchContours", () => sketch.GetSketchContours() as object[]) ?? new object[0];
             sk.ContourCount = contours.Length;
             foreach (ISketchContour contour in contours)

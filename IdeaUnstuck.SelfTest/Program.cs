@@ -11,7 +11,7 @@ using Environment = System.Environment;
 
 namespace IdeaUnstuck.SelfTest
 {
-    static class Program
+    static partial class Program
     {
         static int passed, failed;
         static string Filter = "";
@@ -80,7 +80,9 @@ namespace IdeaUnstuck.SelfTest
                     if (!File.Exists(partTemplate)) partTemplate = @"C:\ProgramData\SOLIDWORKS\SOLIDWORKS " + year + @"\templates\Part.PRTDOT";
                     if (!File.Exists(assemblyTemplate)) assemblyTemplate = @"C:\ProgramData\SOLIDWORKS\SOLIDWORKS " + year + @"\templates\Assembly.ASMDOT";
                     Require(File.Exists(partTemplate), "Part template missing: " + partTemplate);
-                    if (args.Contains("--addin")) AddinCases(args.Contains("--startup")); else LiveCases();
+                    if (args.Contains("--addin")) AddinCases(args.Contains("--startup"));
+                    else if (args.Contains("--traps")) TrapCases();
+                    else { LiveCases(); TrapCases(); }
                 }
             }
             catch (Exception ex) { Log.Exception("SelfTest.Main", ex); failed++; Console.WriteLine("FAIL runner: " + ex.Message); }
@@ -140,7 +142,7 @@ namespace IdeaUnstuck.SelfTest
             Require(Api.Get("ISketchManager.CreateCornerRectangle", () => sm.CreateCornerRectangle(x, y, 0, x + size, y + size, 0)) != null, "Rectangle creation failed.");
         }
         static void Begin() { string result = Rescue.Run(app, "front"); Require(Read().InSketch, result); }
-        static IFeature Extrude(bool merge = true)
+        static IFeature Extrude(bool merge = true, bool midPlane = true)
         {
             Rescue.Run(app, "exit");
             var state = Read();
@@ -148,7 +150,7 @@ namespace IdeaUnstuck.SelfTest
             Api.Run("IModelDoc2.ClearSelection2", () => doc.ClearSelection2(true));
             Require(Api.Get("IFeature.Select2", () => sk.Select2(false, 0)), "Select sketch failed.");
             var fm = Api.Get("IModelDoc2.FeatureManager", () => doc.FeatureManager);
-            var f = Api.Get("IFeatureManager.FeatureExtrusion2", () => fm.FeatureExtrusion2(true, false, false, (int)swEndConditions_e.swEndCondMidPlane, 0, .0127, .0127, false, false, false, false, 0, 0, false, false, false, false, merge, true, true, 0, 0, false) as IFeature);
+            var f = Api.Get("IFeatureManager.FeatureExtrusion2", () => fm.FeatureExtrusion2(true, false, false, midPlane ? (int)swEndConditions_e.swEndCondMidPlane : (int)swEndConditions_e.swEndCondBlind, 0, .0127, .0127, false, false, false, false, 0, 0, false, false, false, false, merge, true, true, 0, 0, false) as IFeature);
             Require(f != null, "Extrude returned null."); return f;
         }
         static void LiveCases()

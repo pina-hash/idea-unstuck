@@ -126,6 +126,8 @@ namespace IdeaUnstuck.Core
 
         public static IReadOnlyDictionary<string, string> DiagnosisLinks { get; } = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(StringComparer.Ordinal) {
             ["no-document"] = "new-part", ["wrong-document"] = "new-part", ["read-incomplete"] = "rebuild", ["other-units"] = "units-mm", ["stuck"] = "check-sketch",
+            ["still-drawing"] = "still-drawing", ["wrong-plane"] = "wrong-plane", ["no-dimensions"] = "smart-dim", ["radius-not-dia"] = "radius-not-dia", ["extrude-direction"] = "extrude-direction", ["rebuild"] = "rebuild", ["no-sketch"] = "start-sketch",
+            ["tree-gone"] = "tree-gone", ["wrong-select"] = "wrong-select",
             ["open-contour"] = "open-contour", ["multiple-outlines"] = "multi-contour", ["sketch-error"] = "multi-contour",
             ["left-sketch"] = "left-sketch", ["millimeters"] = "units-mm", ["over-defined"] = "red-sketch",
             ["feature"] = "red-x", ["rollback"] = "rollback", ["no-body"] = "extrude",
