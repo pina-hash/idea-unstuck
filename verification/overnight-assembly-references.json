@@ -1,0 +1,10 @@
+[
+  {
+    "assembly": "IdeaUnstuck.Core",
+    "interopRuntimeReferences": 0
+  },
+  {
+    "assembly": "IdeaUnstuck.AddIn",
+    "interopRuntimeReferences": 0
+  }
+]

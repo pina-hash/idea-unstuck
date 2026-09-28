@@ -4,6 +4,8 @@
 
 - Install the final overnight build as administrator after saving work and closing SOLIDWORKS. This unattended session has a non-elevated token and read-only access to the installed program directory. No UAC prompt will be launched or awaited.
 - Validate the new installed DLL in the real Task Pane after that install. Core live tests and managed-control tests do not replace installed-host UI checks.
+- After installing the current DLL, run `SelfTest --chaos` (500 operations), `SelfTest --soak` (45 minutes), ten shutdown-during-tick trials, and ten unload/reload cycles. Tonight's chaos/soak preflights explicitly skipped the old installed DLL; timing and memory results are not available.
+- Supply a reachable school network share for the network-file edge case. No credentials or shares were fabricated.
 - Supply a SOLIDWORKS 2025 school PC, a second Windows login, and a DPI check at 100%, 125%, and 150%.
 - Perform the physical Ctrl-click Teacher export reveal and the 30-minute student-style modeling acceptance check.
 

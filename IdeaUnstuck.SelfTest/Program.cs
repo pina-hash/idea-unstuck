@@ -13,7 +13,7 @@ namespace IdeaUnstuck.SelfTest
 {
     static partial class Program
     {
-        static int passed, failed;
+        static int passed, failed, skipped;
         static string Filter = "";
         static bool KeepOpen;
         static readonly Telemetry Log = new Telemetry();
@@ -82,6 +82,8 @@ namespace IdeaUnstuck.SelfTest
                     Require(File.Exists(partTemplate), "Part template missing: " + partTemplate);
                     if (args.Contains("--addin")) AddinCases(args.Contains("--startup"));
                     else if (args.Contains("--traps")) TrapCases();
+                    else if (args.Contains("--edges")) EdgeCases();
+                    else if (args.Contains("--chaos") || args.Contains("--soak")) StressCases(args.Contains("--soak"));
                     else { LiveCases(); TrapCases(); }
                 }
             }
@@ -101,7 +103,8 @@ namespace IdeaUnstuck.SelfTest
             }
             return Finish();
         }
-        static int Finish() { Console.WriteLine("TOTAL PASS=" + passed + " FAIL=" + failed); return failed == 0 ? 0 : 1; }
+        static int Finish() { Console.WriteLine("TOTAL PASS=" + passed + " FAIL=" + failed + " SKIP=" + skipped); return failed > 0 ? 1 : skipped > 0 ? 2 : 0; }
+        static void Skip(string reason) { skipped++; Console.WriteLine("SKIP " + reason); }
         static void Require(bool condition, string message) { if (!condition) throw new InvalidOperationException(message); }
         static void Case(string name, Action test)
         {
@@ -271,6 +274,14 @@ namespace IdeaUnstuck.SelfTest
         }
         static void UnitCases()
         {
+            Case("poll metrics: bounded samples and overlap guard", () => {
+                var stats = new PollStatistics();
+                Require(stats.Enter() && !stats.Enter(), "Overlap was allowed."); stats.Leave(1);
+                for (int i=0;i<5000;i++) { Require(stats.Enter(), "Guard stayed locked."); stats.Leave(i % 20); }
+                var json = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(stats.Snapshot());
+                Require(json.Contains("\"retained\":4096") && stats.MaxConcurrent == 1 && stats.BlockedOverlap == 1, "Statistics are wrong or unbounded.");
+                stats.Reset(); Require(stats.Count == 0 && stats.Enter(), "Reset failed."); stats.Leave(1);
+            });
             Case("help pane: search article related links and refresh preserve reading", () => {
                 using (var pane = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => { })) {
                     IEnumerable<Control> All(Control c) => c.Controls.Cast<Control>().SelectMany(child => new[] { child }.Concat(All(child)));

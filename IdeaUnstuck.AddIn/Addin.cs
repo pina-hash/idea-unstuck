@@ -17,6 +17,8 @@ namespace IdeaUnstuck.AddIn
         [DispId(2)] string GetDiagnostics();
         [DispId(3)] bool ShowPane();
         [DispId(4)] string ExportLog();
+        [DispId(5)] string GetMetrics();
+        [DispId(6)] void ResetMetrics();
     }
 
     [ComVisible(true), Guid("962CE2F1-BF2C-46F3-A8A5-DC6081767E13"), ProgId("IdeaUnstuck.AddIn"), ClassInterface(ClassInterfaceType.None), ComDefaultInterface(typeof(IUnstuckAutomation))]
@@ -29,7 +31,7 @@ namespace IdeaUnstuck.AddIn
         UnstuckPane pane;
         ApiGuard api;
         Timer timer;
-        bool busy, disposed;
+        bool busy, disposed, refreshQueued;
         DSldWorksEvents_Event appEvents;
         DPartDocEvents_Event partEvents;
         IModelDoc2 boundPart;
@@ -38,6 +40,10 @@ namespace IdeaUnstuck.AddIn
         GuidedPaths paths;
         bool connected;
         int documentType, renderCount;
+        readonly PollStatistics polls = new PollStatistics();
+        int blankCards;
+        public string GetMetrics() => new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(new { schema = 1, poll = polls.Snapshot(), blankCards, exceptions = log.ExceptionCount, intervalMs = timer?.Interval ?? 1500, connected, build = typeof(Addin).Assembly.ManifestModule.ModuleVersionId.ToString() });
+        public void ResetMetrics() { polls.Reset(); blankCards = 0; }
         // Read-only automation endpoint; also supplies the IDispatch required by the host.
         public string GetStatus() => (connected && !disposed ? "connected" : "disconnected") + "|" + documentType + "|" + renderCount + "|" + log.ExceptionCount;
         public string GetDiagnostics() => "Log: " + log.Folder + "; error: " + log.LastWriteError + "; pane visible: " + pane?.Visible + "; child controls: " + pane?.Controls.Count + "; pane: " + pane?.Size + "; help entries: " + pane?.HelpEntryCount;
@@ -102,8 +108,10 @@ namespace IdeaUnstuck.AddIn
         int UndoHappened() { try { diagnoses.Undo(DateTime.UtcNow); } catch (Exception ex) { log.Exception("UndoHappened", ex); } return 0; }
         void QueueRefresh()
         {
-            if (disposed || pane == null || pane.IsDisposed) return;
-            pane.BeginInvoke((Action)(() => { try { RefreshBinding(); } catch (Exception ex) { log.Exception("deferred_refresh", ex); } }));
+            if (disposed || refreshQueued || pane == null || pane.IsDisposed) return;
+            refreshQueued = true;
+            try { pane.BeginInvoke((Action)(() => { refreshQueued = false; try { if (!disposed) RefreshBinding(); } catch (Exception ex) { log.Exception("deferred_refresh", ex); } })); }
+            catch { refreshQueued = false; throw; }
         }
         void DetachPart()
         {
@@ -143,25 +151,29 @@ namespace IdeaUnstuck.AddIn
                 if (busy || disposed) return;
                 var doc = api.Get("ISldWorks.ActiveDoc", () => app.ActiveDoc as IModelDoc2);
                 if (doc == null || api.Get("IModelDoc2.GetType", () => doc.GetType()) != 1) { RefreshBinding(); return; }
-                ReadAndRender();
+                ReadAndRender(true);
             }
             catch (Exception ex) { log.Exception("timer_tick", ex); }
         }
-        void ReadAndRender()
+        void ReadAndRender(bool isPoll = false)
         {
             if (busy || disposed) return;
+            if (isPoll && !polls.Enter()) return;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             busy = true;
             try
             {
                 var state = reader.Read(app);
+                if (disposed || pane == null || pane.IsDisposed) return;
                 var list = new Rules().Evaluate(state);
                 diagnoses.Update(state, list, DateTime.UtcNow); paths.Update(state);
+                foreach (var card in list) if (string.IsNullOrWhiteSpace(card.Title) || string.IsNullOrWhiteSpace(card.Meaning) || string.IsNullOrWhiteSpace(card.NextClick)) blankCards++;
                 pane.Render(state, list, paths.Paths);
                 documentType = state.DocumentType;
                 renderCount++;
             }
             catch (Exception ex) { log.Exception("ReadAndRender", ex); }
-            finally { busy = false; }
+            finally { busy = false; if (isPoll) polls.Leave(watch.Elapsed.TotalMilliseconds); }
         }
         void OnAction(string action)
         {

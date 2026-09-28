@@ -1,5 +1,15 @@
 # Verification report
 
+## Overnight phase 3
+
+Edge suite: **27 PASS, 0 FAIL, 1 SKIP** (20 logic/control + 7 edge cases; school network share skipped). A 20-sketch part had 43 total features and a 2616 ms external COM read. A 300-sketch-feature part had 323 total features and a 4654 ms external COM read. These are **out-of-process full reads, not in-host poll tick timings**. Renamed non-English sketches/planes, a read-only file, drawing/no-document messages, and cut/fillet fixtures passed. The original live assembly case passed in phase 1. Evidence: verification/overnight-phase3-edges.txt.
+
+The reader now parses detailed geometry only for the active/last sketch, while checking feature errors throughout the bounded tree. Refresh requests are coalesced and disposal is checked before rendering. A bounded 4096-sample in-host timing endpoint reports median/p95/max, poll count/concurrency, caught exceptions and blank cards; its logic test passed.
+
+**Chaos: 0 operations executed; SKIPPED. Soak: 0 minutes executed; SKIPPED. Median/p95/max and start/end soak memory: NOT MEASURED.** Each preflight had 20 logic/control passes, 0 failures, and 1 skipped stress case. The installed v0.1 DLL lacks the current build's metrics endpoint, and replacing it requires admin approval prohibited during this unattended run. The 500-operation seeded mode and 45-minute mode are provided for the updated installation; neither is counted as passed. Their cut/fillet fixtures were exercised by the edge suite. Ten shutdown-during-tick cycles and ten add-in unload/reload cycles are likewise NOT RUN; they require validation with the current installed DLL. See Needs Mr. Pina in HANDOFF.md.
+
+Interop runtime references remain **0 for Core and 0 for AddIn**. The API source inventory contains the original 96 entries plus 31 new guarded/API entries. A fresh 2025 page audit is PARTIAL: several official pages returned HTTP 403 or generic help shells. Unconfirmed entries are labeled in API_AVAILABILITY.md. No 2025 execution is claimed.
+
 ## Overnight phase 2
 
 Trap suite: **28 PASS, 0 FAIL** (19 logic/control + 9 live cases) in verification/overnight-phase2-passing.txt. New live cases cover hidden tree, selection filters, first sketch on Top Plane, one-sided extrusion plus zero dimensions, radius on a full circle, five minutes without a sketch using an injected clock, rebuild needed and clearing, active Line tool, and over-defined SketchXpert availability. No geometry changes occur in diagnosis reads. docs/trap-coverage.md inventories all 25 wrong entries and explains search-only limits, including CommandManager visibility.

@@ -49,6 +49,7 @@ namespace IdeaUnstuck.Core
                     s.SketchXpertAvailable = Read("ISldWorks.IsCommandEnabled", () => app.IsCommandEnabled(2192));
             }
             var seen = new HashSet<string>();
+            IFeature lastSketchFeature = null;
             int count = 0;
             void Walk(IFeature feature, bool sub, int depth)
             {
@@ -75,8 +76,7 @@ namespace IdeaUnstuck.Core
                         s.Rollback |= f.RolledBack;
                         if ((kind == "ProfileFeature" || kind == "3DProfileFeature") && !f.Suppressed && !f.RolledBack)
                         {
-                            var sk = Read("IFeature.GetSpecificFeature2", () => current.GetSpecificFeature2() as ISketch);
-                            if (sk != null) s.LastSketch = ReadSketch(sk, s, current);
+                            lastSketchFeature = current;
                         }
                         Walk(Read("IFeature.GetFirstSubFeature", () => current.GetFirstSubFeature() as IFeature), true, depth + 1);
                     }
@@ -84,6 +84,13 @@ namespace IdeaUnstuck.Core
                 }
             }
             Walk(Read("IModelDoc2.FirstFeature", () => doc.FirstFeature() as IFeature), false, 0);
+            if (lastSketchFeature != null) {
+                if (s.Sketch != null && s.Sketch.Name == Read("IFeature.Name", () => lastSketchFeature.Name)) s.LastSketch = s.Sketch;
+                else {
+                    var lastSketch = Read("IFeature.GetSpecificFeature2", () => lastSketchFeature.GetSpecificFeature2() as ISketch);
+                    if (lastSketch != null) s.LastSketch = ReadSketch(lastSketch, s, lastSketchFeature);
+                }
+            }
             if (count >= 1500) s.ReadIssues.Add("This tree is too large for a complete check.");
             var bodies = Read("IPartDoc.GetBodies2", () => ((IPartDoc)doc).GetBodies2((int)swBodyType_e.swSolidBody, false) as object[], null);
             s.BodyCount = bodies?.Length ?? 0;
