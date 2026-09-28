@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace IdeaUnstuck.Core
+{
+    public sealed class PathStep
+    {
+        public string Id { get; set; }
+        public string Text { get; set; }
+        public string Action { get; set; }
+        public bool Done { get; set; }
+    }
+    public sealed class GuidedPath
+    {
+        public string Title { get; set; }
+        public List<PathStep> Steps { get; set; }
+    }
+    public sealed class GuidedPaths
+    {
+        readonly Telemetry log;
+        string document;
+        string beforeDimensions, beforeBody;
+        bool changedSize, sawFaceSketch, sawRound;
+        HashSet<string> initialCuts = new HashSet<string>();
+        public List<GuidedPath> Paths { get; private set; }
+        public GuidedPaths(Telemetry log) { this.log = log; Reset(); }
+        public void Reset()
+        {
+            document = null; beforeDimensions = null; beforeBody = null; changedSize = false; sawFaceSketch = false; sawRound = false; initialCuts.Clear();
+            PathStep S(string id, string text, string action = null) => new PathStep { Id = id, Text = text, Action = action };
+            Paths = new List<GuidedPath> {
+                new GuidedPath { Title = "My first 3D part", Steps = new List<PathStep> {
+                    S("a1", "Click File > New > Part."), S("a2", "Press Set units to inches.", "units"),
+                    S("a3", "Select Front Plane, then click Sketch.", "front"), S("a4", "Click Rectangle. Draw one closed outline."),
+                    S("a5", "Click Smart Dimension. Click a line, place the size, then type its value."), S("a6", "Click Exit Sketch.", "exit"),
+                    S("a7", "Click Features > Extruded Boss/Base. Choose Mid Plane, then click the green check."),
+                    S("a8", "Check that Solid Bodies in the left tree shows 1."), S("a9", "Press Ctrl+S. Include your last name in the file name.") } },
+                new GuidedPath { Title = "Change a size", Steps = new List<PathStep> {
+                    S("b1", "Press Get back into my sketch."), S("b2", "Double-click a size. Type a new value and press Enter."),
+                    S("b3", "Click Exit Sketch.", "exit"), S("b4", "Check that the 3D shape changed.") } },
+                new GuidedPath { Title = "Cut into a face", Steps = new List<PathStep> {
+                    S("c1", "Click a flat face, then click Sketch."), S("c2", "Click Circle or Rectangle. Draw a closed outline."),
+                    S("c3", "Click Exit Sketch, then Features > Extruded Cut. Click the green check."), S("c4", "Check that Solid Bodies still shows 1.") } },
+                new GuidedPath { Title = "Round an edge", Steps = new List<PathStep> {
+                    S("d1", "Click Features > Fillet. Pick an edge, type a radius, then click the green check."),
+                    S("d2", "Check that Fillet has no red X in the left tree.") } }
+            };
+        }
+        public void Update(StateSnapshot s)
+        {
+            if (document != s.DocumentKey) { Reset(); document = s.DocumentKey; }
+            if (s.DocumentType != 1 || s.ReadIssues.Count > 0) return;
+            void Mark(string id, bool complete)
+            {
+                var step = Paths.SelectMany(p => p.Steps).First(x => x.Id == id);
+                if (complete && !step.Done) { step.Done = true; log.Write("guided_step_completed", new { id, document = s.FileName }); }
+            }
+            bool Done(string id) => Paths.SelectMany(p => p.Steps).First(x => x.Id == id).Done;
+            var sketch = s.Sketch ?? s.LastSketch;
+            bool outline = sketch != null && sketch.ClosedContours == 1 && sketch.OpenContours == 0;
+            Mark("a1", true); Mark("a2", s.UnitSystem == 3 && s.LengthUnit == 3);
+            Mark("a3", s.InSketch && sketch?.Support == "Front Plane");
+            Mark("a4", Done("a3") && outline); Mark("a5", Done("a4") && sketch.DimensionCount > 0);
+            Mark("a6", Done("a5") && !s.InSketch);
+            Mark("a7", Done("a6") && s.Features.Any(f => f.MidPlane && !f.Suppressed && !f.RolledBack && f.ErrorCode == 0));
+            Mark("a8", Done("a7") && s.BodyCount == 1); Mark("a9", Done("a8") && s.Saved);
+            if (s.InSketch && s.BodyCount > 0 && s.Sketch != null && s.Sketch.DimensionCount > 0)
+            {
+                Mark("b1", true);
+                if (beforeDimensions == null) { beforeDimensions = s.Sketch.DimensionSignature; beforeBody = s.BodySignature; }
+                changedSize |= beforeDimensions != s.Sketch.DimensionSignature;
+                Mark("b2", changedSize);
+            }
+            Mark("b3", changedSize && !s.InSketch);
+            Mark("b4", Done("b3") && s.BodyCount > 0 && s.BodySignature != beforeBody && s.Features.All(f => f.ErrorCode == 0));
+            if (s.InSketch && s.Sketch?.SupportKind == "face" && !sawFaceSketch)
+            { sawFaceSketch = true; initialCuts = new HashSet<string>(s.Features.Where(f => f.Kind == "Cut").Select(f => f.Name)); }
+            Mark("c1", sawFaceSketch); Mark("c2", sawFaceSketch && s.InSketch && s.Sketch?.SupportKind == "face" && outline);
+            Mark("c3", Done("c2") && !s.InSketch && s.Features.Any(f => f.Kind == "Cut" && !initialCuts.Contains(f.Name) && f.ErrorCode == 0 && !f.Suppressed));
+            Mark("c4", Done("c3") && s.BodyCount == 1);
+            var fillets = s.Features.Where(f => f.Kind == "Fillet" && !f.Suppressed && !f.RolledBack).ToArray();
+            sawRound |= fillets.Length > 0;
+            Mark("d1", sawRound); Mark("d2", fillets.Length > 0 && fillets.All(f => f.ErrorCode == 0));
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <Version>0.1.0</Version>
+    <SolidWorksInteropPath Condition="'$(SolidWorksInteropPath)' == ''">C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist</SolidWorksInteropPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp"/>
+    <Reference Include="SolidWorks.Interop.sldworks"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.sldworks.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+    <Reference Include="SolidWorks.Interop.swconst"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.swconst.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+    <Reference Include="SolidWorks.Interop.swpublished"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.swpublished.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
