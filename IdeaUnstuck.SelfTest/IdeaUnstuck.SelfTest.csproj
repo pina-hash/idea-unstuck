@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><UseWindowsForms>true</UseWindowsForms></PropertyGroup>
-  <ItemGroup><ProjectReference Include="..\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj"/><Reference Include="System.Web.Extensions"/></ItemGroup>
+  <ItemGroup><ProjectReference Include="..\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj"/><ProjectReference Include="..\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj"/><Reference Include="System.Web.Extensions"/></ItemGroup>
 </Project>

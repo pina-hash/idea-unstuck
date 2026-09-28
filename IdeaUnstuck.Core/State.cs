@@ -46,11 +46,13 @@ namespace IdeaUnstuck.Core
         public string ConstraintName { get; set; } = "Unknown";
         public string ConstraintMeaning { get; set; } = "Ask a TA.";
         public int ErrorCode { get; set; }
+        public int UsageCode { get; set; }
+        public string UsageMeaning { get; set; } = "";
         public int DimensionCount { get; set; }
         public string DimensionSignature { get; set; } = "";
         // Regions describe faces bounded by contours. A region with several loops can contain holes.
         public int RegionCount { get; set; }
-        public string Describe() => "Sketch " + Name + " has " + EntityCount + " drawing items, " + ClosedContours + " closed outlines and " + OpenContours + " open outlines. " + ConstraintMeaning;
+        public string Describe() => "Sketch " + Name + " has " + EntityCount + " drawing items, " + ClosedContours + " closed outlines and " + OpenContours + " open outlines. " + ConstraintMeaning + (UsageCode != 0 ? " " + UsageMeaning : "");
     }
     public sealed class FeatureState
     {

@@ -76,7 +76,7 @@ namespace IdeaUnstuck.AddIn
             foreach (var path in paths)
             {
                 var heading = new Button { Text = (expanded.Contains(path.Title) ? "Hide: " : "Show: ") + path.Title, AutoSize = true, MinimumSize = new Size(0, 40), Margin = new Padding(0, 4, 0, 4), FlatStyle = FlatStyle.Flat, UseMnemonic = false };
-                heading.Click += (s, e) => Guard("path_expand", () => { if (!expanded.Add(path.Title)) expanded.Remove(path.Title); RenderPaths(); FitWidths(); });
+                heading.Click += (s, e) => Guard("path_expand", () => { log.Write("button_pressed", new { action="path_toggle", path=path.Title }); if (!expanded.Add(path.Title)) expanded.Remove(path.Title); RenderPaths(); FitWidths(); });
                 checklist.Controls.Add(heading);
                 if (!expanded.Contains(path.Title)) continue;
                 foreach (var step in path.Steps)

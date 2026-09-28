@@ -25,7 +25,7 @@ namespace IdeaUnstuck.Core
             s.DocumentType = Read("IModelDoc2.GetType", () => doc.GetType());
             s.FileName = Read("IModelDoc2.GetTitle", () => doc.GetTitle(), "Unnamed part");
             s.Path = Read("IModelDoc2.GetPathName", () => doc.GetPathName(), "");
-            s.DocumentKey = s.FileName; // Session tracker is additionally reset on document events.
+            s.DocumentKey = System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(doc).ToString(CultureInfo.InvariantCulture);
             if (s.DocumentType != 1) return s;
             s.UnitSystem = Read("IModelDoc2.GetUserPreferenceIntegerValue.swUnitSystem", () => doc.GetUserPreferenceIntegerValue((int)swUserPreferenceIntegerValue_e.swUnitSystem), -1);
             s.LengthUnit = Read("IModelDoc2.GetUserPreferenceIntegerValue.swUnitsLinear", () => doc.GetUserPreferenceIntegerValue((int)swUserPreferenceIntegerValue_e.swUnitsLinear), -1);
@@ -125,6 +125,12 @@ namespace IdeaUnstuck.Core
                 if (Read("ISketchContour.IsClosed", () => contour.IsClosed())) sk.ClosedContours++; else sk.OpenContours++;
             }
             sk.RegionCount = Read("ISketch.GetSketchRegionCount", () => sketch.GetSketchRegionCount(), -1);
+            if (sk.EntityCount > 0)
+            {
+                int open=0, closed=0;
+                sk.UsageCode = Read("ISketch.CheckFeatureUse", () => sketch.CheckFeatureUse((int)swSketchCheckFeatureProfileUsage_e.swSketchCheckFeature_BASEEXTRUDE, ref open, ref closed), -1);
+                sk.UsageMeaning = ErrorWords.Contour(sk.UsageCode);
+            }
             return sk;
         }
     }

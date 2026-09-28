@@ -12,7 +12,7 @@ namespace IdeaUnstuck.Core
             void Add(string id, string title, string meaning, string next, string action = null, bool error = false) => result.Add(new Diagnosis { Id = id, Title = title, Meaning = meaning, NextClick = next, Action = action, IsError = error });
             if (s.DocumentType == 0) { Add("no-document", "Open a part.", "Start with a part file.", "Click File > New > Part."); return result; }
             if (s.DocumentType != 1) { Add("wrong-document", "You opened " + (s.DocumentType == 2 ? "an assembly." : "a drawing."), "This helper works on parts.", "Click File > Open and choose your .SLDPRT."); return result; }
-            if (s.ReadIssues.Count > 0) Add("read-incomplete", "Some checks are unavailable.", "The helper could not read all of this part.", "Press Copy for AI, or ask a TA.", "copy");
+            if (s.ReadIssues.Count > 0) { Add("read-incomplete", "Some checks are unavailable.", "The helper could not read all of this part.", "Press Copy for AI, or ask a TA.", "copy"); return result; }
             if (s.Rollback && !s.InSketch) Add("rollback", "Your rollback bar is not at the bottom.", "Features below it are switched off.", "Press Roll to end.", "roll", true);
             var sk = s.InSketch ? s.Sketch : s.BodyCount == 0 ? s.LastSketch : null;
             if (sk != null && sk.ConstraintCode >= 4 && sk.ConstraintCode <= 6) Add("over-defined", "Red means over-defined.", ErrorWords.Constraint(sk.ConstraintCode), "Press Undo.", "undo", true);
@@ -21,6 +21,8 @@ namespace IdeaUnstuck.Core
             if (s.LengthUnit == 0) Add("millimeters", "You are in millimeters.", "One inch is 25.4 millimeters. Check sizes you already drew.", "Press Set units to inches.", "units", true);
             else if (s.LengthUnit >= 0 && s.LengthUnit != 3) Add("other-units", "Your units are not inches.", "This class uses inches.", "Press Set units to inches.", "units", true);
             if (sk != null && sk.OpenContours > 0) Add("open-contour", "Your shape is not closed.", "A solid extrusion needs a closed outline.", "Drag one open end onto the other until they snap.", null, true);
+            if (sk != null && sk.UsageCode != 0 && (new[] {1,2,4,8,12,22,23}.Contains(sk.UsageCode) || (sk.OpenContours == 0 && sk.ClosedContours <= 1)))
+                Add("sketch-error:" + sk.UsageCode, "This sketch needs a check.", sk.UsageMeaning, "Click Tools > Sketch Tools > Check Sketch for Feature.", null, true);
             if (sk != null && sk.ClosedContours > 1) Add("multiple-outlines", "Your sketch has " + sk.ClosedContours + " closed outlines.", "An outline inside another can make a hole. Side-by-side outlines can make separate shapes.", "Delete any extra outline you did not intend.");
             if (!s.InSketch && s.LastSketch != null && s.BodyCount == 0 && !s.Rollback) Add("left-sketch", "You left your sketch.", "Open it to keep drawing or change a size.", "Press Get back into my sketch.", "edit");
             if (s.BodyCount > 1) Add("multiple-bodies", "This part has " + s.BodyCount + " separate 3D shapes.", "They are called solid bodies. This lesson needs one.", "Right-click the last Extrude in the left tree and choose Edit Feature.", null, true);
@@ -47,8 +49,6 @@ namespace IdeaUnstuck.Core
         public void Update(StateSnapshot s, List<Diagnosis> diagnoses, DateTime now)
         {
             if (document != s.DocumentKey) { Reset(now); document = s.DocumentKey; }
-            foreach (var id in live.Keys.Except(diagnoses.Select(d => d.Id)).ToArray()) { log.Write("diagnosis_cleared", new { id, seconds = (now - live[id]).TotalSeconds }); live.Remove(id); }
-            foreach (var d in diagnoses.Where(d => !live.ContainsKey(d.Id))) { live[d.Id] = now; log.Write("diagnosis_appeared", new { d.Id, d.Title }); }
             var errors = string.Join("|", diagnoses.Where(d => d.IsError).Select(d => d.Id));
             var next = errors + ":" + s.Sketch?.DimensionSignature + ":" + s.Sketch?.EntityCount + ":" + s.Sketch?.ContourCount;
             if (next != signature) { signature = next; unchangedSince = now; triggered = false; }
@@ -61,6 +61,8 @@ namespace IdeaUnstuck.Core
                 triggered = true;
             }
             else triggered = false;
+            foreach (var id in live.Keys.Except(diagnoses.Select(d => d.Id)).ToArray()) { log.Write("diagnosis_cleared", new { id, seconds = (now - live[id]).TotalSeconds }); live.Remove(id); }
+            foreach (var d in diagnoses.Where(d => !live.ContainsKey(d.Id))) { live[d.Id] = now; log.Write("diagnosis_appeared", new { d.Id, d.Title }); }
         }
     }
 }

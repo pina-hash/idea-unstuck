@@ -14,6 +14,8 @@ namespace IdeaUnstuck.SelfTest
     static class Program
     {
         static int passed, failed;
+        static string Filter = "";
+        static bool KeepOpen;
         static readonly Telemetry Log = new Telemetry();
         static readonly ApiGuard Api = new ApiGuard(Log);
         static readonly StateReader Reader = new StateReader(Log);
@@ -29,6 +31,23 @@ namespace IdeaUnstuck.SelfTest
             try
             {
                 Directory.CreateDirectory(Output);
+                Filter = args.FirstOrDefault(a => a.StartsWith("--filter="))?.Substring(9) ?? "";
+                KeepOpen = args.Contains("--inspect");
+                if (args.Contains("--pane-preview"))
+                {
+                    Application.EnableVisualStyles();
+                    var preview = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => Console.WriteLine("Preview button: "+id)) { Dock=DockStyle.Fill };
+                    var sample = new StateSnapshot { DocumentType=1, FileName="SMITH_FIRST_PART.SLDPRT", DocumentKey="preview", LengthUnit=0, BodyCount=0, InSketch=true, Sketch=new SketchState { Name="Sketch1", Support="Front Plane", EntityCount=3, OpenContours=1, ContourCount=1, ConstraintCode=2 } };
+                    var paths=new GuidedPaths(Log); paths.Update(sample); preview.Render(sample,new Rules().Evaluate(sample),paths.Paths);
+                    using(var form=new Form { Text="IDEA Unstuck pane layout preview", Width=340, Height=940, StartPosition=FormStartPosition.CenterScreen }) { form.Controls.Add(preview); Application.Run(form); }
+                    return 0;
+                }
+                if (args.Contains("--shutdown-if-empty"))
+                {
+                    var running = Api.Get("COM.GetActiveObject", () => Marshal.GetActiveObject("SldWorks.Application") as ISldWorks);
+                    if (running != null && Api.Get("ISldWorks.GetDocumentCount", () => running.GetDocumentCount(), -1) == 0) Api.Run("ISldWorks.ExitApp", () => running.ExitApp());
+                    return 0;
+                }
                 UnitCases();
                 if (!args.Contains("--unit"))
                 {
@@ -49,6 +68,11 @@ namespace IdeaUnstuck.SelfTest
             catch (Exception ex) { Log.Exception("SelfTest.Main", ex); failed++; Console.WriteLine("FAIL runner: " + ex.Message); }
             finally
             {
+                if (KeepOpen && app != null) {
+                    Console.WriteLine("Inspection window is open. Waiting up to 5 minutes or for inspect.stop.");
+                    var until=DateTime.UtcNow.AddMinutes(5);
+                    while(DateTime.UtcNow<until && !File.Exists(System.IO.Path.Combine(Output,"inspect.stop"))) { Application.DoEvents(); System.Threading.Thread.Sleep(100); }
+                }
                 if (app != null)
                 {
                     foreach (var name in owned) Api.Run("ISldWorks.CloseDoc", () => app.CloseDoc(name));
@@ -61,6 +85,7 @@ namespace IdeaUnstuck.SelfTest
         static void Require(bool condition, string message) { if (!condition) throw new InvalidOperationException(message); }
         static void Case(string name, Action test)
         {
+            if (Filter.Length > 0 && name.IndexOf(Filter, StringComparison.OrdinalIgnoreCase) < 0) return;
             int errors = Log.ExceptionCount;
             try { test(); Require(Log.ExceptionCount == errors, "An API exception was caught. See telemetry."); passed++; Console.WriteLine("PASS " + name); }
             catch (Exception ex) { failed++; Console.WriteLine("FAIL " + name + ": " + ex.Message); Log.Write("selftest_failure", new { name, ex.Message }); }
@@ -83,6 +108,7 @@ namespace IdeaUnstuck.SelfTest
             }
             doc = Api.Get("ISldWorks.NewDocument", () => app.NewDocument(partTemplate, 0, 0, 0) as IModelDoc2);
             Require(doc != null, "NewDocument returned null.");
+            Api.Run("IModelDoc2.ShowFeatureErrorDialog", () => doc.ShowFeatureErrorDialog = false);
             owned.Add(Api.Get("IModelDoc2.GetTitle", () => doc.GetTitle()));
         }
         static ISketchManager Manager() => Api.Get("IModelDoc2.SketchManager", () => doc.SketchManager as ISketchManager);
@@ -119,6 +145,18 @@ namespace IdeaUnstuck.SelfTest
                 Require(Has("open-contour"), "Open line was not detected.");
             });
             Case("two side-by-side outlines diagnosis", () => { NewPart(); Begin(); Rect(); Rect(.05); Require(Has("multiple-outlines"), "Two outlines not detected."); });
+            Case("crossing sketch reports native contour error without changing selection", () => {
+                NewPart(); Begin(); var sm=Manager();
+                Api.Get("ISketchManager.CreateLine",()=>sm.CreateLine(0,0,0,.0254,.0254,0));
+                Api.Get("ISketchManager.CreateLine",()=>sm.CreateLine(.0254,.0254,0,0,.0254,0));
+                Api.Get("ISketchManager.CreateLine",()=>sm.CreateLine(0,.0254,0,.0254,0,0));
+                Api.Get("ISketchManager.CreateLine",()=>sm.CreateLine(.0254,0,0,0,0,0));
+                var sel=Api.Get("IModelDoc2.SelectionManager",()=>doc.SelectionManager as ISelectionMgr);
+                int count=Api.Get("ISelectionMgr.GetSelectedObjectCount2",()=>sel.GetSelectedObjectCount2(-1));
+                var state=Read();Require(state.Sketch.UsageCode!=0,"Crossing outline not reported by native validation.");
+                Require(new Rules().Evaluate(state).Any(d=>d.Id.StartsWith("sketch-error:")),"Missing crossing-sketch diagnosis.");
+                Require(Api.Get("ISelectionMgr.GetSelectedObjectCount2",()=>sel.GetSelectedObjectCount2(-1))==count,"Validation changed selection.");
+            });
             Case("over-defined sketch diagnosis and Undo", () => {
                 NewPart(); Begin(); var sm = Manager();
                 var line = Api.Get("ISketchManager.CreateLine", () => sm.CreateLine(0,0,0,.0254,0,0) as ISketchSegment);
@@ -130,19 +168,40 @@ namespace IdeaUnstuck.SelfTest
                 Rescue.Run(app, "undo"); Require(!Has("over-defined"), "Undo did not clear conflicting relation.");
             });
             Case("failed fillet diagnosis, large radius, Undo", () => {
-                NewPart(); Begin(); Rect(); Extrude();
+                NewPart(); Begin(); Rect(); var boss = Extrude();
                 var bodies = Api.Get("IPartDoc.GetBodies2", () => ((IPartDoc)doc).GetBodies2(0, false) as object[]);
                 var edges = Api.Get("IBody2.GetEdges", () => ((IBody2)bodies[0]).GetEdges() as object[]);
                 Api.Run("IModelDoc2.ClearSelection2", () => doc.ClearSelection2(true));
-                Api.Get("IEntity.Select4", () => ((IEntity)edges[0]).Select4(false, null));
+                var selections=Api.Get("IModelDoc2.SelectionManager",()=>doc.SelectionManager as ISelectionMgr);
+                var selectionData=Api.Get("ISelectionMgr.CreateSelectData",()=>selections.CreateSelectData());
+                Api.Run("ISelectData.Mark",()=>selectionData.Mark=1);
+                Require(Api.Get("IEntity.Select4", () => ((IEntity)edges[0]).Select4(false, selectionData)),"Could not select the fillet edge.");
+                foreach(var edge in edges.Skip(1)) Require(Api.Get("IEntity.Select4",()=>((IEntity)edge).Select4(true,selectionData)),"Could not select a fillet edge.");
                 var fm = Api.Get("IModelDoc2.FeatureManager", () => doc.FeatureManager);
-                var fillet = Api.Get("IFeatureManager.FeatureFillet3", () => fm.FeatureFillet3(195, .001, .001, 0, 0, 0, 0, null, null, null, null, null, null, null) as IFeature);
-                Require(fillet != null, "Valid fillet fixture creation failed.");
-                var data = Api.Get("IFeature.GetDefinition", () => fillet.GetDefinition() as ISimpleFilletFeatureData2);
-                Api.Run("ISimpleFilletFeatureData2.DefaultRadius", () => data.DefaultRadius = .5);
-                Api.Get("IFeature.ModifyDefinition", () => fillet.ModifyDefinition(data, doc, null));
-                Api.Get("IModelDoc2.ForceRebuild3", () => doc.ForceRebuild3(false));
-                Require(Has("feature"), "SOLIDWORKS rejected the large radius without retaining a failed feature.");
+                bool previous = Api.Get("ISldWorks.AllowFailedFeatureCreation", () => app.AllowFailedFeatureCreation(true));
+                try
+                {
+                    var definition=Api.Get("IFeatureManager.CreateDefinition",()=>fm.CreateDefinition((int)swFeatureNameID_e.swFmFillet) as ISimpleFilletFeatureData2);
+                    Require(definition!=null,"Fillet definition was not created.");
+                    Require(Api.Get("ISimpleFilletFeatureData2.Initialize",()=>definition.Initialize((int)swSimpleFilletType_e.swConstRadiusFillet)),"Fillet definition could not initialize.");
+                    Api.Run("ISimpleFilletFeatureData2.ConicTypeForCrossSectionProfile",()=>definition.ConicTypeForCrossSectionProfile=(int)swFeatureFilletProfileType_e.swFeatureFilletCircular);
+                    Api.Run("ISimpleFilletFeatureData2.Edges",()=>definition.Edges=edges);
+                    Api.Run("ISimpleFilletFeatureData2.IsMultipleRadius",()=>definition.IsMultipleRadius=false);
+                    Api.Run("ISimpleFilletFeatureData2.DefaultRadius",()=>definition.DefaultRadius=.001);
+                    var fillet = Api.Get("IFeatureManager.CreateFeature", () => fm.CreateFeature(definition) as IFeature);
+                    Require(fillet != null, "Failed fillet fixture was not retained.");
+                    var debug=Api.Get("IFeature.GetDefinition",()=>fillet.GetDefinition() as ISimpleFilletFeatureData2);
+                    Console.WriteLine("Default radius="+Api.Get("ISimpleFilletFeatureData2.DefaultRadius",()=>debug.DefaultRadius));
+                    Console.WriteLine("Edges="+Api.Get("ISimpleFilletFeatureData2.GetEdgeCount",()=>debug.GetEdgeCount()));
+                    var depthDisplay=Api.Get("IFeature.GetFirstDisplayDimension",()=>boss.GetFirstDisplayDimension() as IDisplayDimension);
+                    var depth=Api.Get("IDisplayDimension.GetDimension2",()=>depthDisplay.GetDimension2(0) as IDimension);
+                    Api.Run("IDimension.SystemValue",()=>depth.SystemValue=.0001);
+                    Api.Get("IModelDoc2.ForceRebuild3", () => doc.ForceRebuild3(false));
+                }
+                finally { Api.Get("ISldWorks.AllowFailedFeatureCreation", () => app.AllowFailedFeatureCreation(previous)); }
+                var filletState=Read();
+                Console.WriteLine("Feature errors: "+string.Join("; ",filletState.Features.Where(f=>f.Kind=="Fillet").Select(f=>f.Name+"="+f.ErrorCode+", suppressed="+f.Suppressed+", rolled="+f.RolledBack)));
+                Require(Has("feature"), "The large-radius fixture did not report a feature error.");
                 Rescue.Run(app, "undo"); Require(!Has("feature"), "Undo did not clear feature error.");
             });
             Case("rollback diagnosis and roll-to-end rescue", () => {
@@ -204,6 +263,33 @@ namespace IdeaUnstuck.SelfTest
             Case("all installed feature and contour enum codes have words", () => { foreach (int value in Enum.GetValues(typeof(swFeatureError_e))) Require(!string.IsNullOrWhiteSpace(ErrorWords.Feature(value)), "Missing feature words."); foreach (int value in Enum.GetValues(typeof(swSketchCheckFeatureStatus_e))) Require(!string.IsNullOrWhiteSpace(ErrorWords.Contour(value)), "Missing contour words."); });
             Case("path does not complete from a body alone", () => { var p = new GuidedPaths(Log); p.Update(new StateSnapshot { DocumentType = 1, DocumentKey = "path", BodyCount = 1 }); Require(!p.Paths[0].Steps.Last().Done, "First path completed without evidence."); });
             Case("document switch resets stuck detector", () => { var t = new DiagnosisTracker(Log); var s = new StateSnapshot { DocumentType = 1, DocumentKey = "one", LengthUnit = 0 }; var now = DateTime.UtcNow; t.Update(s,new Rules().Evaluate(s),now); s.DocumentKey="two"; var ds=new Rules().Evaluate(s); t.Update(s,ds,now.AddMinutes(4)); Require(ds.All(d=>d.Id!="stuck"),"Stuck leaked between parts."); });
+            Case("first-part path follows observed steps and survives Save As", () => {
+                var p=new GuidedPaths(Log); var s=new StateSnapshot {DocumentType=1,DocumentKey="stable",FileName="Part1",BodyCount=0,UnitSystem=3,LengthUnit=3}; p.Update(s);
+                s.InSketch=true; s.Sketch=new SketchState {Name="Sketch1",Support="Front Plane",ClosedContours=1}; p.Update(s);
+                s.Sketch.DimensionCount=1;p.Update(s);s.LastSketch=s.Sketch;s.Sketch=null;s.InSketch=false;p.Update(s);
+                s.BodyCount=1;s.Features.Add(new FeatureState{Name="Boss-Extrude1",Kind="Extrusion",MidPlane=true});p.Update(s);
+                s.Path="C:\\Class\\SMITH.SLDPRT";s.FileName="SMITH.SLDPRT";p.Update(s);
+                Require(p.Paths[0].Steps.All(step=>step.Done),"First-part path lost completion evidence.");
+            });
+            Case("change-size path tracks edit rollback and a rebuilt body",()=>{
+                var p=new GuidedPaths(Log);var s=new StateSnapshot{DocumentType=1,DocumentKey="change",BodyCount=1,BodySignature="before"};p.Update(s);
+                s.InSketch=true;s.BodyCount=0;s.Rollback=true;s.Sketch=new SketchState{Name="Sketch1",DimensionCount=1,DimensionSignature="D1=.01"};p.Update(s);
+                s.Sketch.DimensionSignature="D1=.02";p.Update(s);s.InSketch=false;s.BodyCount=1;s.BodySignature="after";s.Rollback=false;s.Sketch=null;p.Update(s);
+                Require(p.Paths[1].Steps.All(step=>step.Done),"Edit rollback prevented change-size evidence.");
+            });
+            Case("face-cut path requires a newly observed cut",()=>{
+                var p=new GuidedPaths(Log);var s=new StateSnapshot{DocumentType=1,DocumentKey="cut",BodyCount=1,InSketch=true,Sketch=new SketchState{SupportKind="face",ClosedContours=1}};
+                s.Features.Add(new FeatureState{Name="Cut1",Kind="Cut"});p.Update(s);s.InSketch=false;s.Sketch=null;p.Update(s);
+                Require(!p.Paths[2].Steps[2].Done,"An old cut completed the new cut step.");s.Features.Add(new FeatureState{Name="Cut2",Kind="Cut"});p.Update(s);
+                Require(p.Paths[2].Steps.All(step=>step.Done),"New cut was not detected.");
+            });
+            Case("fillet path does not tick failed features",()=>{
+                var p=new GuidedPaths(Log);var s=new StateSnapshot{DocumentType=1,DocumentKey="round",BodyCount=1};var f=new FeatureState{Name="Fillet1",Kind="Fillet",ErrorCode=18};s.Features.Add(f);p.Update(s);
+                Require(!p.Paths[3].Steps[1].Done,"Failed fillet was marked successful.");f.ErrorCode=0;p.Update(s);Require(p.Paths[3].Steps.All(step=>step.Done),"Repaired fillet not observed.");
+            });
+            Case("incomplete reads do not invent document diagnoses",()=>{
+                var s=new StateSnapshot{DocumentType=1,BodyCount=0,LengthUnit=0};s.ReadIssues.Add("API unavailable");var ds=new Rules().Evaluate(s);Require(ds.Count==1 && ds[0].Id=="read-incomplete","Unknown data produced misleading diagnoses.");
+            });
         }
         static void AddinCases()
         {

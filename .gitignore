@@ -2,5 +2,6 @@
 **/obj/
 .vs/
 artifacts/
+release/
 *.user
 *.suo

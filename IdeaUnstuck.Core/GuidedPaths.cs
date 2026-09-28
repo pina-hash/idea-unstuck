@@ -22,12 +22,13 @@ namespace IdeaUnstuck.Core
         string document;
         string beforeDimensions, beforeBody;
         bool changedSize, sawFaceSketch, sawRound;
+        StateSnapshot lastSolidState;
         HashSet<string> initialCuts = new HashSet<string>();
         public List<GuidedPath> Paths { get; private set; }
         public GuidedPaths(Telemetry log) { this.log = log; Reset(); }
         public void Reset()
         {
-            document = null; beforeDimensions = null; beforeBody = null; changedSize = false; sawFaceSketch = false; sawRound = false; initialCuts.Clear();
+            document = null; beforeDimensions = null; beforeBody = null; changedSize = false; sawFaceSketch = false; sawRound = false; lastSolidState = null; initialCuts.Clear();
             PathStep S(string id, string text, string action = null) => new PathStep { Id = id, Text = text, Action = action };
             Paths = new List<GuidedPath> {
                 new GuidedPath { Title = "My first 3D part", Steps = new List<PathStep> {
@@ -65,10 +66,10 @@ namespace IdeaUnstuck.Core
             Mark("a6", Done("a5") && !s.InSketch);
             Mark("a7", Done("a6") && s.Features.Any(f => f.MidPlane && !f.Suppressed && !f.RolledBack && f.ErrorCode == 0));
             Mark("a8", Done("a7") && s.BodyCount == 1); Mark("a9", Done("a8") && s.Saved);
-            if (s.InSketch && s.BodyCount > 0 && s.Sketch != null && s.Sketch.DimensionCount > 0)
+            if (s.InSketch && lastSolidState != null && s.Sketch != null && s.Sketch.DimensionCount > 0)
             {
                 Mark("b1", true);
-                if (beforeDimensions == null) { beforeDimensions = s.Sketch.DimensionSignature; beforeBody = s.BodySignature; }
+                if (beforeDimensions == null) { beforeDimensions = s.Sketch.DimensionSignature; beforeBody = lastSolidState.BodySignature; }
                 changedSize |= beforeDimensions != s.Sketch.DimensionSignature;
                 Mark("b2", changedSize);
             }
@@ -82,6 +83,7 @@ namespace IdeaUnstuck.Core
             var fillets = s.Features.Where(f => f.Kind == "Fillet" && !f.Suppressed && !f.RolledBack).ToArray();
             sawRound |= fillets.Length > 0;
             Mark("d1", sawRound); Mark("d2", fillets.Length > 0 && fillets.All(f => f.ErrorCode == 0));
+            if (!s.InSketch && s.BodyCount > 0) lastSolidState = s;
         }
     }
 }
