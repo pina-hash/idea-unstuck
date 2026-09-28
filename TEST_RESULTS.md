@@ -1,5 +1,11 @@
 # Verification report
 
+## v0.2.0-pilot release
+
+Final release rebuild: **0 warnings, 0 errors**. Release-binary logic/control rerun: **23 PASS, 0 FAIL, 0 SKIP**. The full **49 PASS, 0 FAIL, 0 SKIP** functional regression below ran against the same source before the release rebuild updated assembly commit metadata. Functional source commit: `0ab2fafecd20d4d1c4a547978d32302e438ea162`. Evidence: verification/release-v0.2-build.txt, release-v0.2-unit.txt, and release-v0.2-manifest.json. Core and AddIn version is 0.2.0.0; both still have zero interop runtime references.
+
+The archive includes source, README, HANDOFF, TEST_PLAN, this report, verification evidence, setup scripts, teacher-summary tools, and the four release files. Build folders and generated test parts are excluded. The GitHub release uses this file as its notes. The release is a pilot with the explicitly skipped host stress and school acceptance checks below; no performance acceptance is claimed.
+
 ## Overnight phase 4: final functional build
 
 **49 PASS, 0 FAIL, 0 SKIP** in the complete current regression: 23 logic/managed-control cases, 15 original live cases, nine live trap cases, and two live learning cases on SOLIDWORKS 2026 SP4.1 / API 34.4.1. Build: **0 warnings, 0 errors**. Evidence: verification/overnight-phase4-final.txt and overnight-phase4-build.txt. Counts from overlapping suites must not be added as unique coverage.

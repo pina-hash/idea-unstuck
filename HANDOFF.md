@@ -4,6 +4,8 @@ Private repository: https://github.com/pina-hash/idea-unstuck
 
 Pilot release: https://github.com/pina-hash/idea-unstuck/releases/tag/v0.2.0-pilot
 
+The release rebuild contains the tested functional code from `0ab2fafecd20d4d1c4a547978d32302e438ea162`, with version 0.2.0.0 and refreshed commit metadata. Its final logic/control rerun is **23 PASS, 0 FAIL, 0 SKIP**, after the complete **49 PASS, 0 FAIL, 0 SKIP** real-host regression. File hashes and sizes are in verification/release-v0.2-manifest.json. This handoff and all verification evidence are included in the ZIP.
+
 ## Done
 
 - Local search embeds 49 help entries with 79 valid related links. Exact/prefix/one-typo/whole-phrasing scoring, top-five titles, inline articles, related navigation, and More help for every diagnosis are implemented. Both requested queries rank correctly. The 12 original requested diagnosis mappings and all observed live diagnosis links pass.

@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "functionalSourceCommit": "0ab2fafecd20d4d1c4a547978d32302e438ea162",
+  "fullSelfTest": "49 PASS, 0 FAIL, 0 SKIP",
+  "evidence": "verification/overnight-phase4-final.txt",
+  "files": [
+    {
+      "name": "IdeaUnstuck.AddIn.dll",
+      "bytes": 45056,
+      "sha256": "DDB9589BAA36AF01BC58860A77AC830E077BD85AD81E28A9A4C84648A5A499DE"
+    },
+    {
+      "name": "IdeaUnstuck.Core.dll",
+      "bytes": 144896,
+      "sha256": "F3F6F85704206438E95C01E0838DC6E1F6EED253D59ED8A95FB39760A31EAFA8"
+    },
+    {
+      "name": "IdeaUnstuck.SelfTest.exe",
+      "bytes": 112640,
+      "sha256": "0757A03E6C19593A10A68B5D7C85799302F0D2A39834974A84C95DB1AD82F440"
+    },
+    {
+      "name": "IdeaUnstuck.SelfTest.exe.config",
+      "bytes": 174,
+      "sha256": "051099983B896673909E01A1F631B6652ABB88DA95C9F06F3EFEF4BE033091FA"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  IdeaUnstuck.Core -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.Core\bin\Release\net48\IdeaUnstuck.Core.dll
+  IdeaUnstuck.AddIn -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.AddIn\bin\Release\net48\IdeaUnstuck.AddIn.dll
+  IdeaUnstuck.SelfTest -> C:\Users\aleja\Documents\Codex\2026-09-27\prop\idea-unstuck\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:01.51
