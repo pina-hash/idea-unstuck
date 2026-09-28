@@ -1,0 +1,12 @@
+PASS stuck after three unchanged minutes, then clears
+PASS five undos in one minute, then expires
+PASS unknown feature and constraint codes retain raw values
+PASS all installed feature and contour enum codes have words
+PASS path does not complete from a body alone
+PASS document switch resets stuck detector
+PASS first-part path follows observed steps and survives Save As
+PASS change-size path tracks edit rollback and a rebuilt body
+PASS face-cut path requires a newly observed cut
+PASS fillet path does not tick failed features
+PASS incomplete reads do not invent document diagnoses
+TOTAL PASS=11 FAIL=0

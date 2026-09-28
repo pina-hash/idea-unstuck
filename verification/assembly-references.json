@@ -1,0 +1,26 @@
+[
+  {
+    "solidworksRuntimeReferences": 0,
+    "assembly": "IdeaUnstuck.Core\\bin\\Release\\net48\\IdeaUnstuck.Core.dll",
+    "references": [
+      "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System.IO.Compression, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+      "System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+    ]
+  },
+  {
+    "solidworksRuntimeReferences": 0,
+    "assembly": "IdeaUnstuck.AddIn\\bin\\Release\\net48\\IdeaUnstuck.AddIn.dll",
+    "references": [
+      "mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "IdeaUnstuck.Core, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null",
+      "System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+      "System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+      "System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+    ]
+  }
+]
