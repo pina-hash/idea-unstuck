@@ -1,16 +1,45 @@
 <Project>
+  <!--
+    SOLIDWORKS interop references. EmbedInteropTypes=true copies only the COM
+    interface definitions this code uses (identified by their GUIDs) into our own
+    DLLs, so nothing from SOLIDWORKS ships and one build runs on 2025 and 2026.
+
+    Source of the interop DLLs, in order:
+      1. SolidWorksInteropPath, when that folder exists (a PC with SOLIDWORKS,
+         or -p:SolidWorksInteropPath=...). This is how v0.2 was built (API 34.4.1).
+      2. Otherwise (this container, a GitHub runner): the nuget.org packages
+         SolidWorks.Interop.sldworks/.swconst/.swpublished 32.1.0 (publisher
+         "avidesk", described "2024 SP1", assemblies 32.1.0.123). Build time only:
+         ExcludeAssets=all + PrivateAssets=all means nothing from the package is
+         copied to the output or becomes a dependency. docs/AUDIT-v0.3.md records
+         the GUID comparison against the v0.2 build.
+    Never commit or ship any SOLIDWORKS DLL.
+  -->
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>latest</LangVersion>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
+    <Company>IDEA, Don Bosco Tech</Company>
+    <Product>IDEA Unstuck</Product>
     <SolidWorksInteropPath Condition="'$(SolidWorksInteropPath)' == ''">C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist</SolidWorksInteropPath>
+    <SolidWorksInteropFromPackage Condition="!Exists('$(SolidWorksInteropPath)\SolidWorks.Interop.sldworks.dll')">true</SolidWorksInteropFromPackage>
+    <SolidWorksInteropPackageVersion>32.1.0</SolidWorksInteropPackageVersion>
   </PropertyGroup>
   <ItemGroup>
+    <!-- .NET Framework 4.8 reference assemblies, so a machine without the Developer Pack (or Linux) can build. -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(SolidWorksInteropFromPackage)' == 'true'">
+    <PackageReference Include="SolidWorks.Interop.sldworks" Version="$(SolidWorksInteropPackageVersion)" GeneratePathProperty="true" ExcludeAssets="all" PrivateAssets="all" />
+    <PackageReference Include="SolidWorks.Interop.swconst" Version="$(SolidWorksInteropPackageVersion)" GeneratePathProperty="true" ExcludeAssets="all" PrivateAssets="all" />
+    <PackageReference Include="SolidWorks.Interop.swpublished" Version="$(SolidWorksInteropPackageVersion)" GeneratePathProperty="true" ExcludeAssets="all" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Microsoft.CSharp"/>
-    <Reference Include="SolidWorks.Interop.sldworks"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.sldworks.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
-    <Reference Include="SolidWorks.Interop.swconst"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.swconst.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
-    <Reference Include="SolidWorks.Interop.swpublished"><HintPath>$(SolidWorksInteropPath)\SolidWorks.Interop.swpublished.dll</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+    <Reference Include="SolidWorks.Interop.sldworks"><HintPath>$(SwSldworksDll)</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+    <Reference Include="SolidWorks.Interop.swconst"><HintPath>$(SwSwconstDll)</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
+    <Reference Include="SolidWorks.Interop.swpublished"><HintPath>$(SwSwpublishedDll)</HintPath><EmbedInteropTypes>true</EmbedInteropTypes><Private>false</Private></Reference>
   </ItemGroup>
 </Project>

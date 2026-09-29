@@ -1,0 +1,17 @@
+<Project>
+  <!-- Evaluated after NuGet defines the Pkg* path properties; see Directory.Build.props. -->
+  <PropertyGroup Condition="'$(SolidWorksInteropFromPackage)' == 'true'">
+    <SwSldworksDll>$(PkgSolidWorks_Interop_sldworks)\lib\netstandard2.0\SolidWorks.Interop.sldworks.dll</SwSldworksDll>
+    <SwSwconstDll>$(PkgSolidWorks_Interop_swconst)\lib\netstandard2.0\SolidWorks.Interop.swconst.dll</SwSwconstDll>
+    <SwSwpublishedDll>$(PkgSolidWorks_Interop_swpublished)\lib\netstandard2.0\SolidWorks.Interop.swpublished.dll</SwSwpublishedDll>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(SolidWorksInteropFromPackage)' != 'true'">
+    <SwSldworksDll>$(SolidWorksInteropPath)\SolidWorks.Interop.sldworks.dll</SwSldworksDll>
+    <SwSwconstDll>$(SolidWorksInteropPath)\SolidWorks.Interop.swconst.dll</SwSwconstDll>
+    <SwSwpublishedDll>$(SolidWorksInteropPath)\SolidWorks.Interop.swpublished.dll</SwSwpublishedDll>
+  </PropertyGroup>
+  <Target Name="ReportInteropSource" BeforeTargets="CoreCompile">
+    <Message Importance="high" Text="$(MSBuildProjectName): SOLIDWORKS interop from $(SwSldworksDll)" />
+    <Error Condition="!Exists('$(SwSldworksDll)')" Text="SOLIDWORKS interop DLL not found: $(SwSldworksDll)" />
+  </Target>
+</Project>

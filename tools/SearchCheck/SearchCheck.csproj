@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Compiles the add-in's real search files for .NET 8 so the port can be
+       checked on Linux or Windows without SOLIDWORKS or .NET Framework. -->
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><Nullable>disable</Nullable><ImplicitUsings>disable</ImplicitUsings></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\IdeaUnstuck.Core\SearchEngine.cs" />
+    <Compile Include="..\..\IdeaUnstuck.Core\HelpModel.cs" />
+  </ItemGroup>
+</Project>

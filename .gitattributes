@@ -3,4 +3,5 @@
 *.ps1 text eol=crlf
 *.cs text eol=lf
 *.md text eol=lf
-IdeaUnstuck.Core/kb.json -text
+design/kb-v2.json -text
+design/gloss.json -text
