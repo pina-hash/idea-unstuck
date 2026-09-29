@@ -95,9 +95,15 @@ namespace PaneHarness
                 if (hscroll) failures.Add(name + ": horizontal scrollbar shown");
                 if (wide.Count > 0) failures.Add(name + ": controls wider than the pane: " + string.Join(", ", wide.Take(5)));
                 var small = TooSmall(pane, scale);
+                // Every measured control must be exactly as tall as it says it needs at its
+                // final width; a mismatch is a stale layout (a gap, or clipped text).
+                var stale = All(pane.BodyPanel).Where(c => c.Visible && c is IdeaUnstuck.AddIn.Ui.IMeasured && !(c is IdeaUnstuck.AddIn.Ui.Column))
+                    .Where(c => Math.Abs(((IdeaUnstuck.AddIn.Ui.IMeasured)c).MeasureHeight(c.Width) - c.Height) > 1)
+                    .Select(c => c.GetType().Name + ":" + c.Name + " h=" + c.Height + " wants=" + ((IdeaUnstuck.AddIn.Ui.IMeasured)c).MeasureHeight(c.Width) + " w=" + c.Width).ToList();
+                if (stale.Count > 0) failures.Add(name + ": stale layout: " + string.Join("; ", stale.Take(4)));
                 if (small.Count > 0) failures.Add(name + ": buttons under 36 px tall: " + string.Join(", ", small.Take(5)));
                 form.Hide();
-                return new { name, width, scale, highContrast, horizontalScroll = hscroll, overflow = wide.Count, shortButtons = small.Count, contentHeight = pane.BodyContentHeight };
+                return new { name, width, scale, highContrast, horizontalScroll = hscroll, overflow = wide.Count, shortButtons = small.Count, staleLayout = stale.Count, contentHeight = pane.BodyContentHeight };
             }
         }
 
