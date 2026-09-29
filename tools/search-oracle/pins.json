@@ -2,7 +2,7 @@
  ["it wont let me extrude", "My shape is not closed"],
  ["my lines are red", "My sketch turned red or yellow, or says Over Defined"],
  ["i lost my part", "My part disappeared or I cannot find it"],
- ["how do i make a hole", "Cut a hole or a pocket (Extruded Cut)"],
+ ["how do i make a hole", "Make a hole without a Cut"],
  ["the list on the left is gone", "The list on the left disappeared"],
  ["make it thicker", "Change an extrude, cut or fillet"],
  ["how do i make it round", "Round an edge (Fillet)"],

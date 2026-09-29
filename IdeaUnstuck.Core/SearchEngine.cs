@@ -96,7 +96,8 @@ namespace IdeaUnstuck.Core
             foreach (var t in x.Tokens)
             {
                 if (t == sw) best = Math.Max(best, 3);
-                else if (sw.Length >= 3 && (t.StartsWith(sw, StringComparison.Ordinal) || (sw.StartsWith(t, StringComparison.Ordinal) && t.Length >= 4))) best = Math.Max(best, 2);
+                else if (sw.Length >= 3 && (t.StartsWith(sw, StringComparison.Ordinal) || (sw.StartsWith(t, StringComparison.Ordinal) && t.Length >= 5))) best = Math.Max(best, 2);
+                else if (w.Length >= 5 && t.Length >= 5 && (Dl(w, t) <= 1 || Dl(sw, t) <= 1)) best = Math.Max(best, 2.5);
                 else if (sw.Length >= 4 && Dl(sw, t) <= 1) best = Math.Max(best, 1.5);
                 else if (sw.Length >= 7 && Dl(sw, t) <= 2) best = Math.Max(best, 1);
             }
