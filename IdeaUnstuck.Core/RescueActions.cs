@@ -19,6 +19,14 @@ namespace IdeaUnstuck.Core
         }
         string Execute(ISldWorks app, string action)
         {
+            if (action == "newpart")
+            {
+                var template = api.Get("ISldWorks.GetUserPreferenceStringValue", () => app.GetUserPreferenceStringValue((int)swUserPreferenceStringValue_e.swDefaultTemplatePart), "");
+                if (string.IsNullOrEmpty(template) || !System.IO.File.Exists(template)) return "Click File > New > Part. The helper could not find the part template.";
+                var made = api.Get("ISldWorks.NewDocument", () => app.NewDocument(template, 0, 0, 0) as IModelDoc2);
+                log.Write("rescue_result", new { action, success = made != null });
+                return made != null ? "A new part is open. Next: open the Practice tab, or start drawing." : "Click File > New > Part. The helper could not start a new part.";
+            }
             var doc = api.Get("ISldWorks.ActiveDoc", () => app.ActiveDoc as IModelDoc2);
             if (doc == null || api.Get("IModelDoc2.GetType", () => doc.GetType()) != 1) return "Open a part with File > Open first.";
             var manager = api.Get("IModelDoc2.SketchManager", () => doc.SketchManager);

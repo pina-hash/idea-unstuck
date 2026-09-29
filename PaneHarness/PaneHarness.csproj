@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Hosts the real UnstuckPane in a plain window with made-up SOLIDWORKS states,
+       so the pane can be drawn and timed on a PC (or CI runner) with no SOLIDWORKS. -->
+  <PropertyGroup><OutputType>Exe</OutputType><UseWindowsForms>true</UseWindowsForms><AssemblyName>PaneHarness</AssemblyName></PropertyGroup>
+  <ItemGroup><ProjectReference Include="..\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj"/><ProjectReference Include="..\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj"/><Reference Include="System.Web.Extensions"/></ItemGroup>
+</Project>

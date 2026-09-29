@@ -2,10 +2,8 @@
 **/obj/
 .vs/
 artifacts/
-release/*
-!release/IdeaUnstuck.AddIn.dll
-!release/IdeaUnstuck.Core.dll
-!release/IdeaUnstuck.SelfTest.exe
-!release/IdeaUnstuck.SelfTest.exe.config
+release/
+dist/
+pane-shots/
 *.user
 *.suo

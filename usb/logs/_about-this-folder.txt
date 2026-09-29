@@ -1,0 +1,2 @@
+One file per computer appears here, named after the computer.
+Each line is one install, check or uninstall, with PASS or FAIL.

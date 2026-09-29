@@ -1,0 +1,155 @@
+name: build
+# Windows build, tests, pane pictures, and the flash-drive install cycle.
+# No SOLIDWORKS here: nothing in this workflow loads the add-in inside SOLIDWORKS.
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Build (interop from nuget.org, build time only)
+        run: |
+          dotnet build IdeaUnstuck.sln -c Release 2>&1 | Tee-Object build.log
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          Select-String -Path build.log -Pattern 'SOLIDWORKS interop from' | Select-Object -First 3 | ForEach-Object { $_.Line }
+
+      - name: Unit and logic self-tests
+        run: |
+          $exe = 'IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe'
+          & $exe --unit 2>&1 | Tee-Object selftest-unit.txt
+          if ($LASTEXITCODE -ne 0) { Write-Error "SelfTest --unit exit $LASTEXITCODE"; exit 1 }
+
+      - name: Search port matches the SolidWorks Day post
+        run: |
+          node tools/search-oracle/oracle.js | Tee-Object search-oracle.txt
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $env:WRITE_EXPECTED = '1'; node tools/search-oracle/oracle.js | Out-Null
+          git diff --exit-code -- tools/search-oracle/expected.json
+          if ($LASTEXITCODE -ne 0) { Write-Error 'expected.json is stale: rerun the oracle with WRITE_EXPECTED=1'; exit 1 }
+          dotnet run --project tools/SearchCheck -c Release -- . 2>&1 | Tee-Object search-check.txt
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Embedded SOLIDWORKS interface GUIDs and slots match v0.2
+        run: |
+          New-Item -ItemType Directory v02 | Out-Null
+          foreach ($f in 'AddIn','Core') { cmd /c "git show v0.2.0-pilot:release/IdeaUnstuck.$f.dll > v02\IdeaUnstuck.$f.dll" }
+          $pkg = Join-Path $env:USERPROFILE '.nuget\packages'
+          $interop = 'sldworks','swconst','swpublished' | ForEach-Object { Join-Path $pkg "solidworks.interop.$_\32.1.0\lib\netstandard2.0\SolidWorks.Interop.$_.dll" }
+          dotnet build tools/InteropCheck -c Release -o ic | Out-Null
+          $bad = 0
+          foreach ($f in 'AddIn','Core') {
+            "== $f" | Tee-Object -Append interop-check.txt
+            dotnet ic/InteropCheck.dll compare "v02\IdeaUnstuck.$f.dll" "IdeaUnstuck.AddIn\bin\Release\net48\IdeaUnstuck.$f.dll" @interop 2>&1 | Tee-Object -Append interop-check.txt
+            if ($LASTEXITCODE -ne 0) { $bad++ }
+          }
+          if ($bad) { exit 1 }
+
+      - name: Pane pictures and timing (PaneHarness)
+        run: |
+          $exe = 'PaneHarness\bin\Release\net48\PaneHarness.exe'
+          $p = Start-Process $exe -ArgumentList 'pane-shots' -Wait -PassThru -NoNewWindow
+          Get-Content pane-shots\harness-report.json
+          if ($p.ExitCode -ne 0) { Write-Error "PaneHarness exit $($p.ExitCode)"; exit 1 }
+
+      - name: Package the flash-drive ZIP
+        run: |
+          ./tools/package-usb.ps1 | Tee-Object package.txt
+
+      - name: Install cycle from the ZIP, as a flash drive holds it
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $zip = Get-ChildItem dist\IDEA-Unstuck-USB-v*.zip | Select-Object -First 1
+          $usb = Join-Path $env:RUNNER_TEMP 'usb'
+          Expand-Archive $zip.FullName -DestinationPath $usb -Force
+          function Run([string]$name) {
+            $t = [Diagnostics.Stopwatch]::StartNew()
+            & cmd.exe /c ('"' + (Join-Path $usb $name) + '" /quiet') 2>&1 | Tee-Object -Append install-cycle.txt
+            $code = $LASTEXITCODE
+            ("{0} exit {1} in {2:0.0} s" -f $name, $code, $t.Elapsed.TotalSeconds) | Tee-Object -Append install-cycle.txt
+            return $code
+          }
+          function Expect([string]$name, [int]$want) { $c = Run $name; if ($c -ne $want) { throw "$name returned $c, expected $want" } }
+          function Version { $d = 'C:\Program Files\IDEA\Unstuck\IdeaUnstuck.AddIn.dll'; if (Test-Path $d) { [Reflection.AssemblyName]::GetAssemblyName($d).Version.ToString(3) } else { 'none' } }
+          "--- fresh install" | Tee-Object -Append install-cycle.txt
+          Expect 'Install IDEA Unstuck.cmd' 0
+          if ((Version) -ne '0.3.0') { throw "installed version $(Version)" }
+          $u = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IDEA Unstuck'
+          "Apps & features: $($u.DisplayName) $($u.DisplayVersion) by $($u.Publisher) icon=$($u.DisplayIcon)" | Tee-Object -Append install-cycle.txt
+          if ($u.DisplayName -ne 'IDEA Unstuck' -or $u.Publisher -ne 'IDEA, Don Bosco Tech' -or $u.DisplayVersion -ne '0.3.0') { throw 'Apps & features entry wrong' }
+          Expect 'Check IDEA Unstuck.cmd' 0
+          "--- install again (must be harmless)" | Tee-Object -Append install-cycle.txt
+          Expect 'Install IDEA Unstuck.cmd' 0
+          Expect 'Check IDEA Unstuck.cmd' 0
+          "--- uninstall" | Tee-Object -Append install-cycle.txt
+          Expect 'Uninstall IDEA Unstuck.cmd' 0
+          if ((Version) -ne 'none') { throw 'files left behind' }
+          if (Test-Path 'HKLM:\SOFTWARE\SolidWorks\Addins\{962CE2F1-BF2C-46F3-A8A5-DC6081767E13}') { throw 'add-in key left behind' }
+          Expect 'Check IDEA Unstuck.cmd' 1
+          "--- v0.2 pilot, then v0.3 over it" | Tee-Object -Append install-cycle.txt
+          gh release download v0.2.0-pilot --pattern '*.zip' --dir v02zip
+          Expand-Archive (Get-ChildItem v02zip\*.zip | Select-Object -First 1).FullName -DestinationPath v02pilot -Force
+          $bat = Get-ChildItem v02pilot -Recurse -Filter install.bat | Select-Object -First 1
+          & cmd.exe /c ('"' + $bat.FullName + '"') 2>&1 | Tee-Object -Append install-cycle.txt
+          if ($LASTEXITCODE -ne 0) { throw 'v0.2 install.bat failed' }
+          "v0.2 installed: $(Version)" | Tee-Object -Append install-cycle.txt
+          if ((Version) -ne '0.2.0') { throw 'v0.2 did not install' }
+          Expect 'Install IDEA Unstuck.cmd' 0
+          if ((Version) -ne '0.3.0') { throw "upgrade left $(Version)" }
+          Expect 'Check IDEA Unstuck.cmd' 0
+          "--- drive log" | Tee-Object -Append install-cycle.txt
+          $log = Join-Path $usb ('logs\' + $env:COMPUTERNAME + '.txt')
+          Get-Content $log | Tee-Object -Append install-cycle.txt
+          $lines = @(Get-Content $log)
+          if ($lines.Count -ne 8) { throw "expected 8 log lines, found $($lines.Count)" }
+          foreach ($l in $lines | Where-Object { $_ -match ' INSTALL ' }) { if ($l -notmatch ' PASS ') { throw "install line not PASS: $l" }; if ([double]($l -replace '.*seconds=([\d.]+).*', '$1') -gt 30) { throw "install over 30 s: $l" } }
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Keep evidence
+        if: always()
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          Copy-Item build.log, selftest-unit.txt, search-oracle.txt, search-check.txt, interop-check.txt, package.txt, install-cycle.txt evidence -ErrorAction SilentlyContinue
+          Copy-Item dist\*.sha256 evidence -ErrorAction SilentlyContinue
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pane-shots
+          path: pane-shots/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evidence
+          path: evidence/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: usb-zip
+          path: dist/*.zip*
+
+      - name: Publish the release (tags only)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          $zip = (Get-ChildItem dist\IDEA-Unstuck-USB-v*.zip | Select-Object -First 1).FullName
+          $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
+          $notes = "Flash-drive installer for IDEA Unstuck $env:GITHUB_REF_NAME. Extract All onto a drive, then double-click Install IDEA Unstuck.cmd on each lab PC. See README.txt inside and docs/CHECK-v0.3.md.`n`nSHA-256: $hash`n`nBuilt and install-cycled on windows-latest with no SOLIDWORKS; loading inside SOLIDWORKS 2025 and 2026 is checked by hand (docs/CHECK-v0.3.md)."
+          gh release create $env:GITHUB_REF_NAME $zip --title "IDEA Unstuck $env:GITHUB_REF_NAME" --notes $notes
+        env:
+          GH_TOKEN: ${{ github.token }}

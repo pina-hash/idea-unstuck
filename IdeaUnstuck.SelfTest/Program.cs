@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using IdeaUnstuck.Core;
+using IdeaUnstuck.AddIn.Ui;
 using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swconst;
 using Environment = System.Environment;
@@ -308,52 +309,85 @@ namespace IdeaUnstuck.SelfTest
                 Require(json.Contains("\"retained\":4096") && stats.MaxConcurrent == 1 && stats.BlockedOverlap == 1, "Statistics are wrong or unbounded.");
                 stats.Reset(); Require(stats.Count == 0 && stats.Enter(), "Reset failed."); stats.Leave(1);
             });
-            Case("help pane: search article related links and refresh preserve reading", () => {
-                using (var pane = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => { })) {
+            Case("help pane v0.3: search, answer in place, polling preserves reading", () => {
+                using (var form = new Form { Width = 340, Height = 900 })
+                using (var pane = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => { }, new IdeaUnstuck.AddIn.MemoryPaneSettings { WelcomeDismissed = true }, 1f) { Dock = DockStyle.Fill }) {
+                    form.Controls.Add(pane); form.Show(); Application.DoEvents();
                     IEnumerable<Control> All(Control c) => c.Controls.Cast<Control>().SelectMany(child => new[] { child }.Concat(All(child)));
-                    void Follow(LinkLabel link) => typeof(LinkLabel).GetMethod("OnLinkClicked", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(link, new object[] { new LinkLabelLinkClickedEventArgs(link.Links[0]) });
-                    var search = (TextBox)pane.Controls.Find("HelpSearch", true).Single();
-                    search.Text = "it wont let me extrud";
-                    var first = All(pane).OfType<LinkLabel>().First();
-                    Require(first.Text == KnowledgeBase.Embedded.Find("open-contour").Title, "Wrong first UI result."); Follow(first);
-                    var entry = KnowledgeBase.Embedded.Find("open-contour");
-                    Require(All(pane).OfType<Label>().Any(l => l.Text == entry.Fix && l.Font.Bold), "Fix is missing or not bold.");
-                    Require(All(pane).Any(c => c.Text == "Step by step") && All(pane).Any(c => c.Text == "Why: " + entry.Why), "Article sections missing.");
-                    var state = new StateSnapshot { DocumentType = 1, DocumentKey = "ui", LengthUnit = 0 };
+                    Tile Tile(string name) => (Tile)pane.Find(name);
+                    pane.TypeSearch("it wont let me extrude");
+                    var rows = All(pane.Find("Results")).OfType<Tile>().ToList();
+                    Require(rows.Count == 5 && rows[0].Text == "My shape is not closed" && rows[0].Tag2 == "Something is wrong", "Wrong live results: " + string.Join(" / ", rows.Select(r => r.Text)));
+                    pane.PressEnter();
+                    Require(pane.OpenAnswer?.Id == "open-contour", "Enter did not open the top result.");
+                    Require(!IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("Results")) && !IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("Home")), "The answer did not replace the list.");
+                    Require(All(pane.Find("Steps")).OfType<StepView>().Count() == KnowledgeBase.Embedded.Find("open-contour").Steps.Count, "Steps missing.");
+                    var state = new StateSnapshot { DocumentType = 1, DocumentKey = "ui", LengthUnit = 0, FileName = "A.SLDPRT" };
                     pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
                     state.FileName = "Changed.SLDPRT"; pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
-                    Require(search.Text == "it wont let me extrud" && All(pane).Any(c => c.Text == entry.Fix), "Polling replaced the query or article.");
-                    var related = KnowledgeBase.Embedded.Find(entry.Related.First());
-                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == related.Title));
-                    Require(All(pane).Any(c => c.Text == related.Fix), "Related navigation failed.");
-                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == "Back to search"));
-                    search.Text = "buttons dissapeared";
-                    Require(All(pane).OfType<LinkLabel>().First().Text == KnowledgeBase.Embedded.Find("toolbar-gone").Title, "Toolbar UI result missing.");
-                    Follow(All(pane).OfType<LinkLabel>().First(l => l.Text == "More help"));
-                    Require(All(pane).Any(c => c.Text == KnowledgeBase.Embedded.Find("units-mm").Fix), "Diagnosis link opened the wrong entry.");
+                    Require(pane.SearchText == "it wont let me extrude" && pane.OpenAnswer?.Id == "open-contour", "Polling replaced the query or the answer.");
+                    Require(!IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("RightNow")), "Right now card showed over an open answer.");
+                    Tile("FixedNo").PerformClick();
+                    Require(pane.Find("RaiseHand") != null, "Not yet did not offer the next step.");
+                    Tile("Back").PerformClick();
+                    Require(pane.OpenAnswer == null && IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("Results")), "Back did not return to results.");
+                    pane.TypeSearch("");
+                    Require(IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("RightNow")) && ((Tile)pane.Find("RightNowButton")).Text == "Set units to inches", "Right now card missing for millimeters.");
+                    pane.TypeSearch("zzqx blorp");
+                    Require(pane.Find("NoMatch") != null && !All(pane.Find("Results")).OfType<Tile>().Any(t => t.Name.StartsWith("Entry_")), "Nonsense query matched.");
+                    pane.TypeSearch("");
                     var empty = new StateSnapshot();
                     pane.Render(empty, new Rules().Evaluate(empty), new GuidedPaths(Log).Paths);
-                    Require(All(pane).Any(c => c.Text == "Hide: First 10 minutes") && All(pane).OfType<LinkLabel>().Count(c => c.Text == "Show me where") == 8, "Empty-document lesson is not expanded with all hints.");
+                    Require(IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("NoDocument")) && !IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("RightNow")), "No-document card missing.");
+                    Require(All(pane.Find("PracticeView")).OfType<Tile>().Count(c => c.Text == "Show me where") == 8, "First 10 minutes is not open with its eight hints.");
+                    Require(All(pane.Find("PracticeView")).OfType<CheckBox>().Count() == 8, "Practice steps are not real check boxes.");
                     state.EmptyPartSeconds = 300; state.LengthUnit = 3; state.BodyCount = 0;
                     pane.Render(state, new Rules().Evaluate(state), new GuidedPaths(Log).Paths);
-                    Require(All(pane).OfType<Button>().Count(c => c.Text == "Start a sketch on the Front Plane") == 2, "Start-sketch diagnosis button has the wrong label.");
+                    Require(((Tile)pane.Find("RightNowButton")).Text == "Start a sketch on the Front Plane", "Start-sketch card has the wrong label.");
+                }
+            });
+            Case("pane never takes keyboard focus on its own", () => {
+                using (var form = new Form { Width = 700, Height = 900 })
+                using (var pane = new IdeaUnstuck.AddIn.UnstuckPane(Log, id => { }, new IdeaUnstuck.AddIn.MemoryPaneSettings(), 1f) { Dock = DockStyle.Right, Width = 320 }) {
+                    var other = new TextBox { Dock = DockStyle.Left, Width = 200 }; form.Controls.Add(other); form.Controls.Add(pane); form.Show(); other.Focus(); Application.DoEvents();
+                    Require(other.Focused, "Could not focus the stand-in for the SOLIDWORKS window.");
+                    var s = new StateSnapshot { DocumentType = 1, DocumentKey = "focus", LengthUnit = 0 };
+                    for (int i = 0; i < 5; i++) { s.LengthUnit = i % 2 == 0 ? 0 : 3; pane.Render(s, new Rules().Evaluate(s), new GuidedPaths(Log).Paths); Application.DoEvents(); }
+                    pane.TypeSearch("my lines are red"); pane.OpenEntryById("red-sketch"); Application.DoEvents();
+                    Require(other.Focused && !pane.ContainsFocus, "The pane took keyboard focus.");
                 }
             });
             Case("help: generic diagnosis cards also have links", () => {
                 foreach (var id in new[] { "no-document", "wrong-document", "read-incomplete", "other-units", "stuck" }) Require(KnowledgeBase.Embedded.ForDiagnosis(id) != null, "Missing " + id);
             });
-            Case("help: it wont let me extrud returns open-contour first", () => {
-                Require(KnowledgeBase.Embedded.Search("it wont let me extrud").FirstOrDefault()?.Entry.Id == "open-contour", "Wrong first extrusion result.");
+            Case("search: 22 pinned student queries put the right title first; nonsense finds nothing", () => {
+                var pins = Resource<List<List<string>>>("pins.json");
+                Require(pins.Count == 22, "Expected 22 pins.");
+                foreach (var p in pins) { var top = KnowledgeBase.Embedded.Search(p[0]).FirstOrDefault()?.Entry.Title; Require(top == p[1], "\"" + p[0] + "\" gave " + (top ?? "nothing")); }
+                Require(KnowledgeBase.Embedded.Search("zzqx blorp").Count == 0, "Nonsense matched.");
+                Console.WriteLine("Pinned queries=" + pins.Count);
             });
-            Case("help: buttons dissapeared returns toolbar-gone first", () => {
-                Require(KnowledgeBase.Embedded.Search("buttons dissapeared").FirstOrDefault()?.Entry.Id == "toolbar-gone", "Wrong first toolbar result.");
+            Case("search: C# port matches the SolidWorks Day post on every oracle query", () => {
+                var cases = Resource<List<Dictionary<string, object>>>("expected.json");
+                int bad = 0;
+                foreach (var c in cases)
+                {
+                    var q = (string)c["q"];
+                    var want = string.Join(" | ", ((System.Collections.ArrayList)c["top"]).Cast<System.Collections.ArrayList>().Select(t => t[0] + "=" + Math.Round(Convert.ToDouble(t[1]), 6).ToString("0.######", System.Globalization.CultureInfo.InvariantCulture)));
+                    var got = string.Join(" | ", KnowledgeBase.Embedded.Search(q).Select(r => r.Entry.Id + "=" + Math.Round(r.Score, 6).ToString("0.######", System.Globalization.CultureInfo.InvariantCulture)));
+                    if (want != got) { bad++; if (bad < 5) Console.WriteLine("  DIFF " + q + "\n    js: " + want + "\n    cs: " + got); }
+                }
+                Console.WriteLine("Oracle queries=" + cases.Count + "; differences=" + bad);
+                Require(cases.Count > 700 && bad == 0, bad + " queries differ from the post.");
             });
             Case("help: every related id resolves", () => {
                 var kb = KnowledgeBase.Embedded;
-                Require(kb.Entries.Count == 49, "Expected all 49 supplied entries.");
+                Require(kb.Entries.Count == 99, "Expected the 99-entry library, got " + kb.Entries.Count);
+                Require(kb.Entries.Count(e => e.Kind == "wrong") == 40 && kb.Entries.Count(e => e.Kind == "how") == 47 && kb.Entries.Count(e => e.Kind == "what") == 12, "Kind counts changed.");
                 int count = 0;
                 foreach (var entry in kb.Entries) foreach (var id in entry.Related) { Require(kb.Find(id) != null, entry.Id + " links to missing " + id); count++; }
-                Console.WriteLine("Help entries=" + kb.Entries.Count + "; related links=" + count);
+                foreach (var id in KnowledgeBase.CommonProblems) Require(kb.Find(id) != null, "Common problem missing: " + id);
+                Console.WriteLine("Help entries=" + kb.Entries.Count + "; related links=" + count + "; glossary terms=" + Glossary.Embedded.Count);
             });
             Case("help: every diagnosis link resolves to its expected entry", () => {
                 var kb = KnowledgeBase.Embedded;
@@ -363,23 +397,10 @@ namespace IdeaUnstuck.SelfTest
                 Require(kb.ForDiagnosis("unknown-diagnosis") == null && kb.ForDiagnosis(null) == null, "Unmapped diagnoses must not invent help.");
                 Console.WriteLine("Diagnosis links=" + expected.Length);
             });
-            Case("help: exact prefix phrase and all four single-typo scores", () => {
-                var kb = KnowledgeBase.Embedded;
-                double Score(string query) => kb.Search(query).Single(r => r.Entry.Id == "open-contour").Score;
-                Require(Score("open contour") == 10, "Exact words plus whole phrase should score 10.");
-                Require(Score("extrud") == 2, "Prefix should score 2.");
-                foreach (var query in new[] { "opne", "closd", "clozed", "cloosed" }) Require(Score(query) == 1.5, "Single typo should score 1.5: " + query);
-                Require(Score("opne contoru") == 3, "Distinct typo words should accumulate.");
-                Require(kb.Search("oen").Count == 0, "Three-letter typo must not match.");
-            });
-            Case("help: OR matching normalization top five and blank queries", () => {
-                var kb = KnowledgeBase.Embedded;
-                Require(kb.Search("  ").Count == 0 && kb.Search("zzzzzzzzzz").Count == 0, "Empty or unknown query matched.");
-                Require(kb.Search("zzzzzzzzzz opne").First().Entry.Id == "open-contour", "OR matching failed.");
-                Require(kb.Search("IT WON'T LET ME EXTRUD!").First().Entry.Id == "open-contour", "Normalization failed.");
-                Require(kb.Search("sketch").Count == 5, "Expected five results.");
-                Require(kb.Search("opne opne").First().Score == kb.Search("opne").First().Score, "Repeated word inflated score.");
-                Require(kb.Search("open cont").First(r => r.Entry.Id == "open-contour").Score == 5, "Partial phrase received a whole-phrase bonus.");
+            Case("glossary: SOLIDWORKS words are found for hover help", () => {
+                var tip = Glossary.Embedded.Tip("Click Smart Dimension. Click Exit Sketch.");
+                Require(tip != null && tip.Contains("Smart Dimension:") && tip.Contains("Exit Sketch:") && !tip.Contains("wrench"), "Glossary tip wrong: " + tip);
+                Require(Glossary.Embedded.Tip("nothing to see") == null, "Invented a term.");
             });
             Case("stuck after three unchanged minutes, then clears", () => {
                 var tracker = new DiagnosisTracker(Log); var s = new StateSnapshot { DocumentType = 1, DocumentKey = "test", LengthUnit = 0 };
@@ -425,6 +446,11 @@ namespace IdeaUnstuck.SelfTest
                 var s=new StateSnapshot{DocumentType=1,BodyCount=0,LengthUnit=0};s.ReadIssues.Add("API unavailable");var ds=new Rules().Evaluate(s);Require(ds.Count==1 && ds[0].Id=="read-incomplete","Unknown data produced misleading diagnoses.");
             });
         }
+        static T Resource<T>(string name)
+        {
+            using (var st = typeof(Program).Assembly.GetManifestResourceStream("IdeaUnstuck.SelfTest." + name))
+            using (var r = new StreamReader(st)) return new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 64 * 1024 * 1024 }.Deserialize<T>(r.ReadToEnd());
+        }
         static void AddinCases(bool startup)
         {
             string dll = @"C:\Program Files\IDEA\Unstuck\IdeaUnstuck.AddIn.dll";
@@ -454,7 +480,7 @@ namespace IdeaUnstuck.SelfTest
             });
             Case("installed pane loads all embedded help entries", () => {
                 Require(addin != null, "Add-in unavailable.");
-                Require(((string)addin.GetDiagnostics()).Contains("; help entries: 49"), "Installed pane did not load the embedded knowledge base.");
+                Require(((string)addin.GetDiagnostics()).Contains("; help entries: 99"), "Installed pane did not load the embedded knowledge base.");
             });
             Case("installed add-in exports its teaching log", () => {
                 Require(addin != null, "Add-in unavailable.");

@@ -1,4 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType><UseWindowsForms>true</UseWindowsForms></PropertyGroup>
   <ItemGroup><ProjectReference Include="..\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj"/><ProjectReference Include="..\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj"/><Reference Include="System.Web.Extensions"/></ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\tools\search-oracle\pins.json" LogicalName="IdeaUnstuck.SelfTest.pins.json"/>
+    <EmbeddedResource Include="..\tools\search-oracle\expected.json" LogicalName="IdeaUnstuck.SelfTest.expected.json"/>
+  </ItemGroup>
 </Project>

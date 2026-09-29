@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -61,7 +62,7 @@ namespace IdeaUnstuck.AddIn
                 log.Write("session_start", new { user = Environment.UserName, solidworks = api.Get("ISldWorks.RevisionNumber", () => app.RevisionNumber(), "unknown"), addin = typeof(Addin).Assembly.GetName().Version.ToString() });
                 reader = new StateReader(log); diagnoses = new DiagnosisTracker(log); paths = new GuidedPaths(log);
                 progress = new ProgressTelemetry(log);
-                taskpane = api.Get("ISldWorks.CreateTaskpaneView2", () => app.CreateTaskpaneView2("", "IDEA Unstuck") as ITaskpaneView);
+                taskpane = CreateTaskpane();
                 if (taskpane == null) { DisconnectFromSW(); return false; }
                 pane = api.Get("ITaskpaneView.AddControl", () => taskpane.AddControl("IdeaUnstuck.Pane", "") as UnstuckPane);
                 if (pane == null) { log.Write("connect_failed", new { reason = "Task pane control could not be created." }); DisconnectFromSW(); return false; }
@@ -81,6 +82,36 @@ namespace IdeaUnstuck.AddIn
             }
             catch (Exception ex) { log.Exception("ConnectToSW", ex); DisconnectFromSW(); return false; }
         }
+        // Task pane tab icon. CreateTaskpaneView3 (SOLIDWORKS 2017 and later) takes a
+        // list of PNG paths, one per size; the sizes are the ones xarial xCAD passes
+        // (20, 32, 40, 64, 96, 128). If it fails, fall back to v0.2's call with the
+        // 16x18 bitmap, and last to no icon at all, so an icon problem never stops the pane.
+        static readonly int[] TaskpaneIconSizes = { 20, 32, 40, 64, 96, 128 };
+        ITaskpaneView CreateTaskpane()
+        {
+            string folder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(typeof(Addin).Assembly.Location) ?? "", "icons");
+            var pngs = TaskpaneIconSizes.Select(s => System.IO.Path.Combine(folder, "unstuck-" + s + ".png")).ToArray();
+            ITaskpaneView view = null;
+            if (pngs.All(System.IO.File.Exists)) view = api.Get("ISldWorks.CreateTaskpaneView3", () => app.CreateTaskpaneView3(pngs, "IDEA Unstuck") as ITaskpaneView);
+            string bmp = System.IO.Path.Combine(folder, "taskpane-16x18.bmp");
+            if (view == null && System.IO.File.Exists(bmp)) view = api.Get("ISldWorks.CreateTaskpaneView2.icon", () => app.CreateTaskpaneView2(bmp, "IDEA Unstuck") as ITaskpaneView);
+            if (view == null) view = api.Get("ISldWorks.CreateTaskpaneView2", () => app.CreateTaskpaneView2("", "IDEA Unstuck") as ITaskpaneView);
+            log.Write("taskpane_created", new { icon = view == null ? "none" : pngs.All(System.IO.File.Exists) ? "png-list" : "bitmap-or-none" });
+            return view;
+        }
+        // Esc in the search box: put the keyboard back in the SOLIDWORKS graphics area,
+        // so shortcuts work again. Tries the active view window, then the main frame.
+        void FocusSolidWorks()
+        {
+            long hwnd = 0;
+            var doc = api.Get("ISldWorks.ActiveDoc", () => app.ActiveDoc as IModelDoc2);
+            var view = doc == null ? null : api.Get("IModelDoc2.ActiveView", () => doc.ActiveView as IModelView);
+            if (view != null) hwnd = api.Get("IModelView.GetViewHWndx64", () => view.GetViewHWndx64());
+            if (hwnd == 0) { var frame = api.Get("ISldWorks.Frame", () => app.Frame() as IFrame); if (frame != null) hwnd = api.Get("IFrame.GetHWndx64", () => frame.GetHWndx64()); }
+            if (hwnd != 0) NativeMethods.SetFocus(new IntPtr(hwnd));
+        }
+        static class NativeMethods { [DllImport("user32.dll")] public static extern IntPtr SetFocus(IntPtr hWnd); }
+
         public bool DisconnectFromSW()
         {
             try
@@ -189,12 +220,16 @@ namespace IdeaUnstuck.AddIn
             try
             {
                 if (busy || disposed) return;
-                if (action == "copy")
+                if (action == "focus-sw") { FocusSolidWorks(); return; }
+                if (action == "copy" || action.StartsWith("copy:", StringComparison.Ordinal))
                 {
-                    log.Write("button_pressed", new { action });
+                    var topic = action.Length > 5 ? KnowledgeBase.Embedded.Find(action.Substring(5)) : null;
+                    log.Write("button_pressed", new { action = "copy", topic = topic?.Id });
                     var state = reader.Read(app);
-                    Clipboard.SetText(RescueActions.AiPrompt(state, new Rules().Evaluate(state)));
-                    pane.ShowMessage("Press Windows+Shift+S. Drag over the whole SOLIDWORKS window. Paste the screenshot into the same chat.");
+                    var text = RescueActions.AiPrompt(state, new Rules().Evaluate(state));
+                    if (topic != null) text += "\r\nI already read the class help \"" + topic.Title + "\" and it did not fix it.";
+                    Clipboard.SetText(text);
+                    pane.ShowMessage("Copied. If you want AI help, paste it into your chat. Then press Windows+Shift+S, drag over the whole SOLIDWORKS window, and paste the picture too.");
                 }
                 else if (action == "export")
                 {
@@ -213,7 +248,10 @@ namespace IdeaUnstuck.AddIn
             {
                 using (var machine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64))
                 using (var key = machine.CreateSubKey(@"SOFTWARE\SolidWorks\Addins\" + Id))
-                { key.SetValue("", 1, RegistryValueKind.DWord); key.SetValue("Title", "IDEA Unstuck"); key.SetValue("Description", "Plain words and one next click for first-time students."); }
+                { key.SetValue("", 1, RegistryValueKind.DWord); key.SetValue("Title", "IDEA Unstuck"); key.SetValue("Description", "Plain-word help for students new to SOLIDWORKS. Works offline.");
+                  // Add-Ins list icon. Not confirmed in the SOLIDWORKS API Help (its pages would not load here); harmless if ignored.
+                  var icon = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(type.Assembly.Location) ?? "", "icons", "addin-16.bmp");
+                  if (System.IO.File.Exists(icon)) key.SetValue("Icon Path", icon); }
                 using (var key = Registry.CurrentUser.CreateSubKey(@"Software\SolidWorks\AddInsStartup\" + Id)) key.SetValue("", 1, RegistryValueKind.DWord);
             }
             catch (Exception ex) { logger.Exception("COM_register", ex); throw; }

@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><UseWindowsForms>true</UseWindowsForms></PropertyGroup>
   <ItemGroup><ProjectReference Include="..\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj"/></ItemGroup>
-  <ItemGroup><Reference Include="System.Web.Extensions"/></ItemGroup>
+  <ItemGroup><Reference Include="System.Web.Extensions"/><Reference Include="System.Speech"/></ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\assets\icon\unstuck-64.png" LogicalName="IdeaUnstuck.AddIn.icon-64.png"/>
+  </ItemGroup>
+  <ItemGroup><InternalsVisibleTo Include="IdeaUnstuck.SelfTest"/><InternalsVisibleTo Include="PaneHarness"/></ItemGroup>
 </Project>
