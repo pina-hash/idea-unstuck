@@ -765,8 +765,8 @@
      "w": "ribbon"
     },
     {
-     "t": "Curve that flows from a line: while drawing a line, move the mouse back onto the last point and out again. It switches to an arc. Or use Tangent Arc.",
-     "w": "graphics"
+     "t": "Curve that flows from a line: while drawing a line, press A. The next click makes an arc. Press A again for a line.",
+     "w": "keyboard"
     },
     {
      "t": "Start and end points should snap onto each other. An orange square means they joined.",
@@ -1054,31 +1054,32 @@
   {
    "id": "offset",
    "kind": "how",
-   "title": "Copy an outline inside itself (Offset Entities)",
-   "q": "offset; wall; rim; copy outline; inside outline; border",
-   "fix": "Sketch tab, Offset Entities, type a distance, click the edges, flip inward if needed, green check.",
+   "title": "Copy an outline, or turn a line into a band (Offset Entities)",
+   "q": "offset; wall; rim; copy outline; inside outline; border; band; thicken line; make line thick; even width; both sides",
+   "fix": "Sketch tab, Offset Entities, type a distance, click the line or edges. For a band: check Bi-directional and Cap ends.",
    "steps": [
     {
-     "t": "Start a sketch on the face.",
-     "w": "graphics"
-    },
-    {
-     "t": "Sketch tab, Offset Entities.",
+     "t": "Be in a sketch. Sketch tab, Offset Entities.",
      "w": "ribbon"
     },
     {
-     "t": "Type a distance and click the outer edges.",
+     "t": "Type the distance, then click the line or edge. Select chain picks every connected piece.",
      "w": "property"
     },
     {
-     "t": "Check Reverse if it went outward. Green check.",
+     "t": "To make a band from a path: check Bi-directional (both sides) and Cap ends, then pick Arcs.",
+     "w": "property"
+    },
+    {
+     "t": "Went the wrong way? Check Reverse. Then the green check.",
      "w": "property"
     }
    ],
-   "why": "An offset keeps an even wall, which is how you make a raised rim: offset inward, then cut the pocket.",
+   "why": "A band from one path keeps the same width all the way around, which is what a hook or a rim needs.",
    "related": [
-    "sketch-face",
-    "cut"
+    "cut",
+    "extrude",
+    "arc"
    ]
   },
   {
@@ -1701,19 +1702,23 @@
    "kind": "how",
    "title": "Draw an arc or a curve",
    "q": "arc; curve; round line; bend; three point arc; tangent arc; semicircle",
-   "fix": "Sketch tab, the arrow next to the arc tool: 3 Point Arc or Tangent Arc.",
+   "fix": "Easiest: while drawing a line, press A. The next click is an arc that flows out of the line. Press A again for a line.",
    "steps": [
     {
-     "t": "3 Point Arc: click the start, click the end, then move to set how much it bends and click.",
-     "w": "graphics"
+     "t": "Line tool. Draw a line.",
+     "w": "ribbon"
     },
     {
-     "t": "Tangent Arc: start it on the end of a line so it flows out smoothly.",
-     "w": "graphics"
+     "t": "Press A. Move the mouse: an arc grows smoothly out of the line. Click.",
+     "w": "keyboard"
     },
     {
-     "t": "Trick: while drawing a line, move back onto the last point and out again. It switches to an arc.",
-     "w": "graphics"
+     "t": "Press A again to go back to a line.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Other arcs: the arrow next to the arc tool has 3 Point Arc (start, end, bend) and Centerpoint Arc.",
+     "w": "ribbon"
     }
    ],
    "why": "Smooth curves spread load instead of creating a sharp corner.",
@@ -2391,6 +2396,190 @@
    "related": [
     "start-sketch",
     "left-sketch"
+   ]
+  },
+  {
+   "id": "hole-in-sketch",
+   "kind": "how",
+   "title": "Make a hole without a Cut",
+   "q": "hole in sketch; circle inside; hole in the middle; ring; loop; top hole; hole for the rope; nested",
+   "fix": "Draw a circle inside your closed outline, in the same sketch. When you extrude, it becomes a hole.",
+   "steps": [
+    {
+     "t": "Edit the sketch that has your outline.",
+     "w": "tree"
+    },
+    {
+     "t": "Draw a circle fully inside the outline. It must not touch the outline.",
+     "w": "graphics"
+    },
+    {
+     "t": "Give it a size with Smart Dimension.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Extrude as usual. The inside circle comes out as a hole.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "SolidWorks treats a closed loop inside another closed loop as empty space. A circle that touches the outline breaks that, so keep a wall between them.",
+   "related": [
+    "draw",
+    "cut",
+    "multi-contour"
+   ]
+  },
+  {
+   "id": "trace-sketch",
+   "kind": "how",
+   "title": "Trace a photo of my paper sketch",
+   "q": "trace; photo of my sketch; picture of my drawing; import picture; sketch picture; put my drawing in; copy my paper sketch",
+   "fix": "Start a sketch, then Tools, Sketch Tools, Sketch Picture, and pick the photo. Draw over it.",
+   "steps": [
+    {
+     "t": "Start a sketch on the Front Plane first. The tool is gray until you do.",
+     "w": "tree"
+    },
+    {
+     "t": "Tools menu, Sketch Tools, Sketch Picture. Pick your photo.",
+     "w": "menu"
+    },
+    {
+     "t": "Drag the corners to make it about the right size: the top hole about 1 inch across.",
+     "w": "graphics"
+    },
+    {
+     "t": "Green check. Draw your lines and circles on top of it, then size them with Smart Dimension.",
+     "w": "graphics"
+    }
+   ],
+   "why": "The photo is only a guide. The sizes come from your dimensions, so it does not have to be scaled perfectly.",
+   "related": [
+    "hook-start",
+    "smart-dim"
+   ]
+  },
+  {
+   "id": "hook-start",
+   "kind": "how",
+   "title": "Start my hook from my paper sketch",
+   "q": "start my hook; begin hook; hook from sketch; where do i start; first step hook; turn my sketch into cad; design my hook",
+   "fix": "Circles first: the top hole and the bottom curve. Size and space them, connect them, trim to one outline, extrude.",
+   "steps": [
+    {
+     "t": "Find the two circles in your paper sketch: the hole at the top and the curve at the bottom.",
+     "w": "graphics"
+    },
+    {
+     "t": "New part, IPS, Ctrl+S: V1_ and your own last name.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Front Plane, Sketch. Draw both circles. Size them: 1.000 or bigger. Centers 2.000 to 3.000 apart.",
+     "w": "graphics"
+    },
+    {
+     "t": "Draw the outside around them with circles and lines, lines and arcs (press A), or a path and Offset.",
+     "w": "graphics"
+    },
+    {
+     "t": "Trim to one outline. Keep the opening at least 0.500. Extrude, 0.750 or thinner.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "The rules measure the circles, so start with them. Everything else is your design.",
+   "related": [
+    "hole-in-sketch",
+    "offset",
+    "arc",
+    "trace-sketch"
+   ]
+  },
+  {
+   "id": "wrong-click",
+   "kind": "wrong",
+   "title": "I keep clicking the wrong thing",
+   "q": "wrong thing selected; clicked the wrong line; selects the wrong face; cant click it; picks the wrong one; misclick; clicked by accident; mouse jumpy",
+   "fix": "Slow down: move onto it, stop, wait until it lights up, then click once. Zoom in on small things first.",
+   "steps": [
+    {
+     "t": "Press Esc to drop what is selected.",
+     "w": "keyboard"
+    },
+    {
+     "t": "Zoom in with the scroll wheel so the thing is big on screen.",
+     "w": "mouse"
+    },
+    {
+     "t": "Move onto it slowly and stop. Wait until it lights up and the pointer shows a small symbol.",
+     "w": "graphics"
+    },
+    {
+     "t": "Click once. Something behind it? Right-click, Select Other, pick from the list.",
+     "w": "graphics"
+    }
+   ],
+   "why": "Small targets and fast moves are what cause misses. Making the target bigger by zooming helps more than anything else.",
+   "related": [
+    "select-many",
+    "move-view",
+    "undo"
+   ]
+  },
+  {
+   "id": "revolve",
+   "kind": "how",
+   "title": "Make a round part by spinning a shape (Revolve)",
+   "q": "revolve; spin; round part; turn around an axis; knob; wheel; cylinder shape; lathe",
+   "fix": "Sketch half the shape beside a centerline, then Features tab, Revolved Boss/Base, green check.",
+   "steps": [
+    {
+     "t": "Start a sketch. Draw a centerline where the middle of the round part goes.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Draw half of the shape on one side of the centerline, closed, touching nothing across it.",
+     "w": "graphics"
+    },
+    {
+     "t": "Features tab, Revolved Boss/Base. It spins the shape around the centerline. Green check.",
+     "w": "ribbon"
+    }
+   ],
+   "why": "Extrude pushes a shape straight; Revolve spins it. Anything round like a knob or a wheel is a revolve.",
+   "related": [
+    "centerline",
+    "extrude"
+   ]
+  },
+  {
+   "id": "hole-wizard",
+   "kind": "how",
+   "title": "Make a hole for a screw (Hole Wizard)",
+   "q": "hole wizard; screw hole; bolt hole; tapped hole; threaded; counterbore; clearance hole",
+   "fix": "Features tab, Hole Wizard: pick the hole type and screw size, then the Positions tab, click the face, click where each hole goes.",
+   "steps": [
+    {
+     "t": "Features tab, Hole Wizard.",
+     "w": "ribbon"
+    },
+    {
+     "t": "Type tab: pick the hole type and the screw size.",
+     "w": "property"
+    },
+    {
+     "t": "Positions tab: click the face, then click where each hole goes. Size the location with Smart Dimension.",
+     "w": "graphics"
+    },
+    {
+     "t": "Green check.",
+     "w": "property"
+    }
+   ],
+   "why": "Hole Wizard knows real screw sizes, so the hole fits the screw you will use.",
+   "related": [
+    "cut",
+    "hole-in-sketch"
    ]
   }
  ],
