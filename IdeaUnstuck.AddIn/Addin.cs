@@ -236,7 +236,14 @@ namespace IdeaUnstuck.AddIn
                     var file = ExportLog();
                     pane.ShowMessage(string.IsNullOrEmpty(file) ? "The log export did not finish. Ask a TA." : "Today's logs are on your Desktop: " + System.IO.Path.GetFileName(file));
                 }
-                else { pane.ShowMessage(new RescueActions(log).Run(app, action)); ReadAndRender(); }
+                else
+                {
+                    pane.ShowMessage(new RescueActions(log).Run(app, action));
+                    ReadAndRender();
+                    // The student pressed a button in the pane; hand the keyboard back so
+                    // SOLIDWORKS shortcuts (Esc, S, Ctrl+Z) work again straight away.
+                    FocusSolidWorks();
+                }
             }
             catch (Exception ex) { log.Exception("button_handler", ex); pane?.ShowMessage("That click did not finish. Ask a TA."); }
         }
