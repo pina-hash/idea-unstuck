@@ -127,6 +127,7 @@ namespace PaneHarness
                 .Select(t => t.Text + "=" + t.Height).ToList();
         }
 
+        static double Median(List<double> xs) { var c = xs.OrderBy(x => x).ToList(); return c.Count == 0 ? 0 : c[c.Count / 2]; }
         static double P95(List<double> xs) { xs.Sort(); return xs.Count == 0 ? 0 : xs[(int)Math.Ceiling(xs.Count * 0.95) - 1]; }
 
         static object Timing()
@@ -146,7 +147,13 @@ namespace PaneHarness
                 for (int r = 0; r < 5; r++) foreach (var q in queries) { var sw = Stopwatch.StartNew(); pane.TypeSearch(q); Application.DoEvents(); searches.Add(sw.Elapsed.TotalMilliseconds); }
                 pane.TypeSearch("");
                 var ids = new[] { "open-contour", "red-sketch", "lost-part", "units-mm", "tree-gone", "fillet", "cut", "attach-file", "what-plane", "polygon" };
-                for (int r = 0; r < 4; r++) foreach (var id in ids) { var sw = Stopwatch.StartNew(); pane.OpenEntryById(id); Application.DoEvents(); opens.Add(sw.Elapsed.TotalMilliseconds); }
+                var openBuild = new List<double>(); var openLayout = new List<double>(); var openPaint = new List<double>();
+                for (int r = 0; r < 4; r++) foreach (var id in ids)
+                {
+                    var sw = Stopwatch.StartNew(); pane.OpenEntryById(id); double call = sw.Elapsed.TotalMilliseconds; Application.DoEvents(); opens.Add(sw.Elapsed.TotalMilliseconds);
+                    openBuild.Add(pane.LastOpenBuildMs); openLayout.Add(pane.LastOpenLayoutMs); openPaint.Add(sw.Elapsed.TotalMilliseconds - call);
+                }
+                Console.WriteLine("open answer p95 parts: build " + P95(openBuild).ToString("0.0") + " ms, layout " + P95(openLayout).ToString("0.0") + " ms, paint " + P95(openPaint).ToString("0.0") + " ms; median total " + Median(opens).ToString("0.0") + " ms");
                 // A reader in the middle of a long answer is not moved by polling.
                 pane.OpenEntryById("open-contour"); Application.DoEvents();
                 pane.ScrollPosition = new Point(0, 120); Application.DoEvents();

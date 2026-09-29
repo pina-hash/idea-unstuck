@@ -308,6 +308,8 @@ namespace IdeaUnstuck.AddIn
             LastSearchMs = watch.Elapsed.TotalMilliseconds;
         }
         internal double LastSearchMs { get; private set; }
+        internal double LastOpenBuildMs { get; private set; }
+        internal double LastOpenLayoutMs { get; private set; }
 
         void SearchKey(KeyEventArgs e)
         {
@@ -332,12 +334,15 @@ namespace IdeaUnstuck.AddIn
             openEntry = e;
             log.Write("help_opened", new { id = e.Id, source, query = source == "search" || source == "enter" ? search.Box.Text : null });
             StopSpeech();
+            var watch = Stopwatch.StartNew();
             answer.SuspendLayout(); helpView.SuspendLayout();
             try { BuildAnswer(e); } finally { answer.ResumeLayout(false); helpView.ResumeLayout(false); }
+            double built = watch.Elapsed.TotalMilliseconds;
             results.Visible = false; home.Visible = false; rightNow.Visible = false; noDocument.Visible = false; welcome.Visible = false;
             answer.Visible = true;
             Reflow();
             body.AutoScrollPosition = new Point(0, 0);
+            LastOpenBuildMs = built; LastOpenLayoutMs = watch.Elapsed.TotalMilliseconds - built;
         }
 
         void BuildAnswer(HelpEntry e)
