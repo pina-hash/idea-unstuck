@@ -50,9 +50,10 @@ namespace IdeaUnstuck.Core
                 if (entry == null || string.IsNullOrWhiteSpace(entry.Id) || byId.ContainsKey(entry.Id) ||
                     !Kinds.Contains(entry.Kind) || string.IsNullOrWhiteSpace(entry.Title) ||
                     string.IsNullOrWhiteSpace(entry.Q) || string.IsNullOrWhiteSpace(entry.Fix) ||
-                    string.IsNullOrWhiteSpace(entry.Why) || entry.Steps == null || entry.Steps.Count == 0 ||
+                    string.IsNullOrWhiteSpace(entry.Why) || entry.Steps == null || (entry.Steps.Count == 0 && entry.Kind != "what") ||
                     entry.Steps.Any(s => s == null || string.IsNullOrWhiteSpace(s.T) || string.IsNullOrWhiteSpace(s.W)) || entry.Related == null)
-                    throw new InvalidDataException("The help file has an incomplete or duplicate entry: " + entry?.Id);
+                    // "What is" entries explain a word and have no steps; every other entry needs at least one.
+                throw new InvalidDataException("The help file has an incomplete or duplicate entry: " + entry?.Id);
                 byId.Add(entry.Id, entry);
             }
             foreach (var entry in document.Entries)

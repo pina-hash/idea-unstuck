@@ -345,7 +345,7 @@ namespace IdeaUnstuck.AddIn
                 Tip(view, tip);
                 steps.Controls.Add(view);
             }
-            answer.Controls.Add(steps);
+            if (e.Steps.Count > 0) answer.Controls.Add(steps); else steps.Dispose();
             var doIt = RescueFor(e.Id);
             if (doIt != null)
             {
@@ -425,7 +425,7 @@ namespace IdeaUnstuck.AddIn
         {
             if (speech != null && speech.State == System.Speech.Synthesis.SynthesizerState.Speaking) { StopSpeech(); button.Text = "Read it to me"; return; }
             if (speech == null) { speech = new System.Speech.Synthesis.SpeechSynthesizer(); speech.Rate = -1; speech.SpeakCompleted += (s, a) => Guard("speech_done", () => { if (!button.IsDisposed) button.Text = "Read it to me"; }); }
-            var text = e.Title + ". " + e.Fix + " " + string.Join(" ", e.Steps.Select((st, i) => "Step " + (i + 1) + ". " + st.T));
+            var text = e.Title + ". " + e.Fix + " " + string.Join(" ", e.Steps.Select((st, i) => "Step " + (i + 1) + ". " + st.T)) + (e.Steps.Count == 0 ? " " + e.Why : "");
             log.Write("button_pressed", new { action = "read_aloud", id = e.Id });
             button.Text = "Stop reading";
             speech.SpeakAsync(text);
