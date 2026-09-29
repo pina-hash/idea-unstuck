@@ -45,7 +45,15 @@ namespace IdeaUnstuck.AddIn.Ui
             AccessibleRole = AccessibleRole.StaticText;
         }
         protected override void OnTextChanged(EventArgs e) { AccessibleName = Text; base.OnTextChanged(e); Invalidate(); }
-        public int MeasureHeight(int width) => Text.Length == 0 ? 0 : global::IdeaUnstuck.AddIn.Ui.Text.Height(Text, global::IdeaUnstuck.AddIn.Ui.Text.Of(skin.T, Role), width) + skin.T.Px(2);
+        string cacheKey; int cacheH;
+        public int MeasureHeight(int width)
+        {
+            if (Text.Length == 0) return 0;
+            var font = global::IdeaUnstuck.AddIn.Ui.Text.Of(skin.T, Role);
+            var key = width + "|" + font.GetHashCode() + "|" + skin.T.Scale + "|" + Text;
+            if (key == cacheKey) return cacheH;
+            cacheH = global::IdeaUnstuck.AddIn.Ui.Text.Height(Text, font, width) + skin.T.Px(2); cacheKey = key; return cacheH;
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
             var t = skin.T;
@@ -84,7 +92,14 @@ namespace IdeaUnstuck.AddIn.Ui
         Font MainFont => Style == TileStyle.Link ? skin.T.Body : Style == TileStyle.Row ? skin.T.Body : Style == TileStyle.HeaderToggle ? skin.T.SmallBold : skin.T.Bold;
         int TagHeight => string.IsNullOrEmpty(Tag2) ? 0 : TextRenderer.MeasureText(Tag2, skin.T.SmallBold).Height + skin.T.Px(4);
         int ChevronRoom => Expander ? skin.T.Px(22) : 0;
+        string cacheKey; int cacheH;
         public int MeasureHeight(int width)
+        {
+            var key = width + "|" + MainFont.GetHashCode() + "|" + skin.T.Scale + "|" + Style + "|" + Tag2 + "|" + Detail + "|" + Expander + "|" + Text;
+            if (key == cacheKey) return cacheH;
+            cacheH = MeasureUncached(width); cacheKey = key; return cacheH;
+        }
+        int MeasureUncached(int width)
         {
             var t = skin.T; var p = Inner;
             int min = Style == TileStyle.Link ? t.Px(32) : Style == TileStyle.HeaderToggle ? t.Px(28) : t.Px(36);
@@ -254,7 +269,13 @@ namespace IdeaUnstuck.AddIn.Ui
         }
         int Gutter => skin.T.Px(26);
         int TagH => string.IsNullOrEmpty(Where) ? 0 : TextRenderer.MeasureText(Where, skin.T.SmallBold).Height + skin.T.Px(4);
-        public int MeasureHeight(int width) => Math.Max(skin.T.Px(24), TagH + global::IdeaUnstuck.AddIn.Ui.Text.Height(Text, skin.T.Body, width - Gutter) + skin.T.Px(4));
+        string cacheKey; int cacheH;
+        public int MeasureHeight(int width)
+        {
+            var key = width + "|" + skin.T.Body.GetHashCode() + "|" + skin.T.Scale;
+            if (key == cacheKey) return cacheH;
+            cacheH = Math.Max(skin.T.Px(24), TagH + global::IdeaUnstuck.AddIn.Ui.Text.Height(Text, skin.T.Body, width - Gutter) + skin.T.Px(4)); cacheKey = key; return cacheH;
+        }
         protected override void OnPaint(PaintEventArgs e)
         {
             var t = skin.T; var g = e.Graphics; g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -303,38 +324,56 @@ namespace IdeaUnstuck.AddIn.Ui
         protected override void OnLayout(LayoutEventArgs e) => Place(Width, true);
     }
 
-    /// <summary>The search box with its gray hint text, drawn as a child we control.</summary>
+    /// <summary>A text box that draws its own gray hint while empty. Drawn after the
+    /// box paints (WM_PAINT) and when it is printed (WM_PRINT, used by the harness),
+    /// so it does not depend on the host process having visual styles.</summary>
+    public sealed class HintTextBox : TextBox
+    {
+        public string Hint { get; set; } = "";
+        public Color HintColor { get; set; } = Color.Gray;
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            const int WM_PAINT = 0x000F, WM_PRINT = 0x0317, WM_PRINTCLIENT = 0x0318;
+            if (TextLength != 0 || string.IsNullOrEmpty(Hint)) return;
+            if (m.Msg == WM_PAINT) using (var g = CreateGraphics()) DrawHint(g);
+            else if ((m.Msg == WM_PRINT || m.Msg == WM_PRINTCLIENT) && m.WParam != IntPtr.Zero) using (var g = Graphics.FromHdc(m.WParam)) DrawHint(g);
+        }
+        void DrawHint(Graphics g) => TextRenderer.DrawText(g, Hint, Font, new Rectangle(1, 0, ClientSize.Width - 1, ClientSize.Height), HintColor, BackColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis | TextFormatFlags.NoPrefix | TextFormatFlags.NoPadding);
+        protected override void OnTextChanged(EventArgs e) { base.OnTextChanged(e); Invalidate(); }
+        protected override void OnGotFocus(EventArgs e) { base.OnGotFocus(e); Invalidate(); }
+        protected override void OnLostFocus(EventArgs e) { base.OnLostFocus(e); Invalidate(); }
+    }
+
+    /// <summary>The search box: a bordered white strip holding the text box.</summary>
     public sealed class SearchBox : Panel, IMeasured
     {
         readonly Skin skin;
-        public readonly TextBox Box;
-        readonly Words hint;
+        public readonly HintTextBox Box;
         public SearchBox(Skin skin, string placeholder)
         {
             this.skin = skin; TabStop = false;
-            Box = new TextBox { Name = "HelpSearch", AccessibleName = "Search. " + placeholder, MaxLength = 200, BorderStyle = BorderStyle.None, TabIndex = 0 };
-            hint = new Words(skin, placeholder) { Soft = true, Cursor = Cursors.IBeam };
-            hint.AccessibleRole = AccessibleRole.None;
-            // Clicking the hint is the student clicking the box: that is the one time the pane takes focus.
-            hint.Click += (s, e) => Box.Focus();
-            Controls.Add(hint); Controls.Add(Box);
-            Box.TextChanged += (s, e) => hint.Visible = Box.TextLength == 0;
+            Box = new HintTextBox { Name = "HelpSearch", AccessibleName = "Search. " + placeholder, Hint = placeholder, MaxLength = 200, BorderStyle = BorderStyle.None, TabIndex = 0 };
+            Controls.Add(Box);
             BackColor = Color.White;
+            // A click on the strip around the text is a click on the box.
+            Click += (s, e) => Box.Focus();
+            Cursor = Cursors.IBeam;
         }
-        public void ApplyTheme() { Box.Font = skin.T.Body; Box.BackColor = skin.T.Row; Box.ForeColor = skin.T.Ink; BackColor = skin.T.Row; hint.Font = skin.T.Body; }
-        public int MeasureHeight(int width) => Math.Max(skin.T.Px(36), Box.PreferredHeight + skin.T.Px(14));
+        public void ApplyTheme() { Box.Font = skin.T.Body; Box.BackColor = skin.T.Row; Box.ForeColor = skin.T.Ink; Box.HintColor = skin.T.InkSoft; BackColor = skin.T.Row; }
+        public int MeasureHeight(int width) => Math.Max(skin.T.Px(38), Box.PreferredHeight + skin.T.Px(16));
         protected override void OnLayout(LayoutEventArgs e)
         {
             var t = skin.T; int pad = t.Px(9); int boxH = Box.PreferredHeight;
             Box.SetBounds(pad, (Height - boxH) / 2, Width - pad * 2, boxH);
-            hint.SetBounds(pad + t.Px(1), (Height - boxH) / 2 + t.Px(1), Width - pad * 2, boxH);
         }
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             var t = skin.T; bool focused = Box.Focused;
-            using (var pen = new Pen(focused ? t.Blue : t.PanelBorder, focused ? Math.Max(2, t.Px(2)) : 1))
-                e.Graphics.DrawRectangle(pen, focused ? 1 : 0, focused ? 1 : 0, Width - (focused ? 2 : 1), Height - (focused ? 2 : 1));
+            int w = focused ? Math.Max(2, t.Px(2)) : 1;
+            using (var pen = new Pen(focused ? t.Blue : t.PanelBorder, w) { Alignment = System.Drawing.Drawing2D.PenAlignment.Inset })
+                e.Graphics.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
         }
     }
 }

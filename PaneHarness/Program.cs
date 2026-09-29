@@ -62,17 +62,21 @@ namespace PaneHarness
         static object Shot(string outDir, string state, int width, float scale, bool highContrast)
         {
             int w = (int)Math.Round(width * scale), h = (int)Math.Round(820 * scale);
-            using (var form = new Form { FormBorderStyle = FormBorderStyle.None, StartPosition = FormStartPosition.Manual, Location = new Point(0, 0), ClientSize = new Size(w, h), ShowInTaskbar = false })
+            // The runner's screen is 1024x768, and Windows clips a window to the screen,
+            // so the pane is sized on its own (taller than its small host window) and
+            // drawn directly. The host window only provides a window handle.
+            using (var form = new Form { FormBorderStyle = FormBorderStyle.None, StartPosition = FormStartPosition.Manual, Location = new Point(0, 0), ClientSize = new Size(Math.Min(w, 600), 300), ShowInTaskbar = false })
             using (var pane = Make(scale, state == "first-run", highContrast ? true : (bool?)null))
             {
-                form.Controls.Add(pane); form.Show(); Application.DoEvents();
+                pane.Dock = DockStyle.None; pane.Location = new Point(0, 0); pane.Size = new Size(w, h);
+                form.Controls.Add(pane); form.Show(); form.ActiveControl = null; Application.DoEvents();
                 var paths = new GuidedPaths(log).Paths;
                 switch (state)
                 {
                     case "first-run": case "empty": pane.Render(Clean(), new Rules().Evaluate(Clean()), paths); break;
-                    case "typing": pane.Render(Clean(), new Rules().Evaluate(Clean()), paths); pane.TypeSearch("my lines are re"); break;
+                    case "typing": pane.Render(Clean(), new Rules().Evaluate(Clean()), paths); pane.Find("HelpSearch").Focus(); pane.TypeSearch("my lines are re"); break;
                     case "answer": case "answer-a++":
-                        pane.Render(Mm(), new Rules().Evaluate(Mm()), paths); pane.TypeSearch("it wont let me extrude"); pane.PressEnter();
+                        pane.Render(Mm(), new Rules().Evaluate(Mm()), paths); pane.TypeSearch("it wont let me extrude"); pane.PressEnter(); form.ActiveControl = null;
                         if (state == "answer-a++") pane.UseTextSize(2);
                         break;
                     case "right-now": pane.Render(Mm(), new Rules().Evaluate(Mm()), paths); break;
@@ -83,7 +87,7 @@ namespace PaneHarness
                 var name = state + "-w" + width + "-s" + (int)(scale * 100) + (highContrast ? "-hc" : "") + ".png";
                 using (var bmp = new Bitmap(w, h))
                 {
-                    form.DrawToBitmap(bmp, new Rectangle(0, 0, w, h));
+                    pane.DrawToBitmap(bmp, new Rectangle(0, 0, w, h));
                     bmp.Save(Path.Combine(outDir, name), ImageFormat.Png);
                 }
                 bool hscroll = pane.HorizontalScrollShown;
@@ -121,29 +125,32 @@ namespace PaneHarness
 
         static object Timing()
         {
-            using (var form = new Form { ClientSize = new Size(320, 820), ShowInTaskbar = false, StartPosition = FormStartPosition.Manual, Location = new Point(0, 0) })
+            using (var form = new Form { ClientSize = new Size(320, 520), ShowInTaskbar = false, StartPosition = FormStartPosition.Manual, Location = new Point(0, 0) })
             using (var pane = Make(1f, false))
             {
                 form.Controls.Add(pane); form.Show(); Application.DoEvents();
                 var paths = new GuidedPaths(log).Paths;
-                // Warm up once, then measure.
-                pane.Render(Mm(), new Rules().Evaluate(Mm()), paths);
+                // Warm up every path once (first calls pay for .NET compiling the code), then measure.
+                pane.Render(Mm(), new Rules().Evaluate(Mm()), paths); pane.Render(Clean(), new Rules().Evaluate(Clean()), paths);
+                pane.TypeSearch("warm up extrude"); pane.TypeSearch(""); pane.OpenEntryById("fillet"); pane.TypeSearch("x"); pane.TypeSearch(""); Application.DoEvents();
                 var same = new List<double>(); var changedRenders = new List<double>(); var searches = new List<double>(); var opens = new List<double>();
                 for (int i = 0; i < 300; i++) { var s = Mm(); var sw = Stopwatch.StartNew(); pane.Render(s, new Rules().Evaluate(s), paths); same.Add(sw.Elapsed.TotalMilliseconds); }
                 for (int i = 0; i < 60; i++) { var s = i % 2 == 0 ? Mm() : Clean(); var sw = Stopwatch.StartNew(); pane.Render(s, new Rules().Evaluate(s), paths); Application.DoEvents(); changedRenders.Add(sw.Elapsed.TotalMilliseconds); }
                 var queries = new[] { "it wont let me extrude", "my lines are red", "i lost my part", "how do i make a hole", "the list on the left is gone", "make it thicker", "hexagon", "zzqx blorp", "what is a plane", "turn in my part" };
                 for (int r = 0; r < 5; r++) foreach (var q in queries) { var sw = Stopwatch.StartNew(); pane.TypeSearch(q); Application.DoEvents(); searches.Add(sw.Elapsed.TotalMilliseconds); }
                 pane.TypeSearch("");
-                foreach (var id in new[] { "open-contour", "red-sketch", "lost-part", "units-mm", "tree-gone", "fillet", "cut", "attach-file" }) { var sw = Stopwatch.StartNew(); pane.OpenEntryById(id); Application.DoEvents(); opens.Add(sw.Elapsed.TotalMilliseconds); }
+                var ids = new[] { "open-contour", "red-sketch", "lost-part", "units-mm", "tree-gone", "fillet", "cut", "attach-file", "what-plane", "polygon" };
+                for (int r = 0; r < 4; r++) foreach (var id in ids) { var sw = Stopwatch.StartNew(); pane.OpenEntryById(id); Application.DoEvents(); opens.Add(sw.Elapsed.TotalMilliseconds); }
                 // A reader in the middle of a long answer is not moved by polling.
                 pane.OpenEntryById("open-contour"); Application.DoEvents();
                 pane.ScrollPosition = new Point(0, 120); Application.DoEvents();
                 var before = pane.ScrollPosition;
+                if (before.Y == 0) failures.Add("scroll check could not scroll the answer, so it proves nothing");
                 for (int i = 0; i < 10; i++) { var s = i % 2 == 0 ? Mm() : Clean(); pane.Render(s, new Rules().Evaluate(s), paths); Application.DoEvents(); }
                 var after = pane.ScrollPosition;
                 if (before != after) failures.Add("polling moved the scroll position from " + before + " to " + after);
                 if (pane.OpenAnswer?.Id != "open-contour") failures.Add("polling closed the open answer");
-                var result = new { unchangedPollP95Ms = P95(same), changedPollP95Ms = P95(changedRenders), searchKeystrokeP95Ms = P95(searches), openAnswerP95Ms = P95(opens), scrollKept = before == after, scrollBefore = before.Y, scrollAfter = after.Y };
+                var result = new { unchangedPollP95Ms = P95(same), changedPollP95Ms = P95(changedRenders), searchKeystrokeP95Ms = P95(searches), openAnswerP95Ms = P95(opens), scrollKept = before == after, scrollBefore = -before.Y, scrollAfter = -after.Y, samples = new { polls = same.Count, changed = changedRenders.Count, searches = searches.Count, opens = opens.Count } };
                 foreach (var pair in new[] { ("unchanged poll", P95(same)), ("changed poll", P95(changedRenders)), ("search", P95(searches)), ("open answer", P95(opens)) })
                 {
                     Console.WriteLine("p95 " + pair.Item1 + " = " + pair.Item2.ToString("0.0") + " ms");

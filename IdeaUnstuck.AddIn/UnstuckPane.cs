@@ -127,7 +127,7 @@ namespace IdeaUnstuck.AddIn
             message.Controls.Add(messageText); message.Controls.Add(messageOk);
             welcome = new Column(skin) { Card = true, Padding = new Padding(10), Gap = 4, Name = "Welcome" };
             welcome.Controls.Add(new Words(skin, "Welcome to IDEA Unstuck", TextRole.Bold));
-            welcome.Controls.Add(new Words(skin, "1. Stuck? Type what is happening in the box below, in your own words."));
+            welcome.Controls.Add(new Words(skin, "1. Stuck? Type what is happening in the box above, in your own words."));
             welcome.Controls.Add(new Words(skin, "2. Or pick one of the common problems."));
             welcome.Controls.Add(new Words(skin, "3. The Practice tab walks you through your first part."));
             var gotIt = new Tile(skin, "Got it", TileStyle.Secondary) { Name = "WelcomeOk" };
@@ -140,6 +140,7 @@ namespace IdeaUnstuck.AddIn
             search.Box.KeyDown += (s, e) => Guard("search_key", () => SearchKey(e));
             search.Box.GotFocus += (s, e) => search.Invalidate();
             search.Box.LostFocus += (s, e) => search.Invalidate();
+            search.Box.Hint = Placeholder;
             results = new Column(skin) { Gap = 4, Visible = false, Name = "Results" };
             rightNow = new Column(skin) { Padding = new Padding(14, 10, 10, 10), Gap = 8, Visible = false, Name = "RightNow" };
             rightNow.Controls.Add(new Words(skin, "Right now", TextRole.SmallBold) { Soft = true });
@@ -161,7 +162,7 @@ namespace IdeaUnstuck.AddIn
             export.Click += (s, e) => Guard("export", () => Act("export"));
             Tip(export, "Saves today's local log to the Desktop as a ZIP. Nothing is sent anywhere.");
             BuildHome();
-            foreach (Control c in new Control[] { message, welcome, search, results, rightNow, noDocument, home, answer, export }) helpView.Controls.Add(c);
+            foreach (Control c in new Control[] { message, search, welcome, results, rightNow, noDocument, home, answer, export }) helpView.Controls.Add(c);
             if (help == null) { search.Enabled = false; home.Controls.Clear(); home.Controls.Add(new Words(skin, "Help could not load. Raise your hand.")); }
 
             practiceView = new Column(skin) { Gap = 6, Visible = false, Name = "PracticeView" };
@@ -200,10 +201,11 @@ namespace IdeaUnstuck.AddIn
             var t = skin.T; int h = header.Height; int pad = t.Px(8);
             int icon = t.Px(22);
             logo.SetBounds(pad, (h - icon) / 2, icon, icon);
-            int bw = t.Px(34), bh = t.Px(26), gap = t.Px(3);
-            int x = header.Width - pad - bw * 3 - gap * 2;
-            bool room = x > pad + icon + t.Px(90);
-            for (int i = 0; i < 3; i++) { sizeButtons[i].Visible = room || i == 0 || true; sizeButtons[i].SetBounds(x + i * (bw + gap), (h - bh) / 2, bw, bh); }
+            int bh = t.Px(26), gap = t.Px(3);
+            var widths = sizeButtons.Select(b => TextRenderer.MeasureText(b.Text, t.SmallBold).Width + t.Px(12)).ToArray();
+            int x = header.Width - pad - widths.Sum() - gap * 2;
+            int bx = x;
+            for (int i = 0; i < 3; i++) { sizeButtons[i].SetBounds(bx, (h - bh) / 2, widths[i], bh); bx += widths[i] + gap; }
             title.SetBounds(pad + icon + t.Px(6), 0, Math.Max(10, x - (pad + icon + t.Px(6)) - gap), h);
         }
 
@@ -224,14 +226,14 @@ namespace IdeaUnstuck.AddIn
         void Reflow()
         {
             var keep = body.AutoScrollPosition;
-            SuspendLayout();
-            try
+            // Top down, visible parts only: each container places its children at
+            // the width it was just given. Hidden lists (the full library) cost nothing.
+            void Down(Control c)
             {
-                void Deep(Control c) { foreach (Control child in c.Controls) Deep(child); if (c is Column || c is Row || c is CheckRow) c.PerformLayout(); }
-                Deep(body);
+                if (c is Column || c is Row || c is CheckRow) c.PerformLayout();
+                foreach (Control child in c.Controls) if (Column.IsShown(child) && child.Controls.Count > 0 && !(child is SearchBox)) Down(child);
             }
-            finally { ResumeLayout(true); }
-            body.PerformLayout();
+            Down(body);
             body.AutoScrollPosition = new Point(0, -keep.Y);
             body.Invalidate(true);
         }
