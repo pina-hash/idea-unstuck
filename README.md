@@ -2,35 +2,30 @@
 
 IDEA Unstuck puts short instructions and rescue buttons in the SOLIDWORKS Task Pane. It is for students opening SOLIDWORKS for the first time. It reads the active part every 1.5 seconds. A student must press a button before the helper changes units, the view, the sketch being edited, or the rollback position.
 
-This is a classroom pilot. See [TEST_RESULTS.md](TEST_RESULTS.md) for the checks actually performed and the remaining checks before a lab rollout. SOLIDWORKS 2025 and 2026 are the targets. Only 2026 is available on the development PC.
+This is a classroom pilot. See [TEST_RESULTS.md](TEST_RESULTS.md) for the checks actually performed and the remaining checks before a lab rollout. SOLIDWORKS 2025 and 2026 are the targets. Version 0.3.0 was built and tested with no SOLIDWORKS present (see [docs/AUDIT-v0.3.md](docs/AUDIT-v0.3.md)); v0.2 was tested on 2026.
 
-## Install on a lab PC
+## v0.3: what a student sees
 
-1. Use a Windows PC with a licensed, working SOLIDWORKS 2025 or 2026 installation and .NET Framework 4.8. Use English part templates with Front Plane, Top Plane, and Right Plane.
-2. Extract the entire release ZIP. Keep `install.bat`, `uninstall.bat`, `scripts`, and `release` together. Do not run the batch file from inside the ZIP.
-3. Save students' work and close SOLIDWORKS.
-4. Right-click `install.bat` and choose **Run as administrator**. Approve the Windows prompt. Wait for the line beginning **SUCCESS**. A **FAILURE** line means installation did not finish.
-5. Sign out of Windows and sign back in as the student. This runs the per-user startup initializer.
-6. Open SOLIDWORKS. Choose **Tools > Add-Ins**. Find **IDEA Unstuck**. Select both its **Active Add-ins** and **Start Up** checkboxes.
-7. Find **IDEA Unstuck** among the Task Pane tabs on the right. If the Task Pane is hidden, enable it under **View > User Interface > Task Pane**. Select the IDEA Unstuck tab.
-8. Open a part. Read the top card and do its next click. The checklist changes when SOLIDWORKS reports completed work; clicking a checklist heading only expands or hides it.
-9. Before deploying to a whole class, sign into a second Windows account and run the manual checks in [TEST_PLAN.md](TEST_PLAN.md).
+The pane has a dark title bar with the IDEA Unstuck icon and **A A+ A++** text sizes, remembered for each Windows user. Under it are two tabs, **Help** and **Practice**.
 
-No Visual Studio, SDK, or targeting pack is needed on student PCs. Those tools are for building the add-in. Copying the DLL by itself does not install it.
+- **Help** starts with a search box: "Type what's happening, in your own words". Up to five answers appear as the student types, each tagged **Something is wrong**, **How do I** or **What is**. Enter opens the top answer and Esc clears the box and hands the keyboard back to SOLIDWORKS. The search is the SolidWorks Day post's own search, ported line by line, over the same library (`design/kb-v2.json`).
+- **Right now**: one card with one plain sentence and one blue button, shown only when the part's state gives a confident diagnosis (millimeters, a red sketch, a rollback bar above the end, a failed feature...). Otherwise it is hidden.
+- **Common problems**: six rows, then **Browse all answers**, closed until clicked and grouped by kind.
+- An answer **replaces** the list: Back, the title, the fix in bold, numbered steps tagged with where to look (Left panel, Top ribbon, Bottom-right corner, Keyboard...), then **Did that fix it? Yes / Not yet**. Not yet shows related answers and "Still stuck? Raise your hand." **Read it to me** reads the answer aloud (Windows speech, offline). **Copy for AI** is a small link at the very bottom.
+- **Practice**: the guided paths with real check boxes that SOLIDWORKS state ticks. One path is open at a time. **Show me where** opens a hint; **Do it for me** is a small link under a step.
+- Hover any control for 0.8 s for a tip; answer steps explain the SOLIDWORKS words in them.
 
-## Search for help
+No network code, no account, no AI. Logs stay on the PC.
 
-Type a student question into **Search for help**. Up to five titles appear; select one for a bold fix, numbered **Step by step** instructions, a **Why** explanation, and related help links. **More help** on every diagnosis opens its matching article. **Back to search** returns to the existing query. Polling does not replace the query or an open article.
+## Install on a lab PC (flash drive)
 
-The 49-entry `IdeaUnstuck.Core/kb.json` is embedded in the Core DLL, so help works offline with no separate data file. Search uses title and student-phrasing words: exact = 3, query prefix = 2, one insertion/deletion/substitution/adjacent transposition = 1.5 for words of at least four letters. Each distinct query word contributes its best match; any matching word qualifies. Each complete semicolon-separated phrasing contained in the normalized query adds 4. Case, punctuation, and apostrophes are normalized; ties retain file order. Related links stay inside the pane. The 1500 ms SOLIDWORKS poll is unchanged. The overnight wording review updates article instructions while preserving IDs, student search phrasings, and related links.
+Use the release asset `IDEA-Unstuck-USB-v0.3.0.zip`. `README.txt` inside it is the one-page instruction for someone who has never done this. In short: Extract All onto a drive, then on each PC close SOLIDWORKS and double-click **Install IDEA Unstuck.cmd**. It asks for administrator rights itself and works offline. It checks .NET Framework 4.8, stops if SOLIDWORKS is open, installs to `C:\Program Files\IDEA\Unstuck` for every Windows user, lists the SOLIDWORKS versions it found, upgrades v0.2, and is safe to run twice. It ends on one large PASS or FAIL line and appends one line to `logs\<COMPUTERNAME>.txt` on the drive. **Check IDEA Unstuck.cmd** reports what is installed, and **Uninstall IDEA Unstuck.cmd** (or Settings > Apps) removes it. The five-minute acceptance check is [docs/CHECK-v0.3.md](docs/CHECK-v0.3.md).
 
-## First 10 minutes
+Every Windows user gets the add-in at SOLIDWORKS startup with no box to tick. The installer registers it machine-wide, turns it on for everyone signed in right now, and a sign-in entry turns it on for each later user, including a first-ever sign-in. A student who turns it off in Tools > Add-Ins stays off.
 
-The expanded first path leads through a new part, inches, Front Plane, a circle at the origin, a 1.000-inch diameter, Exit Sketch, a 0.500-inch Mid Plane extrusion, and saving with a last name. Each step has an inline **Show me where** hint. Ticks require observed model state; saving verifies a saved file, not the student's last name. Four additional paths cover a first rectangular part, changing a size, cutting a face, and rounding an edge.
+## Rescue actions
 
-The help card offers a next step and Copy for AI after unchanged diagnoses for two minutes, four undos within 60 seconds, or three matched starts and cancellations of the same command within two minutes. Successful completion clears that command's cancel streak. Document switches reset these counters.
-
-## Rescue buttons
+In v0.3 these are no longer a stack of buttons. Each appears only where it fits: the one button on the Right now card, a small link under a matching answer ("Tried the steps? Find my part"), or **Do it for me** under a practice step. Every press is logged locally.
 
 | Button | Result |
 | --- | --- |

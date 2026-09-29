@@ -80,9 +80,9 @@ jobs:
           Expand-Archive $zip.FullName -DestinationPath $usb -Force
           function Run([string]$name) {
             $t = [Diagnostics.Stopwatch]::StartNew()
-            & cmd.exe /c ('"' + (Join-Path $usb $name) + '" /quiet') 2>&1 | Tee-Object -Append install-cycle.txt
+            & cmd.exe /c ('"' + (Join-Path $usb $name) + '" /quiet') 2>&1 | Tee-Object -Append install-cycle.txt | Out-Host
             $code = $LASTEXITCODE
-            ("{0} exit {1} in {2:0.0} s" -f $name, $code, $t.Elapsed.TotalSeconds) | Tee-Object -Append install-cycle.txt
+            ("{0} exit {1} in {2:0.0} s" -f $name, $code, $t.Elapsed.TotalSeconds) | Tee-Object -Append install-cycle.txt | Out-Host
             return $code
           }
           function Expect([string]$name, [int]$want) { $c = Run $name; if ($c -ne $want) { throw "$name returned $c, expected $want" } }
@@ -106,7 +106,7 @@ jobs:
           gh release download v0.2.0-pilot --pattern '*.zip' --dir v02zip
           Expand-Archive (Get-ChildItem v02zip\*.zip | Select-Object -First 1).FullName -DestinationPath v02pilot -Force
           $bat = Get-ChildItem v02pilot -Recurse -Filter install.bat | Select-Object -First 1
-          & cmd.exe /c ('"' + $bat.FullName + '"') 2>&1 | Tee-Object -Append install-cycle.txt
+          & cmd.exe /c ('"' + $bat.FullName + '"') 2>&1 | Tee-Object -Append install-cycle.txt | Out-Host
           if ($LASTEXITCODE -ne 0) { throw 'v0.2 install.bat failed' }
           "v0.2 installed: $(Version)" | Tee-Object -Append install-cycle.txt
           if ((Version) -ne '0.2.0') { throw 'v0.2 did not install' }

@@ -202,7 +202,7 @@ namespace IdeaUnstuck.AddIn
             int icon = t.Px(22);
             logo.SetBounds(pad, (h - icon) / 2, icon, icon);
             int bh = t.Px(26), gap = t.Px(3);
-            var widths = sizeButtons.Select(b => TextRenderer.MeasureText(b.Text, t.SmallBold).Width + t.Px(12)).ToArray();
+            var widths = sizeButtons.Select(b => Math.Max(t.Px(28), TextRenderer.MeasureText(b.Text, t.SmallBold).Width + t.Px(10))).ToArray();
             int x = header.Width - pad - widths.Sum() - gap * 2;
             int bx = x;
             for (int i = 0; i < 3; i++) { sizeButtons[i].SetBounds(bx, (h - bh) / 2, widths[i], bh); bx += widths[i] + gap; }

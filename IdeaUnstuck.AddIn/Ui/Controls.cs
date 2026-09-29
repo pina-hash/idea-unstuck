@@ -88,7 +88,7 @@ namespace IdeaUnstuck.AddIn.Ui
         }
         protected override void OnTextChanged(EventArgs e) { UpdateName(); base.OnTextChanged(e); Invalidate(); }
         public void UpdateName() => AccessibleName = (string.IsNullOrEmpty(Tag2) ? "" : Tag2 + ": ") + Text + (Expander ? (Expanded ? ", open" : ", closed") : "") + (Selected && Style == TileStyle.Tab ? ", selected" : "");
-        Padding Inner => Style == TileStyle.Link ? new Padding(skin.T.Px(4), skin.T.Px(6), skin.T.Px(4), skin.T.Px(6)) : new Padding(skin.T.Px(10), skin.T.Px(8), skin.T.Px(10), skin.T.Px(8));
+        Padding Inner => Style == TileStyle.HeaderToggle ? new Padding(skin.T.Px(2), skin.T.Px(2), skin.T.Px(2), skin.T.Px(2)) : Style == TileStyle.Link ? new Padding(skin.T.Px(4), skin.T.Px(6), skin.T.Px(4), skin.T.Px(6)) : new Padding(skin.T.Px(10), skin.T.Px(8), skin.T.Px(10), skin.T.Px(8));
         Font MainFont => Style == TileStyle.Link ? skin.T.Body : Style == TileStyle.Row ? skin.T.Body : Style == TileStyle.HeaderToggle ? skin.T.SmallBold : skin.T.Bold;
         int TagHeight => string.IsNullOrEmpty(Tag2) ? 0 : TextRenderer.MeasureText(Tag2, skin.T.SmallBold).Height + skin.T.Px(4);
         int ChevronRoom => Expander ? skin.T.Px(22) : 0;
