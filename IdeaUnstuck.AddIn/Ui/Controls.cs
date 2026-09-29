@@ -296,17 +296,44 @@ namespace IdeaUnstuck.AddIn.Ui
         }
     }
 
+    /// <summary>
+    /// A real CheckBox (keyboard, screen readers and UI Automation see a check box)
+    /// that draws its own box at the pane's scale, because the system box stays 13 px
+    /// at 150 percent.
+    /// </summary>
+    public sealed class ScaledCheckBox : CheckBox
+    {
+        readonly Skin skin;
+        public ScaledCheckBox(Skin skin)
+        {
+            this.skin = skin;
+            SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
+        }
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var t = skin.T; var g = e.Graphics; g.SmoothingMode = SmoothingMode.AntiAlias;
+            using (var b = new SolidBrush(Parent?.BackColor ?? t.Page)) g.FillRectangle(b, ClientRectangle);
+            int size = Math.Min(Width, Height) - 2; var r = new Rectangle(1, 1, size - 1, size - 1);
+            using (var b = new SolidBrush(Checked ? t.Green : t.Row)) g.FillRectangle(b, r);
+            using (var pen = new Pen(Checked ? t.Green : t.InkSoft, Math.Max(1, t.Px(1.5f)))) g.DrawRectangle(pen, r);
+            if (Checked)
+                using (var pen = new Pen(t.GreenInk, Math.Max(2, t.Px(2.5f))) { StartCap = LineCap.Round, EndCap = LineCap.Round, LineJoin = LineJoin.Round })
+                    g.DrawLines(pen, new[] { new PointF(r.X + size * .22f, r.Y + size * .52f), new PointF(r.X + size * .42f, r.Y + size * .72f), new PointF(r.X + size * .78f, r.Y + size * .3f) });
+            if (Focused && ShowFocusCues) using (var pen = new Pen(t.Focus) { DashStyle = DashStyle.Dot }) g.DrawRectangle(pen, 0, 0, Width - 1, Height - 1);
+        }
+    }
+
     /// <summary>A practice step: a real check box that SOLIDWORKS state ticks, the step text, and its links.</summary>
     public sealed class CheckRow : Panel, IMeasured
     {
         readonly Skin skin;
-        public readonly CheckBox Box;
+        public readonly ScaledCheckBox Box;
         public readonly Words Label;
         public readonly List<Control> Links = new List<Control>();
         public CheckRow(Skin skin, string text, bool done)
         {
             this.skin = skin; TabStop = false;
-            Box = new CheckBox { AutoCheck = false, Checked = done, Text = "", AccessibleName = (done ? "Done: " : "Not done yet: ") + text, TabStop = true, FlatStyle = FlatStyle.System };
+            Box = new ScaledCheckBox(skin) { AutoCheck = false, Checked = done, Text = "", AccessibleName = (done ? "Done: " : "Not done yet: ") + text, TabStop = true };
             Label = new Words(skin, text) { Soft = done };
             Controls.Add(Box); Controls.Add(Label);
         }
@@ -335,7 +362,9 @@ namespace IdeaUnstuck.AddIn.Ui
         {
             base.WndProc(ref m);
             const int WM_PAINT = 0x000F, WM_PRINT = 0x0317, WM_PRINTCLIENT = 0x0318;
-            if (TextLength != 0 || string.IsNullOrEmpty(Hint)) return;
+            // Check the message first: TextLength itself sends WM_GETTEXTLENGTH to this window.
+            if (m.Msg != WM_PAINT && m.Msg != WM_PRINT && m.Msg != WM_PRINTCLIENT) return;
+            if (string.IsNullOrEmpty(Hint) || TextLength != 0) return;
             if (m.Msg == WM_PAINT) using (var g = CreateGraphics()) DrawHint(g);
             else if ((m.Msg == WM_PRINT || m.Msg == WM_PRINTCLIENT) && m.WParam != IntPtr.Zero) using (var g = Graphics.FromHdc(m.WParam)) DrawHint(g);
         }
