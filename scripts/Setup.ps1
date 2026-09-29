@@ -119,7 +119,7 @@ function Install {
     $before = Get-InstalledVersion
     if ($before) { Say ('Found IDEA Unstuck ' + $before + '. Upgrading it.') }
     $years = Get-SolidWorksYears
-    if ($years.Count -eq 0) { $Notes.Add('no SOLIDWORKS found on this PC; installed anyway') | Out-Null; Say 'No SOLIDWORKS found. Installing anyway; it will load once SOLIDWORKS is installed.' }
+    if ($years.Count -eq 0) { Say 'No SOLIDWORKS found. Installing anyway; it will load once SOLIDWORKS is installed.' }
     else { Say ('SOLIDWORKS found: ' + ($years -join ', ')) }
     Unregister-Existing
     New-Item -ItemType Directory -Path (Join-Path $Target 'icons') -Force | Out-Null
@@ -148,7 +148,7 @@ function Install {
     # Verify what we just did.
     $problems = Get-Problems
     if ($problems.Count -gt 0) { throw ('Installed, but these checks failed: ' + ($problems -join '; ')) }
-    $what = if ($before) { 'Upgraded ' + $before + ' to ' + $Version } else { 'Installed ' + $Version }
+    $what = if (-not $before) { 'Installed ' + $Version } elseif ($before -eq $Version) { 'Reinstalled ' + $Version } else { 'Upgraded ' + $before + ' to ' + $Version }
     $cover = if ($years.Count -gt 0) { 'for SOLIDWORKS ' + ($years -join ' and ') } else { '(no SOLIDWORKS found yet)' }
     return ($what + ' ' + $cover + '. Every Windows user gets it when SOLIDWORKS starts.')
 }
@@ -219,8 +219,7 @@ function Check {
     Say ('Starts with SOLIDWORKS for you: ' + $mine)
     if (Get-Process SLDWORKS -ErrorAction SilentlyContinue) { Say 'SOLIDWORKS is running now. That is fine for this check.' }
     if ($problems.Count -gt 0) { throw ('Installed ' + $v + ', but: ' + ($problems -join '; ')) }
-    if ($years.Count -eq 0) { $Notes.Add('no SOLIDWORKS found') | Out-Null }
-    return ('IDEA Unstuck ' + $v + ' is installed' + $(if ($years.Count) { ' for SOLIDWORKS ' + ($years -join ' and ') } else { '. No SOLIDWORKS found on this PC.' }) + '.')
+    return ('IDEA Unstuck ' + $v + ' is installed' + $(if ($years.Count) { ' for SOLIDWORKS ' + ($years -join ' and ') + '.' } else { '. No SOLIDWORKS found on this PC.' }))
 }
 
 try {

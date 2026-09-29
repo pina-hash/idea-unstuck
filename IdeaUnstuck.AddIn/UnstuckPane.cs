@@ -202,7 +202,7 @@ namespace IdeaUnstuck.AddIn
             int icon = t.Px(22);
             logo.SetBounds(pad, (h - icon) / 2, icon, icon);
             int bh = t.Px(26), gap = t.Px(3);
-            var widths = sizeButtons.Select(b => Math.Max(t.Px(28), TextRenderer.MeasureText(b.Text, t.SmallBold).Width + t.Px(10))).ToArray();
+            var widths = sizeButtons.Select(b => Math.Max(t.Px(28), TextRenderer.MeasureText(b.Text, t.HeaderSmall).Width + t.Px(10))).ToArray();
             int x = header.Width - pad - widths.Sum() - gap * 2;
             int bx = x;
             for (int i = 0; i < 3; i++) { sizeButtons[i].SetBounds(bx, (h - bh) / 2, widths[i], bh); bx += widths[i] + gap; }
@@ -215,6 +215,9 @@ namespace IdeaUnstuck.AddIn
             log.Write("button_pressed", new { action = "text_size", size = Theme.TextSizeNames[size] });
             skin.T = MakeTheme();
             ApplyTheme();
+            // Rebuild what is on screen, so every line is measured in the new size.
+            if (openEntry != null) { var e = openEntry; var back = history.ToArray(); openEntry = null; OpenEntry(e, "text_size"); history.Clear(); foreach (var h in back.Reverse()) history.Push(h); }
+            if (paths != null) { BuildPractice(); Reflow(); }
         }
 
         /// <summary>Harness hook: same as the student pressing A, A+ or A++.</summary>

@@ -21,7 +21,7 @@ namespace IdeaUnstuck.AddIn.Ui
         public int TextSize { get; }
 
         public Color Page, Panel, PanelBorder, Ink, InkSoft, Header, HeaderInk, Blue, BlueInk, BlueHover, Green, GreenInk, Link, Row, RowHover, Focus, CardEdge, Message;
-        public Font Body, Bold, Small, SmallBold, Title, HeaderFont;
+        public Font Body, Bold, Small, SmallBold, Title, HeaderFont, HeaderSmall;
 
         public Theme(float scale, int textSize, bool? highContrast = null, float fontScale = 1f)
         {
@@ -35,6 +35,7 @@ namespace IdeaUnstuck.AddIn.Ui
             SmallBold = new Font("Segoe UI", Math.Max(8.5f, pt - 1.5f) * (fontScale >= 1 ? 1 : fontScale), FontStyle.Bold);
             Title = new Font("Segoe UI", pt + 2, FontStyle.Bold);
             HeaderFont = new Font("Segoe UI", 11f * fontScale, FontStyle.Bold);
+            HeaderSmall = new Font("Segoe UI", 9f * fontScale, FontStyle.Bold);
             if (HighContrast)
             {
                 Page = Panel = Row = SystemColors.Window; Ink = InkSoft = SystemColors.WindowText;
