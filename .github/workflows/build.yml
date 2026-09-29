@@ -7,6 +7,11 @@ on:
     tags: ['v*']
   pull_request:
   workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Publish a release with this tag (for example v0.3.0) on the commit this run builds. Leave empty for a plain build.'
+        required: false
+        default: ''
 permissions:
   contents: write
 concurrency:
@@ -144,12 +149,16 @@ jobs:
           name: usb-zip
           path: dist/*.zip*
 
-      - name: Publish the release (tags only)
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publish the release (a v* tag push, or a manual run given release_tag)
+        if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && startsWith(inputs.release_tag, 'v'))
         run: |
+          $tag = if ('${{ inputs.release_tag }}') { '${{ inputs.release_tag }}' } else { $env:GITHUB_REF_NAME }
+          if ($tag -notmatch '^v\d+\.\d+\.\d+$') { throw "bad tag $tag" }
+          $env:GITHUB_REF_NAME = $tag
           $zip = (Get-ChildItem dist\IDEA-Unstuck-USB-v*.zip | Select-Object -First 1).FullName
           $hash = (Get-FileHash $zip -Algorithm SHA256).Hash
           $notes = "Flash-drive installer for IDEA Unstuck $env:GITHUB_REF_NAME. Extract All onto a drive, then double-click Install IDEA Unstuck.cmd on each lab PC. See README.txt inside and docs/CHECK-v0.3.md.`n`nSHA-256: $hash`n`nBuilt and install-cycled on windows-latest with no SOLIDWORKS; loading inside SOLIDWORKS 2025 and 2026 is checked by hand (docs/CHECK-v0.3.md)."
-          gh release create $env:GITHUB_REF_NAME $zip --title "IDEA Unstuck $env:GITHUB_REF_NAME" --notes $notes
+          # --target creates the tag on this exact commit when it does not exist yet.
+          gh release create $env:GITHUB_REF_NAME $zip --target $env:GITHUB_SHA --title "IDEA Unstuck $env:GITHUB_REF_NAME" --notes $notes
         env:
           GH_TOKEN: ${{ github.token }}
