@@ -1,0 +1,23 @@
+PASS "it wont let me extrude" -> open-contour=11.50 | extrude=7.00 | extrude-direction=6.00 | newer-version=5.50 | no-snap=5.50
+PASS "my lines are red" -> red-sketch=7.50 | multi-contour=4.50 | colors=4.50 | red-x=4.50 | still-drawing=4.50
+PASS "i lost my part" -> lost-part=11.50 | delete-part=5.35 | rollback=5.35 | two-bodies=5.35 | wrong-plane=5.35
+PASS "how do i make a hole" -> cut=7.00 | open-contour=3.00 | cut-nothing=3.00 | hole-in-sketch=3.00 | hole-wizard=3.00
+PASS "the list on the left is gone" -> tree-gone=14.50 | what-tree=10.85 | lost-part=10.00 | left-sketch=9.00 | red-x=4.90
+PASS "make it thicker" -> edit-feature=7.00 | extrude=2.55 | measure=2.55 | offset=2.00
+PASS "how do i make it round" -> fillet=7.00 | slot=3.00 | arc=3.00 | sketch-fillet=3.00 | fillet-fails=3.00
+PASS "numbers are like 25.4" -> units-mm=17.00 | what-dimension=7.00 | dim-box=3.00 | smart-dim=3.00 | driven-dim=3.00
+PASS "the little pencil thing" -> left-sketch=11.00 | edit-feature=7.00 | wrong-plane=2.55 | change-dim=2.55
+PASS "how to take a screenshot" -> screenshot=10.00 | undo=4.00 | paste-shot=3.00 | slow=2.50 | lost-part=2.00
+PASS "cant get back into my drawing" -> left-sketch=10.50 | still-drawing=7.50 | view-tilted=7.50 | open-contour=7.05 | red-sketch=7.05
+PASS "where is my file" -> open-file=7.00 | find-file=7.00 | search-command=4.00 | new-part=3.00 | save=3.00
+PASS "it says newer version" -> newer-version=13.00 | multi-contour=4.00 | red-sketch=4.00 | rebuild=4.00 | read-only=4.00
+PASS "ok button is grey" -> green-check-grey=10.50 | what-panel=10.00 | sketch-greyed-tools=7.05 | toolbar-gone=4.50 | nothing-happens=4.50
+PASS "hexagon" -> polygon=7.00
+PASS "my part is super tiny" -> tiny-huge=10.00 | delete-part=3.00 | lost-part=3.00 | rollback=3.00 | two-bodies=3.00
+PASS "its all blue lines" -> colors=10.00 | multi-contour=3.00 | red-sketch=3.00 | still-drawing=3.00 | dragged-arrow=3.00
+PASS "how to see the back" -> move-view=6.00 | left-sketch=3.00 | lost-part=3.00 | rollback=3.00 | view-tilted=3.00
+PASS "what is a plane" -> what-plane=8.50 | what-midplane=4.50 | extrude-direction=3.00 | wrong-plane=3.00 | start-sketch=3.00
+PASS "delete everything and restart" -> delete-part=17.00 | delete=9.00 | red-sketch=4.00 | shape-jumped=4.00 | still-drawing=3.00
+PASS "nothing happens when i click" -> nothing-happens=14.50 | left-sketch=4.50 | lost-part=4.50 | still-drawing=4.50 | wrong-select=4.50
+PASS "turn in my part" -> attach-file=18.00 | move-view=10.00 | extrude=6.00 | revolve=6.00 | open-contour=3.00
+oracle pins failed=0

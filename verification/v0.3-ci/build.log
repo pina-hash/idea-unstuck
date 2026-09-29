@@ -1,0 +1,19 @@
+  Determining projects to restore...
+  Restored D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.AddIn\IdeaUnstuck.AddIn.csproj (in 7.01 sec).
+  Restored D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.Core\IdeaUnstuck.Core.csproj (in 7.01 sec).
+  Restored D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.SelfTest\IdeaUnstuck.SelfTest.csproj (in 63 ms).
+  Restored D:\a\idea-unstuck\idea-unstuck\PaneHarness\PaneHarness.csproj (in 73 ms).
+  IdeaUnstuck.Core: SOLIDWORKS interop from C:\Users\runneradmin\.nuget\packages\solidworks.interop.sldworks\32.1.0\lib\netstandard2.0\SolidWorks.Interop.sldworks.dll
+  IdeaUnstuck.Core -> D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.Core\bin\Release\net48\IdeaUnstuck.Core.dll
+  IdeaUnstuck.AddIn: SOLIDWORKS interop from C:\Users\runneradmin\.nuget\packages\solidworks.interop.sldworks\32.1.0\lib\netstandard2.0\SolidWorks.Interop.sldworks.dll
+  IdeaUnstuck.AddIn -> D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.AddIn\bin\Release\net48\IdeaUnstuck.AddIn.dll
+  IdeaUnstuck.SelfTest: SOLIDWORKS interop from C:\Users\runneradmin\.nuget\packages\solidworks.interop.sldworks\32.1.0\lib\netstandard2.0\SolidWorks.Interop.sldworks.dll
+  IdeaUnstuck.SelfTest -> D:\a\idea-unstuck\idea-unstuck\IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe
+  PaneHarness: SOLIDWORKS interop from C:\Users\runneradmin\.nuget\packages\solidworks.interop.sldworks\32.1.0\lib\netstandard2.0\SolidWorks.Interop.sldworks.dll
+  PaneHarness -> D:\a\idea-unstuck\idea-unstuck\PaneHarness\bin\Release\net48\PaneHarness.exe
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:21.82

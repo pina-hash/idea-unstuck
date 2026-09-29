@@ -1,5 +1,28 @@
 # Verification report
 
+## v0.3.0 (ledger 0348, 2026-09-29)
+
+**Nothing in v0.3 has run inside SOLIDWORKS.** It was built in a Linux container and on GitHub `windows-latest` runners (Windows 11 build 26100), and neither has SOLIDWORKS or Windows 10. Loading in SOLIDWORKS 2025 and 2026, the task pane icon, the Add-Ins list icon, Esc returning focus to the graphics area, New part, and the rescue actions are all Mr. Pina's check in [docs/CHECK-v0.3.md](docs/CHECK-v0.3.md). Evidence below is from CI run 36523247898 (commit 8a06121), copied to `verification/v0.3-ci/` and `verification/v0.3-pane/`.
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Build, no SOLIDWORKS present (interop from nuget.org 32.1.0, build time only) | 0 errors, 0 warnings | `v0.3-ci/build.log` |
+| SelfTest `--unit` (logic, search, library, glossary, pane behavior, focus) | 23 PASS, 0 FAIL, 0 SKIP | `v0.3-ci/selftest-unit.txt` |
+| 22 pinned student queries put the stated title first | 22 of 22, in the post's JavaScript and in the C# port | `v0.3-ci/search-oracle.txt`, `search-check.txt` |
+| C# search port against the post's own JavaScript | 828 queries, 0 differences (ids and scores) | `v0.3-ci/search-check.txt` |
+| "zzqx blorp" | 0 results, pane shows a sentence and a way back | SelfTest, SearchCheck |
+| Library | 105 entries (41 wrong, 52 how, 12 what), 165 related links, 26 diagnosis links, 58 glossary terms, all resolve | `v0.3-ci/selftest-unit.txt` |
+| Embedded SOLIDWORKS interface GUIDs and vtable slots against v0.2.0-pilot's DLLs | AddIn 18 shared, all equal, 0 slot conflicts (+ IFrame, IModelView new); Core 26 of 26 equal, 0 slot conflicts | `v0.3-ci/interop-check.txt`, `v0.3-interop-check.txt` |
+| Pane pictures: 7 states x widths 260/320/420 x scales 100/125/150 (simulated), plus high contrast and A++ | 66 pictures; 0 horizontal scroll bars, 0 controls wider than the pane, 0 buttons under 36 px, 0 stale layouts | `v0.3-pane/harness-report.json` |
+| UI time, p95, on the runner | poll with nothing changed 0.006 ms (300 polls); poll that changes the card 19.8 ms (60); search keystroke 24.3 ms (50); open an answer 42.3 ms (40) | same |
+| Polling under a reader | Scroll stayed at 120 px and the answer stayed open through 10 changing polls | same |
+| Focus | A stand-in text box kept focus through 20 polls and an answer opening; search box kept focus while typing; Esc cleared it and requested the SOLIDWORKS handoff | same, and SelfTest |
+| Flash-drive cycle from the ZIP: install, check, install again, check, uninstall, check (expects FAIL), v0.2 install.bat, v0.3 over it, check | All as expected; installs 0.6 to 1.0 s inside the script (3.7 s wall time); 8 log lines on the "drive" | `v0.3-ci/install-cycle.txt` |
+| Apps & features entry | "IDEA Unstuck", 0.3.0, "IDEA, Don Bosco Tech", icon `unstuck.ico` | same |
+| Release ZIP SHA-256 on this commit | AF5A23CD...CB90 (the tagged release has its own; see the release page) | `v0.3-ci/IDEA-Unstuck-USB-v0.3.0.zip.sha256` |
+
+Not verified: anything inside SOLIDWORKS (above); Windows 10; a real 125 or 150 percent Windows DPI setting (scales were simulated); Windows high contrast on a real desktop (the harness forced the high-contrast palette); System.Speech output (no audio on the runner); a second Windows account signing in for the first time (the Run entry and the loaded-hive step are unchanged mechanics or read-only-checked, not exercised with a new profile); UAC prompts (the runner is already an administrator, so `/quiet` ran the scripts directly).
+
 ## v0.2.0-pilot release
 
 Final release rebuild: **0 warnings, 0 errors**. Release-binary logic/control rerun: **23 PASS, 0 FAIL, 0 SKIP**. The full **49 PASS, 0 FAIL, 0 SKIP** functional regression below ran against the same source before the release rebuild updated assembly commit metadata. Functional source commit: `0ab2fafecd20d4d1c4a547978d32302e438ea162`. Evidence: verification/release-v0.2-build.txt, release-v0.2-unit.txt, and release-v0.2-manifest.json. Core and AddIn version is 0.2.0.0; both still have zero interop runtime references.

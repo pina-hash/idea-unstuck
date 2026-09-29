@@ -1,0 +1,22 @@
+Package: D:\a\idea-unstuck\idea-unstuck\dist\IDEA-Unstuck-USB-v0.3.0.zip
+SHA-256: AF5A23CDF72D9E72686192CE49FE03BA51FD34DD95660FA0945306FCA349CB90
+  Check IDEA Unstuck.cmd  496
+  Install IDEA Unstuck.cmd  1014
+  README.txt  2433
+  Uninstall IDEA Unstuck.cmd  997
+  files\Check.cmd  302
+  files\IdeaUnstuck.AddIn.dll  107520
+  files\IdeaUnstuck.Core.dll  198144
+  files\Initialize-User.ps1  985
+  files\Setup.ps1  16531
+  files\Uninstall.cmd  706
+  files\unstuck.ico  40917
+  files\icons\addin-16.bmp  822
+  files\icons\taskpane-16x18.bmp  918
+  files\icons\unstuck-128.png  8765
+  files\icons\unstuck-20.png  1018
+  files\icons\unstuck-32.png  1738
+  files\icons\unstuck-40.png  2336
+  files\icons\unstuck-64.png  3967
+  files\icons\unstuck-96.png  6380
+  logs\_about-this-folder.txt  129

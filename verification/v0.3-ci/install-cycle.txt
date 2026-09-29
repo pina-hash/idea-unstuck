@@ -1,0 +1,154 @@
+--- fresh install
+
+IDEA Unstuck 0.3.0 - Install
+  No SOLIDWORKS found. Installing anyway; it will load once SOLIDWORKS is installed.
+RegAsm : warning RA0000 : Registering an unsigned assembly with /codebase can cause your assembly to interfere with other applications that may be installed on the same computer. The /codebase switch is intended to be used only with signed assemblies. Please give your assembly a strong name and re-register it.
+  Took 1.3 seconds.
+
+================================================================
+   PASS   Installed 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+================================================================
+
+Install IDEA Unstuck.cmd exit 0 in 11.8 s
+Apps & features: IDEA Unstuck 0.3.0 by IDEA, Don Bosco Tech icon=C:\Program Files\IDEA\Unstuck\unstuck.ico
+
+IDEA Unstuck 0.3.0 - Check
+  Installed version:   0.3.0
+  SOLIDWORKS on this PC: none found
+  IdeaUnstuck.AddIn.dll       present
+  IdeaUnstuck.Core.dll        present
+  Initialize-User.ps1         present
+  Setup.ps1                   present
+  Uninstall.cmd               present
+  Check.cmd                   present
+  unstuck.ico                 present
+  icons\unstuck-20.png        present
+  icons\unstuck-32.png        present
+  icons\unstuck-40.png        present
+  icons\unstuck-64.png        present
+  icons\unstuck-96.png        present
+  icons\unstuck-128.png       present
+  icons\taskpane-16x18.bmp    present
+  icons\addin-16.bmp          present
+  Starts with SOLIDWORKS for you: on
+  Took 0.2 seconds.
+
+================================================================
+   PASS   IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.
+================================================================
+
+Check IDEA Unstuck.cmd exit 0 in 0.7 s
+--- install again (must be harmless)
+
+IDEA Unstuck 0.3.0 - Install
+  Found IDEA Unstuck 0.3.0. Upgrading it.
+  No SOLIDWORKS found. Installing anyway; it will load once SOLIDWORKS is installed.
+RegAsm : warning RA0000 : Registering an unsigned assembly with /codebase can cause your assembly to interfere with other applications that may be installed on the same computer. The /codebase switch is intended to be used only with signed assemblies. Please give your assembly a strong name and re-register it.
+  Took 0.8 seconds.
+
+================================================================
+   PASS   Reinstalled 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+================================================================
+
+Install IDEA Unstuck.cmd exit 0 in 1.6 s
+
+IDEA Unstuck 0.3.0 - Check
+  Installed version:   0.3.0
+  SOLIDWORKS on this PC: none found
+  IdeaUnstuck.AddIn.dll       present
+  IdeaUnstuck.Core.dll        present
+  Initialize-User.ps1         present
+  Setup.ps1                   present
+  Uninstall.cmd               present
+  Check.cmd                   present
+  unstuck.ico                 present
+  icons\unstuck-20.png        present
+  icons\unstuck-32.png        present
+  icons\unstuck-40.png        present
+  icons\unstuck-64.png        present
+  icons\unstuck-96.png        present
+  icons\unstuck-128.png       present
+  icons\taskpane-16x18.bmp    present
+  icons\addin-16.bmp          present
+  Starts with SOLIDWORKS for you: on
+  Took 0.2 seconds.
+
+================================================================
+   PASS   IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.
+================================================================
+
+Check IDEA Unstuck.cmd exit 0 in 0.8 s
+--- uninstall
+
+IDEA Unstuck 0.3.0 - Uninstall
+  Took 0.9 seconds.
+
+================================================================
+   PASS   Removed IDEA Unstuck 0.3.0. Student parts and help logs were kept.
+================================================================
+
+Uninstall IDEA Unstuck.cmd exit 0 in 1.4 s
+
+IDEA Unstuck 0.3.0 - Check
+  Installed version:   not installed
+  SOLIDWORKS on this PC: none found
+
+================================================================
+   FAIL   IDEA Unstuck is not installed on this PC.
+================================================================
+
+Check IDEA Unstuck.cmd exit 1 in 0.7 s
+--- v0.2 pilot, then v0.3 over it
+RegAsm : warning RA0000 : Registering an unsigned assembly with /codebase can cause your assembly to interfere with other applications that may be installed on the same computer. The /codebase switch is intended to be used only with signed assemblies. Please give your assembly a strong name and re-register it.
+Types registered successfully
+Verified program files, COM registration, and per-user logon initialization.
+SUCCESS: IDEA Unstuck is installed for this PC.
+v0.2 installed: 0.2.0
+
+IDEA Unstuck 0.3.0 - Install
+  Found IDEA Unstuck 0.2.0. Upgrading it.
+  No SOLIDWORKS found. Installing anyway; it will load once SOLIDWORKS is installed.
+RegAsm : warning RA0000 : Registering an unsigned assembly with /codebase can cause your assembly to interfere with other applications that may be installed on the same computer. The /codebase switch is intended to be used only with signed assemblies. Please give your assembly a strong name and re-register it.
+  Took 0.6 seconds.
+
+================================================================
+   PASS   Upgraded 0.2.0 to 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+================================================================
+
+Install IDEA Unstuck.cmd exit 0 in 1.1 s
+
+IDEA Unstuck 0.3.0 - Check
+  Installed version:   0.3.0
+  SOLIDWORKS on this PC: none found
+  IdeaUnstuck.AddIn.dll       present
+  IdeaUnstuck.Core.dll        present
+  Initialize-User.ps1         present
+  Setup.ps1                   present
+  Uninstall.cmd               present
+  Check.cmd                   present
+  unstuck.ico                 present
+  icons\unstuck-20.png        present
+  icons\unstuck-32.png        present
+  icons\unstuck-40.png        present
+  icons\unstuck-64.png        present
+  icons\unstuck-96.png        present
+  icons\unstuck-128.png       present
+  icons\taskpane-16x18.bmp    present
+  icons\addin-16.bmp          present
+  Starts with SOLIDWORKS for you: on
+  Took 0.2 seconds.
+
+================================================================
+   PASS   IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.
+================================================================
+
+Check IDEA Unstuck.cmd exit 0 in 0.6 s
+--- drive log
+2026-09-29 04:50:09 INSTALL PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=1.4 Installed 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+2026-09-29 04:50:10 CHECK PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.2 IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.
+2026-09-29 04:50:11 INSTALL PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.8 Reinstalled 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+2026-09-29 04:50:12 CHECK PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.2 IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.
+2026-09-29 04:50:14 UNINSTALL PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=1.0 Removed IDEA Unstuck 0.3.0. Student parts and help logs were kept.
+2026-09-29 04:50:14 CHECK FAIL v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.2 IDEA Unstuck is not installed on this PC.
+2026-09-29 04:50:21 INSTALL PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.6 Upgraded 0.2.0 to 0.3.0 (no SOLIDWORKS found yet). Every Windows user gets it when SOLIDWORKS starts.
+2026-09-29 04:50:22 CHECK PASS v0.3.0 solidworks=none windows=Windows11-26100 seconds=0.2 IDEA Unstuck 0.3.0 is installed. No SOLIDWORKS found on this PC.

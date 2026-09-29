@@ -1,0 +1,24 @@
+PASS it wont let me extrude -> My shape is not closed
+PASS my lines are red -> My sketch turned red or yellow, or says Over Defined
+PASS i lost my part -> My part disappeared or I cannot find it
+PASS how do i make a hole -> Cut a hole or a pocket (Extruded Cut)
+PASS the list on the left is gone -> The list on the left disappeared
+PASS make it thicker -> Change an extrude, cut or fillet
+PASS how do i make it round -> Round an edge (Fillet)
+PASS numbers are like 25.4 -> My numbers are huge or weird, like 25.4
+PASS the little pencil thing -> I left my sketch and cannot get back in
+PASS how to take a screenshot -> Take a screenshot
+PASS cant get back into my drawing -> I left my sketch and cannot get back in
+PASS where is my file -> Open my part again
+PASS it says newer version -> It says the file is from a newer version
+PASS ok button is grey -> The green check is gray and I cannot click OK
+PASS hexagon -> Draw a hexagon (Polygon)
+PASS my part is super tiny -> My part is tiny or huge
+PASS its all blue lines -> What do blue and black lines mean?
+PASS how to see the back -> Turn, zoom and move the view
+PASS what is a plane -> What are Front, Top and Right Plane?
+PASS delete everything and restart -> I messed up so badly I want to delete everything and start over
+PASS nothing happens when i click -> I click a tool and nothing happens
+PASS turn in my part -> Hand in my .SLDPRT file
+PASS zzqx blorp -> 0 results
+SEARCHCHECK queries=828 differences=0 pins=22 pinFailures=0

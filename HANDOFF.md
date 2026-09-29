@@ -1,5 +1,18 @@
 # IDEA Unstuck handoff
 
+## v0.3.0 (ledger 0348, overnight 2026-09-28 to 29)
+
+- What changed: [docs/AUDIT-v0.3.md](docs/AUDIT-v0.3.md) (why), [README.md](README.md) (what students see, how to install), [TEST_RESULTS.md](TEST_RESULTS.md) (what was checked).
+- Do next: [docs/CHECK-v0.3.md](docs/CHECK-v0.3.md), five minutes on the SOLIDWORKS 2026 laptop, then one Windows 10 lab PC with 2025.
+- Build anywhere with a .NET SDK: `dotnet build IdeaUnstuck.sln -c Release`, then `pwsh tools/package-usb.ps1` for the ZIP. `.github/workflows/build.yml` does all of it on every push and publishes a release on a `v*` tag.
+- Calls you may want to undo:
+  1. **"Do it for me" is a small link.** `UnstuckPane.DoItForMeIsSmallLink = true` in `IdeaUnstuck.AddIn/UnstuckPane.cs`; set it to false for the v0.2 full-size button. Each use is logged (`do_it_for_me`). Four answers (lost part, millimeters, left sketch, rollback) also end with a small "Tried the steps? ..." link that does the step.
+  2. **The interop packages from nuget.org** (avidesk, 32.1.0, "2024 SP1") are used only when SOLIDWORKS is not installed on the build machine. See the audit, section 3.
+  3. **The v0.2 wording pass is not in the library.** kb-v2 is the post's own text; see the audit, section 4.
+  4. **Rescue buttons hand the keyboard back to SOLIDWORKS** after they run, so shortcuts work straight away.
+- Settings per Windows user: `HKCU\Software\IDEA\Unstuck` (TextSize 0 to 2, WelcomeDismissed).
+- Released binaries no longer live in `release/` in the repo; the release ZIP is the artifact.
+
 Private repository: https://github.com/pina-hash/idea-unstuck
 
 Pilot release: https://github.com/pina-hash/idea-unstuck/releases/tag/v0.2.0-pilot
