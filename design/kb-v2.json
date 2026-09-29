@@ -1296,15 +1296,15 @@
    "id": "save",
    "kind": "how",
    "title": "Save my part with the right name",
-   "q": "save; save as; name file; filename; lastname; where to save",
-   "fix": "File, Save As, type the name you were given with your last name, Save.",
+   "q": "save; save as; name file; filename; lastname; where to save; ctrl s; what do i name it",
+   "fix": "Press Ctrl+S. The first time, a box asks for a name: type the start the assignment gives you, then YOUR OWN last name.",
    "steps": [
     {
-     "t": "Click File, then Save As.",
-     "w": "menu"
+     "t": "Press Ctrl+S. The first time, a Save As box opens and asks for a name.",
+     "w": "keyboard"
     },
     {
-     "t": "Type the name your assignment asks for, like V1_SMITH.",
+     "t": "Type the start the assignment gives you, then your own last name. If you are Maria Lopez: SWDAY_LOPEZ.",
      "w": "menu"
     },
     {
@@ -1312,11 +1312,11 @@
      "w": "menu"
     },
     {
-     "t": "Save it where Mr. Pina told the class.",
+     "t": "Click Save. Look at the very top of SolidWorks: your file name is there now.",
      "w": "menu"
     },
     {
-     "t": "After that, Ctrl+S saves again.",
+     "t": "After that, Ctrl+S saves again with no box. Press it often.",
      "w": "keyboard"
     }
    ],
@@ -1773,10 +1773,10 @@
    "kind": "how",
    "title": "See the part from the front, top or at an angle",
    "q": "front view; top view; isometric; angle view; standard views; view orientation; spin view",
-   "fix": "Press the spacebar and double-click a view. Ctrl+7 is the angled (isometric) view.",
+   "fix": "Press the spacebar with the mouse over the part, then double-click a view: Front, Top, or Isometric for the angled view.",
    "steps": [
     {
-     "t": "Press the spacebar. A box of views opens.",
+     "t": "Put the mouse over the part and press the spacebar. A box of views opens.",
      "w": "keyboard"
     },
     {
@@ -1784,8 +1784,8 @@
      "w": "graphics"
     },
     {
-     "t": "Shortcuts: Ctrl+1 Front, Ctrl+5 Top, Ctrl+7 Isometric.",
-     "w": "keyboard"
+     "t": "To turn it freely instead, hold the middle mouse button (the scroll wheel) and drag.",
+     "w": "mouse"
     }
    ],
    "why": "Isometric shows all three directions at once, the best view for a screenshot.",
