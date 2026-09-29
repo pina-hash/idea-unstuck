@@ -19,7 +19,8 @@
 | Focus | A stand-in text box kept focus through 20 polls and an answer opening; search box kept focus while typing; Esc cleared it and requested the SOLIDWORKS handoff | same, and SelfTest |
 | Flash-drive cycle from the ZIP: install, check, install again, check, uninstall, check (expects FAIL), v0.2 install.bat, v0.3 over it, check | All as expected; installs 0.6 to 1.0 s inside the script (3.7 s wall time); 8 log lines on the "drive" | `v0.3-ci/install-cycle.txt` |
 | Apps & features entry | "IDEA Unstuck", 0.3.0, "IDEA, Don Bosco Tech", icon `unstuck.ico` | same |
-| Release ZIP SHA-256 on this commit | AF5A23CD...CB90 (the tagged release has its own; see the release page) | `v0.3-ci/IDEA-Unstuck-USB-v0.3.0.zip.sha256` |
+| Published release v0.3.0 (tag created by CI run 36523697381 on commit 3c81fd0, all steps above passing in that run) | `IDEA-Unstuck-USB-v0.3.0.zip`, 193,740 bytes, SHA-256 `03371d4593b5fcb9361599ca169792c5dbd7dec8b89332679439af4f1e554d24`, downloaded back and re-hashed | https://github.com/pina-hash/idea-unstuck/releases/tag/v0.3.0 |
+| DLLs inside the released ZIP | Same GUID and slot result as above against v0.2; 0 SolidWorks assembly references; the only new reference is System.Speech (part of .NET Framework 4.8) | `verification/v0.3-release-interop-check.txt` |
 
 Not verified: anything inside SOLIDWORKS (above); Windows 10; a real 125 or 150 percent Windows DPI setting (scales were simulated); Windows high contrast on a real desktop (the harness forced the high-contrast palette); System.Speech output (no audio on the runner); a second Windows account signing in for the first time (the Run entry and the loaded-hive step are unchanged mechanics or read-only-checked, not exercised with a new profile); UAC prompts (the runner is already an administrator, so `/quiet` ran the scripts directly).
 

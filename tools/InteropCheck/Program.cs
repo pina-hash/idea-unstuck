@@ -111,6 +111,16 @@ static class P
     static int Main(string[] a)
     {
         if (a.Length >= 2 && a[0] == "embedded") { foreach (var kv in Types(a[1], true).OrderBy(k => k.Key)) Console.WriteLine(kv.Key + " " + kv.Value); return 0; }
+        if (a.Length >= 2 && a[0] == "refs")
+        {
+            // Assembly references: a SolidWorks.Interop one here would mean the DLL needs it at run time.
+            using var fs = File.OpenRead(a[1]); using var pe = new PEReader(fs); var md = pe.GetMetadataReader();
+            var refs = md.AssemblyReferences.Select(h => md.GetAssemblyReference(h)).Select(r => md.GetString(r.Name) + " " + r.Version).ToList();
+            foreach (var r in refs) Console.WriteLine(r);
+            var sw = refs.Count(r => r.StartsWith("SolidWorks", StringComparison.OrdinalIgnoreCase));
+            Console.WriteLine("SolidWorks assembly references=" + sw);
+            return sw == 0 ? 0 : 1;
+        }
         if (a.Length >= 2 && a[0] == "interop")
         {
             foreach (var f in a.Skip(1)) { var id = new List<string>(); var t = Types(f, false, id); Console.WriteLine(string.Join("", id) + " types=" + t.Count); }
