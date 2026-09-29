@@ -382,8 +382,9 @@ namespace IdeaUnstuck.SelfTest
             });
             Case("help: every related id resolves", () => {
                 var kb = KnowledgeBase.Embedded;
-                Require(kb.Entries.Count == 99, "Expected the 99-entry library, got " + kb.Entries.Count);
-                Require(kb.Entries.Count(e => e.Kind == "wrong") == 40 && kb.Entries.Count(e => e.Kind == "how") == 47 && kb.Entries.Count(e => e.Kind == "what") == 12, "Kind counts changed.");
+                // design/kb-v2.json grows as the post grows; the count is whatever that file holds.
+                Require(kb.Entries.Count >= 99 && KnowledgeBase.Kinds.All(k => kb.Entries.Any(e => e.Kind == k)), "Library smaller than v2 or missing a kind: " + kb.Entries.Count);
+                Console.WriteLine("Kinds: " + string.Join(", ", KnowledgeBase.Kinds.Select(k => k + "=" + kb.Entries.Count(e => e.Kind == k))));
                 int count = 0;
                 foreach (var entry in kb.Entries) foreach (var id in entry.Related) { Require(kb.Find(id) != null, entry.Id + " links to missing " + id); count++; }
                 foreach (var id in KnowledgeBase.CommonProblems) Require(kb.Find(id) != null, "Common problem missing: " + id);
@@ -480,7 +481,7 @@ namespace IdeaUnstuck.SelfTest
             });
             Case("installed pane loads all embedded help entries", () => {
                 Require(addin != null, "Add-in unavailable.");
-                Require(((string)addin.GetDiagnostics()).Contains("; help entries: 99"), "Installed pane did not load the embedded knowledge base.");
+                Require(((string)addin.GetDiagnostics()).Contains("; help entries: " + KnowledgeBase.Embedded.Entries.Count), "Installed pane did not load the embedded knowledge base.");
             });
             Case("installed add-in exports its teaching log", () => {
                 Require(addin != null, "Add-in unavailable.");
