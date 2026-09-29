@@ -75,7 +75,7 @@
    "id": "left-sketch",
    "kind": "wrong",
    "title": "I left my sketch and cannot get back in",
-   "q": "exited sketch; get back into sketch; edit sketch; left sketch; cant edit sketch; sketch gone; change my sketch; go back to sketch; pencil; little pencil; pencil icon; clicked out; pressed escape and lost sketch; how edit drawing; go back to drawing; unlock sketch",
+   "q": "exited sketch; get back into sketch; edit sketch; left sketch; cant edit sketch; sketch gone; change my sketch; go back to sketch; go back to my sketch; get back to my sketch; back into my sketch; edit my sketch; edit sketch; open my sketch again; pencil; little pencil; pencil icon; clicked out; pressed escape and lost sketch; how edit drawing; go back to drawing; unlock sketch; get back in my sketch; back in my sketch; get in my sketch",
    "fix": "Click the sketch in the tree on the left, then click Edit Sketch (the pencil).",
    "steps": [
     {
@@ -316,7 +316,7 @@
    "id": "still-drawing",
    "kind": "wrong",
    "title": "It keeps drawing lines every time I click",
-   "q": "keeps drawing; cant stop drawing; line tool; extra lines; stop tool",
+   "q": "keeps drawing; cant stop drawing; line tool; extra lines; stop tool; stop drawing; how to stop drawing; stop the line",
    "fix": "Press Esc. That stops the tool.",
    "steps": [
     {
@@ -337,7 +337,7 @@
    "id": "enter-repeat",
    "kind": "wrong",
    "title": "A tool opened that I did not choose",
-   "q": "tool opened by itself; random tool; enter key; repeat command; popped up",
+   "q": "tool opened by itself; random tool; enter key; repeat command; popped up; pressed enter; hit enter; something opened; enter opened a tool; enter key",
    "fix": "Press Esc to close it. Pressing Enter repeats the last tool you used.",
    "steps": [
     {
@@ -381,7 +381,7 @@
    "id": "toolbar-gone",
    "kind": "wrong",
    "title": "The buttons or tabs at the top disappeared",
-   "q": "toolbar gone; tabs missing; commandmanager; buttons gone; sketch tab missing; features tab missing; ribbon gone",
+   "q": "toolbar gone; tabs missing; commandmanager; buttons gone; sketch tab missing; features tab missing; ribbon gone; tool bar gone; toolbar gone; tabs gone; tabs disappeared; ribbon gone; buttons gone",
    "fix": "Right-click on any tab at the top (like Features) and turn on the tab you are missing.",
    "steps": [
     {
@@ -784,7 +784,7 @@
    "id": "smart-dim",
    "kind": "how",
    "title": "Set an exact size (Smart Dimension)",
-   "q": "dimension; size; exact size; smart dimension; measure in sketch; set length; diameter; center to center; set size; exact size; type number; make exact; how big",
+   "q": "dimension; size; exact size; smart dimension; measure in sketch; set length; diameter; center to center; set size; exact size; type number; make exact; how big; demension; dimention; dimenshun; dimesion",
    "fix": "Sketch tab, Smart Dimension, click the thing, click to place, type the number, Enter.",
    "steps": [
     {
@@ -870,7 +870,7 @@
    "id": "extrude",
    "kind": "how",
    "title": "Make it 3D (Extruded Boss/Base)",
-   "q": "extrude; make 3d; thickness; boss; turn sketch into part; extruded boss base; make it thick; make it solid; turn into 3d; pop out; give it thickness",
+   "q": "extrude; make 3d; thickness; boss; turn sketch into part; extruded boss base; make it thick; make it solid; turn into 3d; pop out; give it thickness; extrued; extrood; extude; extrute; exturde",
    "fix": "Features tab, Extruded Boss/Base, Mid Plane, type the thickness, green check.",
    "steps": [
     {
@@ -970,7 +970,7 @@
    "id": "fillet",
    "kind": "how",
    "title": "Round an edge (Fillet)",
-   "q": "fillet; round edge; round corner; smooth edge; radius edge; make it round; round the edges; make edges round",
+   "q": "fillet; round edge; round corner; smooth edge; radius edge; make it round; round the edges; make edges round; filet; fillit; filit; fillett; round edges",
    "fix": "Features tab, Fillet, type a radius, click the edges, green check.",
    "steps": [
     {
@@ -1086,7 +1086,7 @@
    "id": "trim",
    "kind": "how",
    "title": "Erase part of a line (Trim)",
-   "q": "trim; erase part of line; cut line; remove extra; power trim; cut line; erase part of circle; remove inside arc; extra line inside",
+   "q": "trim; erase part of line; cut line; remove extra; power trim; cut line; erase part of circle; remove inside arc; extra line inside; trimm; triming; trimming",
    "fix": "Sketch tab, Trim Entities, Power trim, drag across the pieces you do not want.",
    "steps": [
     {
@@ -1161,7 +1161,7 @@
    "id": "measure",
    "kind": "how",
    "title": "Measure my part",
-   "q": "measure; how big; check size; distance; diameter; thickness; center distance",
+   "q": "measure; how big; check size; distance; diameter; thickness; center distance; mesure; how long is it; check size",
    "fix": "Evaluate tab, Measure, click what you want to measure.",
    "steps": [
     {
@@ -1194,7 +1194,7 @@
    "id": "move-view",
    "kind": "how",
    "title": "Turn, zoom and move the view",
-   "q": "rotate; turn; spin; zoom; pan; move view; look around; view; turn around; look at back; rotate part; see other side; move around",
+   "q": "rotate; turn; spin; zoom; pan; move view; look around; view; scroll wheel; middle mouse; middle mouse button; middle button; wheel click; spin it around; zoom in; zoom out; turn around; look at back; rotate part; see other side; move around",
    "fix": "Hold the middle mouse button to turn. Scroll to zoom. Ctrl + middle button to slide.",
    "steps": [
     {
@@ -1345,7 +1345,7 @@
    "id": "what-sketch",
    "kind": "what",
    "title": "What is a sketch?",
-   "q": "sketch; what is a sketch; drawing; 2d; flat drawing; blueprint",
+   "q": "sketch; what is a sketch; drawing; 2d; flat drawing; blueprint; skech; scetch; sketh; skatch",
    "fix": "A flat 2D drawing on a plane or a face. Every 3D shape starts as a sketch.",
    "steps": [],
    "why": "You draw the outline flat, set its sizes, then a feature like Extrude turns it into 3D. Change the sketch later and the 3D part changes with it.",
@@ -2011,7 +2011,7 @@
    "id": "paste-shot",
    "kind": "how",
    "title": "Put my screenshot in this assignment",
-   "q": "paste screenshot; add picture; upload image; screenshot not showing; where paste",
+   "q": "paste screenshot; add picture; upload image; screenshot not showing; where paste; paste not working; ctrl v not working; screenshot wont paste; cant paste; paste does nothing",
    "fix": "Click the step, then press Ctrl+V.",
    "steps": [
     {
@@ -2402,7 +2402,7 @@
    "id": "hole-in-sketch",
    "kind": "how",
    "title": "Make a hole without a Cut",
-   "q": "hole in sketch; circle inside; hole in the middle; ring; loop; top hole; hole for the rope; nested",
+   "q": "hole in sketch; circle inside; hole in the middle; ring; loop; top hole; hole for the rope; nested; how do i make a hole; make a hole; hole in my sketch; top hole; hole for the rope",
    "fix": "Draw a circle inside your closed outline, in the same sketch. When you extrude, it becomes a hole.",
    "steps": [
     {
