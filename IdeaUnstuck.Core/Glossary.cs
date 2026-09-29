@@ -9,7 +9,7 @@ namespace IdeaUnstuck.Core
 {
     /// <summary>
     /// SOLIDWORKS words and their plain meanings, from the SolidWorks Day post
-    /// (design/gloss.json). Used for hover help on answer steps.
+    /// (IdeaUnstuck.Core/gloss.json). Used for hover help on answer steps.
     /// </summary>
     public sealed class Glossary
     {

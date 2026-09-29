@@ -4,6 +4,6 @@
 *.cs text eol=lf
 *.md text eol=lf
 design/kb-v2.json -text
-design/gloss.json -text
+IdeaUnstuck.Core/gloss.json -text
 *.cmd text eol=crlf
 usb/**/*.txt text eol=crlf

@@ -3,6 +3,6 @@
   <ItemGroup>
     <!-- One copy of the library, shared with the SolidWorks Day post. -->
     <EmbeddedResource Include="..\design\kb-v2.json" LogicalName="IdeaUnstuck.Core.kb-v2.json"/>
-    <EmbeddedResource Include="..\design\gloss.json" LogicalName="IdeaUnstuck.Core.gloss.json"/>
+    <EmbeddedResource Include="gloss.json" LogicalName="IdeaUnstuck.Core.gloss.json"/>
   </ItemGroup>
 </Project>
