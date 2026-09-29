@@ -222,6 +222,8 @@ namespace IdeaUnstuck.AddIn.Ui
             int width = bar ? full - SystemInformation.VerticalScrollBarWidth : full;
             int total = Content(width, true);
             AutoScrollMinSize = new Size(0, bar ? total : 0);
+            // The base class is what shows or hides the scroll bar.
+            base.OnLayout(levent);
             if (HorizontalScroll.Visible) { HorizontalScroll.Visible = false; HorizontalScroll.Enabled = false; }
         }
         protected override void OnPaint(PaintEventArgs e)

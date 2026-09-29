@@ -289,6 +289,7 @@ namespace IdeaUnstuck.AddIn
             if (string.IsNullOrWhiteSpace(q)) { results.Visible = false; home.Visible = true; shown = new HelpResult[0]; Reflow(); return; }
             var watch = Stopwatch.StartNew();
             shown = help.Search(q);
+            results.SuspendLayout();
             results.Visible = true; home.Visible = false;
             if (shown.Count == 0)
             {
@@ -298,6 +299,7 @@ namespace IdeaUnstuck.AddIn
                 results.Controls.Add(back);
             }
             else foreach (var r in shown) results.Controls.Add(EntryTile(r.Entry, "search"));
+            results.ResumeLayout(false);
             LastSearchMs = watch.Elapsed.TotalMilliseconds;
             Reflow();
             LastSearchMs = watch.Elapsed.TotalMilliseconds;
@@ -327,6 +329,16 @@ namespace IdeaUnstuck.AddIn
             openEntry = e;
             log.Write("help_opened", new { id = e.Id, source, query = source == "search" || source == "enter" ? search.Box.Text : null });
             StopSpeech();
+            answer.SuspendLayout(); helpView.SuspendLayout();
+            try { BuildAnswer(e); } finally { answer.ResumeLayout(false); helpView.ResumeLayout(false); }
+            results.Visible = false; home.Visible = false; rightNow.Visible = false; noDocument.Visible = false; welcome.Visible = false;
+            answer.Visible = true;
+            Reflow();
+            body.AutoScrollPosition = new Point(0, 0);
+        }
+
+        void BuildAnswer(HelpEntry e)
+        {
             ClearChildren(answer);
             var t = skin.T;
             var back = new Tile(skin, history.Count > 0 ? "< Back" : string.IsNullOrWhiteSpace(search.Box.Text) ? "< Back to the list" : "< Back to results", TileStyle.Link) { Name = "Back" };
@@ -387,10 +399,6 @@ namespace IdeaUnstuck.AddIn
             copy.Click += (s, ev) => Guard("copy_ai", () => Act("copy:" + e.Id));
             Tip(copy, "Copies a description of your part and this problem, so you can paste it into an AI chat if you choose. Nothing is sent.");
             answer.Controls.Add(copy);
-            results.Visible = false; home.Visible = false; rightNow.Visible = false; noDocument.Visible = false; welcome.Visible = false;
-            answer.Visible = true;
-            Reflow();
-            body.AutoScrollPosition = new Point(0, 0);
         }
 
         static Tuple<string, string> RescueFor(string id)
@@ -548,6 +556,11 @@ namespace IdeaUnstuck.AddIn
         internal void ShowPractice(bool practice) => ShowTab(!practice);
 
         void BuildPractice()
+        {
+            practiceView.SuspendLayout();
+            try { BuildPracticeInner(); } finally { practiceView.ResumeLayout(false); }
+        }
+        void BuildPracticeInner()
         {
             ClearChildren(practiceView);
             practiceView.Controls.Add(new Words(skin, "Practice parts", TextRole.Bold));
