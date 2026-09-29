@@ -1,5 +1,5 @@
 @echo off
-rem IDEA Unstuck 0.3.0: installs for every Windows user on this PC
+rem IDEA Unstuck 0.3.1: installs for every Windows user on this PC
 rem Double-click to run. Works offline. Keep this file next to the "files" folder.
 setlocal
 set "HERE=%~dp0"

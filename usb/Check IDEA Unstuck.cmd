@@ -1,5 +1,5 @@
 @echo off
-rem IDEA Unstuck 0.3.0: checks the installation; changes nothing
+rem IDEA Unstuck 0.3.1: checks the installation; changes nothing
 rem Double-click to run. Works offline. Keep this file next to the "files" folder.
 setlocal
 set "HERE=%~dp0"

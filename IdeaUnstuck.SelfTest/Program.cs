@@ -335,7 +335,7 @@ namespace IdeaUnstuck.SelfTest
                     Require(IdeaUnstuck.AddIn.Ui.Column.IsShown(pane.Find("RightNow")) && ((Tile)pane.Find("RightNowButton")).Text == "Set units to inches", "Right now card missing for millimeters.");
                     var open = new StateSnapshot { DocumentType = 1, DocumentKey = "ui", LengthUnit = 3, BodyCount = 0, InSketch = true, Sketch = new SketchState { Name = "Sketch1", EntityCount = 4, OpenContours = 1, ContourCount = 1, ConstraintCode = 2 } };
                     pane.Render(open, new Rules().Evaluate(open), new GuidedPaths(Log).Paths);
-                    Require(pane.Find("Issue_open-contour") != null && ((Words)pane.Find("SketchLine")).Text.Contains("1 open outlines") && ((Words)pane.Find("StatusLine")).Text.Contains("in a sketch"), "Live status does not show the open outline.");
+                    Require(pane.Find("Issue_open-contour") != null && ((Words)pane.Find("SketchLine")).Text.Contains("1 open outline.") && ((Words)pane.Find("StatusLine")).Text.Contains("in a sketch"), "Live status does not show the open outline.");
                     Require(pane.Find("Issue_unsaved") != null, "Live status dropped a reminder.");
                     var fine = new StateSnapshot { DocumentType = 1, DocumentKey = "ui", LengthUnit = 3, BodyCount = 1, Path = "C:\\a.SLDPRT" };
                     pane.Render(fine, new Rules().Evaluate(fine), new GuidedPaths(Log).Paths);

@@ -2,14 +2,14 @@
 
 IDEA Unstuck puts short instructions and rescue buttons in the SOLIDWORKS Task Pane. It is for students opening SOLIDWORKS for the first time. It reads the active part every 1.5 seconds. A student must press a button before the helper changes units, the view, the sketch being edited, or the rollback position.
 
-This is a classroom pilot. See [TEST_RESULTS.md](TEST_RESULTS.md) for the checks actually performed and the remaining checks before a lab rollout. SOLIDWORKS 2025 and 2026 are the targets. Version 0.3.0 was built and tested with no SOLIDWORKS present (see [docs/AUDIT-v0.3.md](docs/AUDIT-v0.3.md)); v0.2 was tested on 2026.
+This is a classroom pilot. See [TEST_RESULTS.md](TEST_RESULTS.md) for the checks actually performed and the remaining checks before a lab rollout. SOLIDWORKS 2025 and 2026 are the targets. Version 0.3.x was built and tested with no SOLIDWORKS present (see [docs/AUDIT-v0.3.md](docs/AUDIT-v0.3.md)); v0.2 was tested on 2026.
 
 ## v0.3: what a student sees
 
 The pane has a dark title bar with the IDEA Unstuck icon and **A A+ A++** text sizes, remembered for each Windows user. Under it are two tabs, **Help** and **Practice**.
 
 - **Help** starts with a search box: "Type what's happening, in your own words". Up to five answers appear as the student types, each tagged **Something is wrong**, **How do I** or **What is**. Enter opens the top answer and Esc clears the box and hands the keyboard back to SOLIDWORKS. The search is the SolidWorks Day post's own search, ported line by line, over the same library (`design/kb-v2.json`).
-- **Right now**: one card with one plain sentence and one blue button, shown only when the part's state gives a confident diagnosis (millimeters, a red sketch, a rollback bar above the end, a failed feature...). Otherwise it is hidden.
+- **Your part right now** (v0.3.1, back from v0.1 and v0.2 at Mr. Pina's request): always shown while a part is open and updated on every 1.5 s check. It gives a health line ("Looks good. Nothing to fix right now." or "1 thing to fix"), the status line (file, in or out of a sketch and on which plane, units), and the sketch report (drawing items, closed and open outlines, how defined it is, and any Check Sketch result). Then one row per current issue with what it means, the next click and **Show me how**. The first issue the helper can fix itself gets the one blue button.
 - **Common problems**: six rows, then **Browse all answers**, closed until clicked and grouped by kind.
 - An answer **replaces** the list: Back, the title, the fix in bold, numbered steps tagged with where to look (Left panel, Top ribbon, Bottom-right corner, Keyboard...), then **Did that fix it? Yes / Not yet**. Not yet shows related answers and "Still stuck? Raise your hand." **Read it to me** reads the answer aloud (Windows speech, offline). **Copy for AI** is a small link at the very bottom.
 - **Practice**: the guided paths with real check boxes that SOLIDWORKS state ticks. One path is open at a time. **Show me where** opens a hint; **Do it for me** is a small link under a step.
@@ -19,7 +19,7 @@ No network code, no account, no AI. Logs stay on the PC.
 
 ## Install on a lab PC (flash drive)
 
-Use the release asset `IDEA-Unstuck-USB-v0.3.0.zip`. `README.txt` inside it is the one-page instruction for someone who has never done this. In short: Extract All onto a drive, then on each PC close SOLIDWORKS and double-click **Install IDEA Unstuck.cmd**. It asks for administrator rights itself and works offline. It checks .NET Framework 4.8, stops if SOLIDWORKS is open, installs to `C:\Program Files\IDEA\Unstuck` for every Windows user, lists the SOLIDWORKS versions it found, upgrades v0.2, and is safe to run twice. It ends on one large PASS or FAIL line and appends one line to `logs\<COMPUTERNAME>.txt` on the drive. **Check IDEA Unstuck.cmd** reports what is installed, and **Uninstall IDEA Unstuck.cmd** (or Settings > Apps) removes it. The five-minute acceptance check is [docs/CHECK-v0.3.md](docs/CHECK-v0.3.md).
+Use the release asset `IDEA-Unstuck-USB-v0.3.1.zip`. `README.txt` inside it is the one-page instruction for someone who has never done this. In short: Extract All onto a drive, then on each PC close SOLIDWORKS and double-click **Install IDEA Unstuck.cmd**. It asks for administrator rights itself and works offline. It checks .NET Framework 4.8, stops if SOLIDWORKS is open, installs to `C:\Program Files\IDEA\Unstuck` for every Windows user, lists the SOLIDWORKS versions it found, upgrades v0.2, and is safe to run twice. It ends on one large PASS or FAIL line and appends one line to `logs\<COMPUTERNAME>.txt` on the drive. **Check IDEA Unstuck.cmd** reports what is installed, and **Uninstall IDEA Unstuck.cmd** (or Settings > Apps) removes it. The five-minute acceptance check is [docs/CHECK-v0.3.md](docs/CHECK-v0.3.md).
 
 Every Windows user gets the add-in at SOLIDWORKS startup with no box to tick. The installer registers it machine-wide, turns it on for everyone signed in right now, and a sign-in entry turns it on for each later user, including a first-ever sign-in. A student who turns it off in Tools > Add-Ins stays off.
 

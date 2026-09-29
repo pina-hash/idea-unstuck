@@ -1,5 +1,9 @@
 # IDEA Unstuck handoff
 
+## v0.3.1 (2026-09-29, same session)
+
+Mr. Pina asked for the v0.1/v0.2 live detector back. The Help tab now always shows **Your part right now** while a part is open: health line, status line, sketch report, and every current issue with its next click. v0.3.0 showed at most one issue and hid otherwise. v0.3.1 also follows the post's updated search: a one-typo match on a word of five or more letters scores 2.5, and a reverse prefix needs 5 letters. Mr. Pina's audited library changed the post's answer to "how do i make a hole" to **Make a hole without a Cut**, so that pin now follows the post.
+
 ## v0.3.0 (ledger 0348, overnight 2026-09-28 to 29)
 
 - What changed: [docs/AUDIT-v0.3.md](docs/AUDIT-v0.3.md) (why), [README.md](README.md) (what students see, how to install), [TEST_RESULTS.md](TEST_RESULTS.md) (what was checked).

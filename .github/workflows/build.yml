@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag:
-        description: 'Publish a release with this tag (for example v0.3.0) on the commit this run builds. Leave empty for a plain build.'
+        description: 'Publish a release with this tag (for example v0.3.1) on the commit this run builds. Leave empty for a plain build.'
         required: false
         default: ''
 permissions:
@@ -94,10 +94,10 @@ jobs:
           function Version { $d = 'C:\Program Files\IDEA\Unstuck\IdeaUnstuck.AddIn.dll'; if (Test-Path $d) { [Reflection.AssemblyName]::GetAssemblyName($d).Version.ToString(3) } else { 'none' } }
           "--- fresh install" | Tee-Object -Append install-cycle.txt
           Expect 'Install IDEA Unstuck.cmd' 0
-          if ((Version) -ne '0.3.0') { throw "installed version $(Version)" }
+          if ((Version) -ne '0.3.1') { throw "installed version $(Version)" }
           $u = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\IDEA Unstuck'
           "Apps & features: $($u.DisplayName) $($u.DisplayVersion) by $($u.Publisher) icon=$($u.DisplayIcon)" | Tee-Object -Append install-cycle.txt
-          if ($u.DisplayName -ne 'IDEA Unstuck' -or $u.Publisher -ne 'IDEA, Don Bosco Tech' -or $u.DisplayVersion -ne '0.3.0') { throw 'Apps & features entry wrong' }
+          if ($u.DisplayName -ne 'IDEA Unstuck' -or $u.Publisher -ne 'IDEA, Don Bosco Tech' -or $u.DisplayVersion -ne '0.3.1') { throw 'Apps & features entry wrong' }
           Expect 'Check IDEA Unstuck.cmd' 0
           "--- install again (must be harmless)" | Tee-Object -Append install-cycle.txt
           Expect 'Install IDEA Unstuck.cmd' 0
@@ -116,7 +116,7 @@ jobs:
           "v0.2 installed: $(Version)" | Tee-Object -Append install-cycle.txt
           if ((Version) -ne '0.2.0') { throw 'v0.2 did not install' }
           Expect 'Install IDEA Unstuck.cmd' 0
-          if ((Version) -ne '0.3.0') { throw "upgrade left $(Version)" }
+          if ((Version) -ne '0.3.1') { throw "upgrade left $(Version)" }
           Expect 'Check IDEA Unstuck.cmd' 0
           "--- drive log" | Tee-Object -Append install-cycle.txt
           $log = Join-Path $usb ('logs\' + $env:COMPUTERNAME + '.txt')

@@ -1,4 +1,4 @@
-IDEA Unstuck 0.3.0 - flash drive installer
+IDEA Unstuck 0.3.1 - flash drive installer
 ==========================================
 
 IDEA Unstuck adds a help panel to SOLIDWORKS 2025 and 2026 for students.
@@ -7,9 +7,9 @@ It works offline. It needs no account and no internet.
 
 A. PUT IT ON THE FLASH DRIVE (once)
 -----------------------------------
-1. Copy IDEA-Unstuck-USB-v0.3.0.zip onto the flash drive.
+1. Copy IDEA-Unstuck-USB-v0.3.1.zip onto the flash drive.
 2. Right-click the ZIP on the flash drive. Click "Extract All...".
-3. Click "Extract". A folder named IDEA-Unstuck-USB-v0.3.0 appears.
+3. Click "Extract". A folder named IDEA-Unstuck-USB-v0.3.1 appears.
    Open it. You should see:
       Install IDEA Unstuck.cmd
       Uninstall IDEA Unstuck.cmd
@@ -23,7 +23,7 @@ A. PUT IT ON THE FLASH DRIVE (once)
 B. INSTALL ON ONE COMPUTER (about 30 seconds)
 ---------------------------------------------
 1. Close SOLIDWORKS on that computer.
-2. Plug in the flash drive. Open the IDEA-Unstuck-USB-v0.3.0 folder.
+2. Plug in the flash drive. Open the IDEA-Unstuck-USB-v0.3.1 folder.
 3. Double-click "Install IDEA Unstuck.cmd".
 4. Windows asks "Do you want to allow this app to make changes?".
    Click Yes. (If it asks for a password, use an administrator account.)

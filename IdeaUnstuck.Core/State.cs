@@ -66,7 +66,8 @@ namespace IdeaUnstuck.Core
         public string DimensionSignature { get; set; } = "";
         // Regions describe faces bounded by contours. A region with several loops can contain holes.
         public int RegionCount { get; set; }
-        public string Describe() => "Sketch " + Name + " has " + EntityCount + " drawing items, " + ClosedContours + " closed outlines and " + OpenContours + " open outlines. " + ConstraintMeaning + (UsageCode != 0 ? " " + UsageMeaning : "");
+        static string N(int n, string one, string many) => n + " " + (n == 1 ? one : many);
+        public string Describe() => "Sketch " + Name + " has " + N(EntityCount, "drawing item", "drawing items") + ", " + N(ClosedContours, "closed outline", "closed outlines") + " and " + N(OpenContours, "open outline", "open outlines") + ". " + ConstraintMeaning + (UsageCode != 0 ? " " + UsageMeaning : "");
     }
     public sealed class FeatureState
     {

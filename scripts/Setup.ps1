@@ -10,7 +10,7 @@ param(
     [string]$Source = ''
 )
 $ErrorActionPreference = 'Stop'
-$Version = '0.3.0'
+$Version = '0.3.1'
 $Target = Join-Path $env:ProgramFiles 'IDEA\Unstuck'
 $Guid = '{962CE2F1-BF2C-46F3-A8A5-DC6081767E13}'
 $PaneClsid = '{73B7229D-3403-4476-B3D0-67B7A5781BA2}'

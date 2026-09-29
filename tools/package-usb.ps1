@@ -1,7 +1,7 @@
 # Builds dist\IDEA-Unstuck-USB-v<version>.zip, laid out exactly as it sits on a
 # flash drive after "Extract All": the three .cmd files, README.txt, logs\, files\.
 # Run after: dotnet build IdeaUnstuck.sln -c Release
-param([string]$Version = '0.3.0', [string]$Configuration = 'Release')
+param([string]$Version = '0.3.1', [string]$Configuration = 'Release')
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $bin = Join-Path $root ('IdeaUnstuck.AddIn\bin\' + $Configuration + '\net48')
