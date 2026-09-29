@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SolidWorks Day</title>
+<script type="application/json" id="idea-manifest">
+{
+  "schemaVersion": 3,
+  "kind": "html-assignment",
+  "title": "SolidWorks Day",
+  "course": "IDEA100",
+  "points": 10,
+  "modules": [
+    {
+      "id": "swday-follow",
+      "title": "Follow Along",
+      "points": 5,
+      "audience": "individual",
+      "blocks": [
+        {
+          "id": "swday-step-01",
+          "field": "s1",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-02",
+          "field": "s2",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-03",
+          "field": "s3",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-04",
+          "field": "s4",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-05",
+          "field": "s5",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-06",
+          "field": "s6",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-07",
+          "field": "s7",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-08",
+          "field": "s8",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-09",
+          "field": "s9",
+          "type": "image"
+        },
+        {
+          "id": "swday-step-10",
+          "field": "s10",
+          "type": "image"
+        }
+      ],
+      "criteria": [
+        {
+          "id": "steps",
+          "text": "A screenshot for every step of the wrench, each showing what the step asks for",
+          "points": 5,
+          "levels": [
+            {
+              "points": 5,
+              "label": "Complete",
+              "short": "All ten steps shown",
+              "descriptor": "Ten screenshots, each showing what its step asks for."
+            },
+            {
+              "points": 3,
+              "label": "Proficient",
+              "short": "Seven to nine steps",
+              "descriptor": "Seven to nine steps have a matching screenshot."
+            },
+            {
+              "points": 1,
+              "label": "Developing",
+              "short": "Fewer than seven steps",
+              "descriptor": "One to six steps have a matching screenshot."
+            },
+            {
+              "points": 0,
+              "label": "Absent",
+              "short": "No screenshots",
+              "descriptor": "No screenshots pasted."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "swday-own",
+      "title": "On Your Own",
+      "points": 5,
+      "audience": "individual",
+      "blocks": [
+        {
+          "id": "swday-part",
+          "field": "partA",
+          "type": "image"
+        },
+        {
+          "id": "swday-own-shot",
+          "field": "ownShot",
+          "type": "image"
+        },
+        {
+          "id": "swday-own-note",
+          "field": "ownNote",
+          "type": "longText",
+          "minSentences": 2
+        },
+        {
+          "id": "swday-trap1",
+          "field": "trap1",
+          "type": "checkbox"
+        },
+        {
+          "id": "swday-trap2",
+          "field": "trap2",
+          "type": "checkbox"
+        },
+        {
+          "id": "swday-trap3",
+          "field": "trap3",
+          "type": "checkbox"
+        },
+        {
+          "id": "swday-trap4",
+          "field": "trap4",
+          "type": "checkbox"
+        },
+        {
+          "id": "swday-trap5",
+          "field": "trap5",
+          "type": "checkbox"
+        }
+      ],
+      "criteria": [
+        {
+          "id": "part",
+          "text": "The part file is handed in, named, and rebuilds",
+          "points": 2,
+          "levels": [
+            {
+              "points": 2,
+              "label": "Complete",
+              "short": "Named, opens, rebuilds",
+              "descriptor": "SWDAY_LASTNAME.SLDPRT is handed in, opens and rebuilds with no red or yellow marks."
+            },
+            {
+              "points": 1,
+              "label": "Developing",
+              "short": "Misnamed or has errors",
+              "descriptor": "A part file is handed in but is misnamed or carries errors in the tree."
+            },
+            {
+              "points": 0,
+              "label": "Absent",
+              "short": "No part file",
+              "descriptor": "No part file handed in."
+            }
+          ]
+        },
+        {
+          "id": "own",
+          "text": "The wrench is changed without a demo, and the changes are described",
+          "points": 3,
+          "levels": [
+            {
+              "points": 3,
+              "label": "Complete",
+              "short": "Two changes, shown and described",
+              "descriptor": "At least two changes made on their own, a screenshot showing them, and two sentences saying what changed and one thing that went wrong."
+            },
+            {
+              "points": 2,
+              "label": "Proficient",
+              "short": "One change shown",
+              "descriptor": "One change made, shown and described."
+            },
+            {
+              "points": 1,
+              "label": "Developing",
+              "short": "Described but not shown",
+              "descriptor": "A description with no screenshot, or a screenshot with no change visible."
+            },
+            {
+              "points": 0,
+              "label": "Absent",
+              "short": "Nothing on your own",
+              "descriptor": "Nothing in this section."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+/* SOLIDWORKS-STYLE WORK SURFACE. Modeled on the program's own light interface: neutral
+   gray chrome, white panes, the tree on the left, blue selection. No brand red, no logo.
+   One look, because students switch between this page and SolidWorks all period. */
+:root {
+  --chrome: #2c3036; --chrome2: #3a3f47; --chrome-ink: #eef1f4; --chrome-dim: #aab3bd;
+  --bg: #e7e9ec; --pane: #ffffff; --pane2: #f5f6f8; --tab: #dde1e6;
+  --ink: #16191d; --ink2: #3b424b; --ink3: #626b75;
+  --line: #c9ced5; --line2: #8d96a1;
+  --sel: #1f6fbf; --sel-bg: #dcebfa; --sel-ink: #0f4f8f;
+  --ok: #1e7a3a; --ok-bg: #e2f2e6; --warn: #9a5a00; --warn-bg: #fbeed9; --bad: #b3261e; --bad-bg: #fbe6e4;
+  --hot: #1e7a3a; --hot-bg: #e2f2e6; --hot-ink: #14592a;
+  --sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: Consolas, "Cascadia Mono", ui-monospace, monospace;
+  --fs: 15px; --lh: 1.5; --ls: 0;
+}
+:root.easy { --sans: Verdana, Tahoma, "Segoe UI", sans-serif; --lh: 1.75; --ls: .02em; }
+:root.big { --fs: 17px; } :root.bigger { --fs: 19.5px; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink); font: var(--fs)/var(--lh) var(--sans); letter-spacing: var(--ls); overflow-x: hidden; }
+#content { position: relative; padding-top: 88px; }
+#probes { position: absolute; left: 0; top: 0; width: 1px; overflow: hidden; pointer-events: none; }
+#probes i { position: absolute; left: 0; width: 1px; }
+button, input, textarea, select { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--sel); outline-offset: 2px; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* ---------- title bar + command tabs (follows the reader) ---------- */
+#top { position: absolute; left: 0; right: 0; top: 0; z-index: 40; will-change: transform; }
+#top.float { box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+.titlebar { height: 40px; display: flex; align-items: center; gap: 14px; padding: 0 14px; background: var(--chrome); color: var(--chrome-ink); }
+.titlebar .doc { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.titlebar .doc small { font-weight: 400; color: var(--chrome-dim); margin-left: 8px; }
+.meter { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--chrome-dim); white-space: nowrap; }
+.meter .bar { width: 160px; height: 8px; background: #50565f; border-radius: 4px; overflow: hidden; }
+.meter .bar i { display: block; height: 100%; width: 0; background: #62b2ff; transition: width .3s; }
+.meter b { color: var(--chrome-ink); font-variant-numeric: tabular-nums; }
+.pill { font-size: 12px; padding: 3px 9px; border: 1px solid #5b626c; border-radius: 99px; color: var(--chrome-dim); white-space: nowrap; }
+.pill.bad { color: #ffb4ab; border-color: #8a3a33; }
+.cmd { display: flex; align-items: stretch; gap: 2px; padding: 4px 8px 0; background: var(--tab); border-bottom: 1px solid var(--line2); height: 48px; }
+.cmd .t { border: 1px solid transparent; border-bottom: 0; background: none; padding: 0 16px; font-weight: 600; color: var(--ink2); border-radius: 4px 4px 0 0; display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.cmd .t[aria-selected="true"] { background: var(--pane); border-color: var(--line2); color: var(--ink); position: relative; top: 1px; }
+.cmd .t svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+.cmd .t .badge { font-size: 12px; font-weight: 600; background: var(--sel); color: #fff; border-radius: 99px; padding: 0 7px; }
+.acc { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.acc button { min-height: 36px; min-width: 36px; padding: 0 10px; border: 1px solid var(--line2); background: var(--pane); border-radius: 4px; font-size: 13px; font-weight: 600; }
+.acc button[aria-pressed="true"] { background: var(--sel); color: #fff; border-color: var(--sel); }
+
+/* ---------- views ---------- */
+.view { max-width: 1400px; margin: 0 auto; padding: 14px clamp(10px, 2vw, 22px) 26px; }
+.view[hidden] { display: none !important; }
+.pane { background: var(--pane); border: 1px solid var(--line); border-radius: 6px; }
+.phead { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--pane2); border-radius: 6px 6px 0 0; }
+.phead h2 { margin: 0; font-size: 16px; }
+.phead .note { color: var(--ink3); font-size: 14px; }
+.phead .pts { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--ink2); border: 1px solid var(--line2); border-radius: 4px; padding: 2px 8px; white-space: nowrap; }
+
+/* follow along: tree + step */
+.fa { display: grid; grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.tree { padding: 6px 0; }
+.tree .root { display: flex; align-items: center; gap: 8px; padding: 6px 14px; font-weight: 600; color: var(--ink2); }
+.tree ol { list-style: none; margin: 0; padding: 0; }
+.tree li button { display: grid; grid-template-columns: 26px 1fr auto; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 6px 12px 6px 22px; border: 0; border-left: 3px solid transparent; background: none; text-align: left; }
+.tree li button:hover { background: var(--pane2); }
+.tree li button[aria-current="step"] { background: var(--sel-bg); border-left-color: var(--sel); }
+.tree .ic { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 4px; border: 1px solid var(--line2); font: 700 12px var(--mono); color: var(--ink3); background: var(--pane); }
+.tree li.done .ic { background: var(--ok); border-color: var(--ok); color: #fff; }
+.tree li.pend .ic { background: var(--sel-bg); border-color: var(--sel); color: var(--sel-ink); }
+.tree li.err .ic { background: var(--bad); border-color: var(--bad); color: #fff; }
+.tree .tt { font-weight: 600; font-size: .95em; line-height: 1.3; }
+.tree .st { font-size: 12px; color: var(--ink3); white-space: nowrap; }
+.tree li.done .st { color: var(--ok); }
+.rollback { height: 6px; margin: 6px 14px 10px; background: repeating-linear-gradient(90deg, #f2c200 0 10px, #222 10px 20px); border-radius: 2px; opacity: .8; }
+
+.stepcard { padding: 16px 18px 18px; display: grid; gap: 14px; }
+.stephead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.stephead .num { font: 700 13px var(--mono); color: var(--sel-ink); background: var(--sel-bg); border-radius: 4px; padding: 2px 8px; }
+.stephead h3 { margin: 0; font-size: 1.35em; line-height: 1.2; }
+.stephead .say { margin-left: auto; }
+.doit { margin: 0; padding: 0; list-style: none; counter-reset: d; display: grid; gap: 8px; }
+.doit li { counter-increment: d; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; font-size: 1.05em; }
+.doit li::before { content: counter(d); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--chrome); color: #fff; font: 700 13px var(--mono); margin-top: 1px; }
+.doit .where { display: inline-block; margin-left: 6px; font-size: 12px; color: var(--ink3); border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; white-space: nowrap; }
+.shotzone { border: 2px dashed var(--line2); border-radius: 6px; background: var(--pane2); min-height: 150px; display: grid; place-items: center; text-align: center; padding: 14px; cursor: pointer; transition: border-color .15s, background-color .15s; }
+.shotzone:hover, .shotzone.over { border-color: var(--sel); background: var(--sel-bg); }
+.shotzone b { display: block; font-size: 1.05em; }
+.shotzone span { color: var(--ink3); font-size: .93em; }
+.shotzone kbd, .keys kbd, kbd { font: 600 12.5px var(--mono); padding: 1px 6px; border: 1px solid var(--line2); border-bottom-width: 2px; border-radius: 4px; background: var(--pane); color: var(--ink); white-space: nowrap; }
+.shotzone img { max-width: 100%; max-height: 360px; border: 1px solid var(--line); border-radius: 4px; display: block; margin: 0 auto 8px; }
+.shotzone .saved { font-weight: 600; color: var(--ok); }
+.shotmeta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+.shotmeta .state { font-weight: 600; }
+.shotmeta .state.ok { color: var(--ok); } .shotmeta .state.up { color: var(--ink3); } .shotmeta .state.bad { color: var(--bad); }
+.btn { min-height: 44px; padding: 0 16px; border: 1px solid var(--line2); border-radius: 5px; background: var(--pane); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+.btn.primary { background: var(--sel); border-color: var(--sel); color: #fff; }
+.btn.small { min-height: 36px; padding: 0 12px; font-size: .9em; }
+.lookfor { border-left: 3px solid var(--sel); background: var(--sel-bg); padding: 8px 12px; border-radius: 0 4px 4px 0; font-size: .97em; }
+.lookfor b { color: var(--sel-ink); }
+.stuckrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+.stuckrow > span { font-weight: 600; margin-right: 4px; }
+.chip { min-height: 36px; padding: 0 12px; border: 1px solid var(--line2); border-radius: 99px; background: var(--pane); font-size: .9em; font-weight: 600; }
+.chip:hover { border-color: var(--sel); color: var(--sel-ink); }
+.navrow { display: flex; gap: 8px; justify-content: space-between; }
+
+/* break it */
+.traps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 12px; padding: 14px; }
+.trap { border: 1px solid var(--line); border-radius: 6px; padding: 12px 14px; display: grid; gap: 8px; background: var(--pane); }
+.trap h3 { margin: 0; font-size: 1.05em; }
+.trap p { margin: 0; color: var(--ink2); }
+.trap p b { color: var(--ink); }
+.trap .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.check { display: flex; gap: 10px; align-items: center; font-weight: 600; min-height: 44px; cursor: pointer; }
+.check input { width: 20px; height: 20px; accent-color: var(--ok); }
+
+/* on your own */
+.own { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 14px; padding: 14px; align-items: start; }
+.own ul { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.fl { display: grid; gap: 6px; font-weight: 600; }
+.fl textarea { width: 100%; min-height: 110px; border: 1px solid var(--line2); border-radius: 5px; padding: 10px; font-weight: 400; resize: vertical; background: var(--pane); }
+.fcard { border: 1px solid var(--line2); border-radius: 6px; padding: 12px; display: grid; gap: 8px; }
+.fcard h4 { margin: 0; font-size: 1em; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.fcard code { font: 600 13px var(--mono); background: var(--sel-bg); color: var(--sel-ink); padding: 1px 6px; border-radius: 3px; }
+.fdrop { min-height: 70px; border: 2px dashed var(--line2); border-radius: 6px; display: flex; gap: 12px; align-items: center; padding: 10px 14px; background: var(--pane2); cursor: pointer; }
+.fdrop:hover, .fdrop.over { border-color: var(--sel); background: var(--sel-bg); }
+.fdrop[hidden] { display: none; }
+.fstate { display: flex; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--ok); border-radius: 5px; background: var(--ok-bg); }
+.fstate[hidden] { display: none; }
+.fstate .fn { font: 600 13px var(--mono); flex: 1; overflow-wrap: anywhere; }
+.fmsg { margin: 0; font-size: .93em; }
+.fmsg.bad { color: var(--bad); } .fmsg.note { color: var(--warn); }
+.fmsg:empty { display: none; }
+
+/* unstuck */
+.us { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.sbox { position: relative; }
+.sbox input { width: 100%; font-size: 1.2em; font-weight: 600; padding: 13px 14px 13px 46px; border: 2px solid var(--line2); border-radius: 6px; background: var(--pane); }
+.sbox input:focus { outline: none; border-color: var(--sel); box-shadow: 0 0 0 3px var(--sel-bg); }
+.sbox svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; fill: none; stroke: var(--ink3); stroke-width: 2.4; }
+.hint { font-size: 13px; color: var(--ink3); margin: 6px 2px 0; }
+.results { display: grid; gap: 4px; margin-top: 8px; }
+.results button { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; text-align: left; min-height: 44px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 5px; background: var(--pane); font-weight: 600; }
+.results button:hover, .results button.act { border-color: var(--sel); background: var(--sel-bg); }
+.results small { font-weight: 400; color: var(--ink3); font-size: .85em; }
+.kind { font: 700 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+.kind.wrong { color: var(--bad); background: var(--bad-bg); }
+.kind.how { color: var(--sel-ink); background: var(--sel-bg); }
+.kind.what { color: var(--ok); background: var(--ok-bg); }
+.none { padding: 12px; border: 1px dashed var(--line2); border-radius: 5px; color: var(--ink2); background: var(--pane2); }
+.usgrid { display: grid; grid-template-columns: minmax(250px, 340px) minmax(0, 1fr); gap: 14px; align-items: start; }
+.browse { padding: 8px 0; }
+.browse details { border-bottom: 1px solid var(--line); }
+.browse details:last-child { border-bottom: 0; }
+.browse summary { display: flex; justify-content: space-between; align-items: center; min-height: 44px; padding: 0 14px; cursor: pointer; font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink2); }
+.browse summary small { font: 600 12px var(--mono); color: var(--ink3); letter-spacing: 0; }
+.browse summary:hover { background: var(--pane2); }
+.browse h3 { margin: 10px 14px 4px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+.browse button { display: block; width: 100%; text-align: left; min-height: 40px; padding: 7px 14px; border: 0; border-left: 3px solid transparent; background: none; font-size: .93em; }
+.browse button:hover { background: var(--pane2); }
+.browse button.on { background: var(--sel-bg); border-left-color: var(--sel); font-weight: 600; }
+.answer { scroll-margin-top: 100px; padding: 16px 18px 18px; display: grid; gap: 14px; }
+.answer h3 { margin: 4px 0 0; font-size: 1.35em; line-height: 1.25; }
+.fix { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; background: var(--sel-bg); border: 1px solid #b9d5f2; border-radius: 6px; padding: 12px 14px; font-size: 1.12em; font-weight: 600; }
+.fix > b { font: 700 11px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--sel-ink); padding-top: 5px; }
+.levels { display: flex; gap: 8px; flex-wrap: wrap; }
+.levels .btn[aria-pressed="true"] { background: var(--chrome); color: #fff; border-color: var(--chrome); }
+.steps { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+ol.st { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 4px; }
+ol.st li { counter-increment: s; }
+ol.st button { display: grid; grid-template-columns: 28px 1fr; gap: 10px; width: 100%; text-align: left; padding: 8px 10px; border: 1px solid transparent; border-radius: 5px; background: none; line-height: var(--lh); }
+ol.st button::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--pane2); border: 1px solid var(--line2); font: 700 12px var(--mono); }
+ol.st li.on button { border-color: var(--hot); background: var(--hot-bg); }
+ol.st li.on button::before { background: var(--hot); border-color: var(--hot); color: #fff; }
+.map { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 5px; background: var(--pane2); }
+.map .r { fill: #e3e6ea; stroke: #b9c0c8; stroke-width: .8; }
+.map .r.dark { fill: #3a3f47; stroke: #3a3f47; }
+.map .r.hot { fill: var(--hot); stroke: var(--hot-ink); }
+.map text { font: 600 7.5px var(--sans); fill: #5c6570; pointer-events: none; }
+.map text.w { fill: #d6dbe0; }
+.map text.hot { fill: #fff; }
+.map .ic { stroke: #7a838d; stroke-width: 1.2; fill: none; }
+.map .ic.hot { stroke: var(--hot); stroke-width: 2.2; }
+.mapcap { font-size: 14px; color: var(--ink2); margin-top: 6px; }
+.mapcap b { color: var(--hot-ink); }
+.why { margin: 0; font-size: 1.05em; color: var(--ink2); max-width: 70ch; }
+.rel { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: .9em; color: var(--ink3); }
+.aibox { display: grid; gap: 8px; border: 1px solid var(--line); background: var(--pane2); border-radius: 6px; padding: 12px 14px; }
+.aibox p { margin: 0; font-size: .95em; color: var(--ink2); }
+.aibox textarea { width: 100%; font: 13px var(--mono); padding: 8px; border: 1px solid var(--line2); border-radius: 4px; background: var(--pane); }
+.keys { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; color: var(--ink2); }
+.keys span { display: inline-flex; gap: 6px; align-items: center; }
+.src { font-size: 12.5px; color: var(--ink3); margin-top: 14px; }
+
+@media (max-width: 980px) {
+  .fa, .usgrid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .meter .bar { width: 90px; }
+}
+@media (max-width: 640px) {
+  #content { padding-top: 132px; }
+  .titlebar .doc small, .meter .lbl { display: none; }
+  .cmd { height: auto; flex-wrap: wrap; padding-bottom: 4px; }
+  .cmd .t { padding: 0 10px; }
+  .cmd .t .tl { display: none; }
+  .acc { margin-left: 0; width: 100%; }
+  .fix { grid-template-columns: 1fr; gap: 4px; }
+  .stephead .say { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.tipbox { position: absolute; z-index: 90; max-width: 300px; background: var(--chrome); color: var(--chrome-ink); padding: 8px 11px; border-radius: 5px; font-size: 13.5px; line-height: 1.45; box-shadow: 0 8px 22px rgba(0,0,0,.28); pointer-events: none; }
+.tipbox[hidden] { display: none; }
+.term { text-decoration: underline dotted var(--line2); text-underline-offset: 3px; cursor: help; }
+
+</style>
+</head>
+<body>
+<div id="content">
+<div id="probes" aria-hidden="true"></div>
+<div hidden><input type="file" data-field="s1" hidden disabled><input type="file" data-field="s2" hidden disabled><input type="file" data-field="s3" hidden disabled><input type="file" data-field="s4" hidden disabled><input type="file" data-field="s5" hidden disabled><input type="file" data-field="s6" hidden disabled><input type="file" data-field="s7" hidden disabled><input type="file" data-field="s8" hidden disabled><input type="file" data-field="s9" hidden disabled><input type="file" data-field="s10" hidden disabled><input type="file" data-field="partA" hidden disabled><input type="file" data-field="ownShot" hidden disabled></div>
+<div id="top">
+  <div class="titlebar">
+    <span class="doc">SolidWorks Day <small>IDEA100 &middot; build a wrench, then build it yourself</small></span>
+    <span class="meter" data-tipstatic="How many steps have a saved screenshot."><span class="lbl" id="bartext">0 of 10 steps</span><span class="bar"><i id="bar"></i></span></span>
+    <span class="pill" id="status" data-tipstatic="Your work saves by itself. This shows the last save.">Autosave on</span>
+  </div>
+  <div class="cmd" role="tablist" aria-label="Sections">
+    <button type="button" class="t" role="tab" data-tipstatic="Build the wrench with Mr. Pina, one step at a time. Paste a screenshot for each step." id="t-follow" aria-selected="true" aria-controls="v-follow"><svg viewBox="0 0 24 24"><path d="M4 5h10M4 12h10M4 19h10"/><path d="M17 4l2 2 3-3M17 11l2 2 3-3"/></svg><span class="tl">Follow along</span><span class="badge" id="badge-follow">0/10</span></button>
+    <button type="button" class="t" role="tab" data-tipstatic="Cause five common problems on purpose, then fix them yourself." id="t-break" aria-selected="false" aria-controls="v-break"><svg viewBox="0 0 24 24"><path d="M14 3l-4 7h5l-5 11"/></svg><span class="tl">Break it</span></button>
+    <button type="button" class="t" role="tab" data-tipstatic="Change the wrench with no demo, then hand in your part file." id="t-own" aria-selected="false" aria-controls="v-own"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg><span class="tl">On your own</span></button>
+    <button type="button" class="t" role="tab" data-tipstatic="Search any problem in your own words and get the next click." id="t-unstuck" aria-selected="false" aria-controls="v-unstuck"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l5 5"/></svg><span class="tl">Unstuck</span></button>
+    <div class="acc" aria-label="Reading options">
+      <button type="button" id="acc-big" data-acc="big" data-tipstatic="Makes all the text bigger." aria-pressed="false" title="Bigger text">A+</button>
+      <button type="button" id="acc-bigger" data-acc="bigger" data-tipstatic="Makes all the text much bigger." aria-pressed="false" title="Biggest text">A++</button>
+      <button type="button" id="acc-easy" data-acc="easy" data-tipstatic="Easier-to-read letters with more space between lines." aria-pressed="false">Easy read</button>
+    </div>
+  </div>
+</div>
+
+<section class="view" id="v-follow" role="tabpanel" aria-labelledby="t-follow">
+  <div class="fa">
+    <nav class="pane tree" aria-label="Steps">
+      <div class="root">&#9662; Wrench</div>
+      <ol id="tree"></ol>
+      <div class="rollback" aria-hidden="true" data-tipstatic="In SolidWorks this yellow and black bar is the rollback bar. Here it just marks the end of the steps."></div>
+    </nav>
+    <article class="pane stepcard" id="step" aria-live="polite"></article>
+  </div>
+</section>
+
+<section class="view" id="v-break" role="tabpanel" aria-labelledby="t-break" hidden>
+  <div class="pane">
+    <div class="phead"><h2>Break it on purpose</h2><span class="note">Cause each problem, then fix it using Unstuck, not a TA.</span></div>
+    <div class="traps" id="traps"><div class="trap" data-fix="left-sketch"><h3>1. Leave the sketch, get back in</h3><p><b>Break it: </b>Edit Sketch1, then click Exit Sketch.</p><div class="row"><button type="button" class="btn small fixbtn">How to fix it</button><label class="check"><input type="checkbox" data-field="trap1">I broke it and fixed it</label></div></div><div class="trap" data-fix="open-contour"><h3>2. A shape that is not closed</h3><p><b>Break it: </b>Sketch on the front face. Draw three lines that do not close. Try Extruded Cut.</p><div class="row"><button type="button" class="btn small fixbtn">How to fix it</button><label class="check"><input type="checkbox" data-field="trap2">I broke it and fixed it</label></div></div><div class="trap" data-fix="rollback"><h3>3. The rollback bar</h3><p><b>Break it: </b>Drag the yellow and black bar in the tree up above Cut-Extrude1. The hex disappears.</p><div class="row"><button type="button" class="btn small fixbtn">How to fix it</button><label class="check"><input type="checkbox" data-field="trap3">I broke it and fixed it</label></div></div><div class="trap" data-fix="units-mm"><h3>4. Millimeters</h3><p><b>Break it: </b>Click IPS at the bottom right and pick MMGS. Look at the numbers.</p><div class="row"><button type="button" class="btn small fixbtn">How to fix it</button><label class="check"><input type="checkbox" data-field="trap4">I broke it and fixed it</label></div></div><div class="trap" data-fix="red-sketch"><h3>5. A red sketch</h3><p><b>Break it: </b>Edit Sketch1. Dimension center to center again. If a box asks, pick Leave this dimension driving.</p><div class="row"><button type="button" class="btn small fixbtn">How to fix it</button><label class="check"><input type="checkbox" data-field="trap5">I broke it and fixed it</label></div></div></div>
+  </div>
+</section>
+
+<section class="view" id="v-own" role="tabpanel" aria-labelledby="t-own" hidden>
+  <div class="pane">
+    <div class="phead"><h2>On your own</h2><span class="note">No demo. Use Unstuck when you get stuck.</span><span class="pts">5 pts</span></div>
+    <div class="own">
+      <div style="display:grid;gap:12px">
+        <div><b>Change your wrench. Do at least two:</b><ul><li>Make the center distance 3.000.</li><li>Put a hex socket on the small end too, 0.500 across the flats.</li><li>Make it 0.300 thick.</li><li>Anything else you want: a slot, a hole, a different shape at one end.</li></ul></div>
+        <div class="shotzone" id="ownzone" data-tipstatic="Paste a screenshot of your changed wrench here with Ctrl+V." tabindex="0" role="button" aria-label="Screenshot of your changed wrench"></div>
+        <div class="shotmeta" id="ownmeta"></div>
+        <label class="fl">What you changed, and one thing that went wrong and how you fixed it
+          <textarea id="ownNote" data-field="ownNote" placeholder="Two sentences or more."></textarea>
+        </label>
+      </div>
+      <div class="fcard">
+        <h4>Hand in your part <code>SWDAY_LASTNAME.SLDPRT</code></h4>
+        <div class="fdrop" id="fdrop" data-tipstatic="Drop your SWDAY_LASTNAME.SLDPRT here, or click to find it." tabindex="0" role="button" aria-label="Hand in your part file"><span><b>Drop or choose your .SLDPRT</b><br><span style="color:var(--ink3)">Press Ctrl+S in SolidWorks first.</span></span></div>
+        <div class="fstate" id="fstate" hidden></div>
+        <p class="fmsg" id="fmsg" aria-live="polite"></p>
+        <input type="file" id="fpick" accept=".sldprt,.SLDPRT" hidden>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-unstuck" role="tabpanel" aria-labelledby="t-unstuck" hidden>
+  <div class="us">
+    <div class="pane" style="padding:14px">
+      <div class="sbox" role="search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <input id="q" data-tipstatic="Type anything, in your own words. Spelling does not have to be right." type="search" autocomplete="off" spellcheck="false" placeholder="Type what is happening, in your own words" aria-label="What is happening in SolidWorks?">
+      </div>
+      <p class="hint" id="hint">Like: it wont let me extrude, my lines are red, i lost my part, how do i make a hole</p>
+      <div class="results" id="res" aria-live="polite"></div>
+      <div class="keys" id="keys" style="margin-top:12px" aria-label="Keys to know"></div>
+    </div>
+    <div class="usgrid">
+      <nav class="pane browse" id="browse" aria-label="All answers"></nav>
+      <article class="pane answer" id="answer" aria-live="polite"></article>
+    </div>
+  </div>
+  <p class="src">Sources: SOLIDWORKS Help, Dassault Systemes (sketching, features, Measure). IDEA100 class demonstrations.</p>
+</section>
+</div>
+<script>
+(function () {
+  var D = {"entries": [{"id": "open-contour", "kind": "wrong", "title": "My shape is not closed", "q": "open contour; not closed; gap; wont extrude; cannot extrude; extrude error; sketch has open; broken outline; ends not touching; wont let me extrude; cant extrude; extrude not working; extrude error; shape wont fill; outline not solid; wont turn 3d; sketch not closed; missing line; hole in outline", "fix": "Find the gap in your outline and drag one loose end onto the other until it snaps.", "steps": [{"t": "Zoom in on every corner with the scroll wheel. A gap can be too small to see from far away.", "w": "mouse"}, {"t": "Open the Tools menu, then Sketch Tools, then Check Sketch for Feature. Click Check. It tells you where the open ends are.", "w": "menu"}, {"t": "Click and drag one loose end onto the other end. Let go when a small orange square appears. That square means the two ends are joined.", "w": "graphics"}, {"t": "Delete any tiny extra line you find. Click it, press Delete.", "w": "keyboard"}, {"t": "Try the extrude again.", "w": "ribbon"}], "why": "An extrude pushes your outline into 3D, like pouring plastic into a mold. If the outline has a gap, the plastic leaks out, so SolidWorks refuses. Every outline must be one closed loop.", "related": ["multi-contour", "extrude", "check-sketch"]}, {"id": "multi-contour", "kind": "wrong", "title": "It says my sketch has multiple contours or lines crossing", "q": "multiple contours; self intersecting; lines crossing; overlapping lines; two outlines; contour error; intersect", "fix": "Erase the extra pieces so there is one outline. Circles inside it are fine: they become holes.", "steps": [{"t": "Look for lines that cross each other or stick out past a corner.", "w": "graphics"}, {"t": "On the Sketch tab, click Trim Entities. Choose Power trim.", "w": "ribbon"}, {"t": "Hold the left mouse button and drag across the extra pieces. They disappear as you cross them.", "w": "mouse"}, {"t": "Look for a line drawn twice on top of itself: drag a line away and see if another one is under it. Delete the copy.", "w": "graphics"}, {"t": "Run Tools, Sketch Tools, Check Sketch for Feature to confirm.", "w": "menu"}], "why": "A hook is one outline with holes inside it. Two outlines side by side, or lines that cross, give SolidWorks more than one possible shape and it cannot guess which one you mean.", "related": ["open-contour", "trim", "check-sketch"]}, {"id": "left-sketch", "kind": "wrong", "title": "I left my sketch and cannot get back in", "q": "exited sketch; get back into sketch; edit sketch; left sketch; cant edit sketch; sketch gone; change my sketch; go back to sketch; pencil; little pencil; pencil icon; clicked out; pressed escape and lost sketch; how edit drawing; go back to drawing; unlock sketch", "fix": "Click the sketch in the tree on the left, then click Edit Sketch (the pencil).", "steps": [{"t": "Find the list on the left side of the screen. That is the tree: every step of your part, in order.", "w": "tree"}, {"t": "If you already extruded, click the small arrow next to Boss-Extrude1. Your sketch (Sketch1) is inside it.", "w": "tree"}, {"t": "Click Sketch1. A small bar of icons pops up next to your mouse.", "w": "tree"}, {"t": "Click Edit Sketch, the icon with a pencil. Your sketch lines light up and you can change them.", "w": "graphics"}, {"t": "When you finish, click the Exit Sketch icon in the top-right corner of the part area.", "w": "corner"}], "why": "Leaving a sketch does not lock it. Every sketch and feature stays editable forever. Editing is how you change a part, which is why you never need to start over.", "related": ["exit-sketch", "edit-feature", "delete-part"]}, {"id": "delete-part", "kind": "wrong", "title": "I messed up so badly I want to delete everything and start over", "q": "start over; delete everything; delete part; messed up; ruined; new part again; restart", "fix": "Do not delete it. Press Ctrl+Z to undo, or edit the step that went wrong. It is almost always faster.", "steps": [{"t": "Press Ctrl+Z. Each press undoes one step. Keep going until it looks right again.", "w": "keyboard"}, {"t": "If one feature is wrong, right-click it in the tree and pick Edit Feature.", "w": "tree"}, {"t": "If the shape is wrong, click the sketch in the tree and pick Edit Sketch.", "w": "tree"}, {"t": "Still stuck after that? Ask a TA before you delete anything.", "w": "keyboard"}], "why": "Starting over throws away every correct step with the one wrong one. In CAD you fix the step that broke. The tree is there so you can go back to any step.", "related": ["undo", "left-sketch", "edit-feature"]}, {"id": "units-mm", "kind": "wrong", "title": "My numbers are huge or weird, like 25.4", "q": "millimeters; mm; wrong units; numbers huge; 25.4; metric; inches; units; decimals; numbers look wrong; 25.4; 12.7; millimeter; wrong measurements", "fix": "You are in millimeters. Click the units at the bottom-right corner and pick IPS.", "steps": [{"t": "Look at the bottom-right corner of the SolidWorks window. It shows the unit system, like MMGS.", "w": "units"}, {"t": "Click it and pick IPS (inch, pound, second).", "w": "units"}, {"t": "Your part does not change size. Only the numbers change to inches.", "w": "graphics"}, {"t": "If you typed numbers while in millimeters, they are wrong now. Retype them in inches.", "w": "graphics"}, {"t": "To make three decimal places show: Options (the gear at the top), Document Properties tab, Units, set Length decimals to .123.", "w": "menu"}], "why": "Every size in this project is in inches. A 2 you typed in millimeters is 2 mm, about the thickness of a coin. The unit system decides what your typed numbers mean.", "related": ["set-units"]}, {"id": "red-sketch", "kind": "wrong", "title": "My sketch turned red or yellow, or says Over Defined", "q": "red lines; yellow lines; over defined; overdefined; conflict; sketch red; cannot solve; sketchxpert; everything red; red lines; turned red; sketch error", "fix": "Press Ctrl+Z to undo the last dimension or relation you added.", "steps": [{"t": "Look at the bottom of the screen. It says Over Defined when two rules are fighting.", "w": "status"}, {"t": "Press Ctrl+Z once. That usually removes the rule that caused it.", "w": "keyboard"}, {"t": "Or find the red or yellow dimension and delete it.", "w": "graphics"}, {"t": "For help finding it: click the words Over Defined at the bottom. SketchXpert opens. Click Diagnose, pick a solution, click Accept.", "w": "status"}], "why": "Each dimension is a rule. If a line is 2 inches long AND its two ends are dimensioned 2.5 inches apart, both cannot be true. SolidWorks shows the conflict in red.", "related": ["colors", "smart-dim"]}, {"id": "colors", "kind": "wrong", "title": "What do blue and black lines mean?", "q": "blue lines; black lines; under defined; fully defined; line colors; why blue", "fix": "Blue means the line can still move. Black means dimensions lock it in place. Both are fine.", "steps": [{"t": "Drag a blue line. It moves, because nothing locks it yet.", "w": "graphics"}, {"t": "Add dimensions until the lines turn black. Black lines stay put when you change other things.", "w": "ribbon"}, {"t": "The bottom of the screen says Under Defined or Fully Defined.", "w": "status"}], "why": "A fully defined sketch (all black) behaves predictably when you change a number. It is good practice, not a requirement for your first part.", "related": ["red-sketch", "smart-dim"]}, {"id": "lost-part", "kind": "wrong", "title": "My part disappeared or I cannot find it", "q": "cant see part; disappeared; lost; gone; zoomed out; blank screen; where is my part; nothing there; screen empty; white screen; zoomed in too far; cant find anything; where did it go", "fix": "Put your mouse over the part area and press F. It zooms to fit your whole part.", "steps": [{"t": "Move the mouse over the big part area and press F.", "w": "keyboard"}, {"t": "Still nothing? Press the spacebar and double-click Isometric.", "w": "keyboard"}, {"t": "Look in the tree for a gray line with a yellow-and-black bar above your features. Right-click the bar and pick Roll to End.", "w": "rollback"}, {"t": "Open the Solid Bodies folder in the tree. If your body is hidden, right-click it and pick Show.", "w": "tree"}], "why": "The part is almost never gone. The view moved, the rollback bar hid it, or the body was hidden. None of those delete anything.", "related": ["move-view", "rollback"]}, {"id": "red-x", "kind": "wrong", "title": "There is a red X or a yellow triangle in the tree", "q": "red x; error; yellow triangle; warning; rebuild error; feature failed; fillet failed; cut failed; failed; what wrong; exclamation", "fix": "Hover over the first one from the top to read what it says, then right-click it and pick Edit Feature.", "steps": [{"t": "Find the FIRST feature with a mark, counting from the top of the tree. Fix that one first: it often causes the others.", "w": "tree"}, {"t": "Hover the mouse over it and read the message.", "w": "tree"}, {"t": "Right-click it. Pick Edit Feature to change its settings, or Edit Sketch to change its shape.", "w": "tree"}, {"t": "A yellow triangle is a warning: the part still works. A red X means that feature failed.", "w": "tree"}, {"t": "Common cause: a Fillet radius that is too big. Make it smaller.", "w": "property"}], "why": "Features are built in order, top to bottom. If an early one changes, a later one can lose the edge or face it was attached to, and it fails.", "related": ["edit-feature", "fillet", "rebuild"]}, {"id": "rollback", "kind": "wrong", "title": "Things in my tree are gray, or there is a yellow and black line in the middle", "q": "grayed out; gray features; rollback bar; yellow black line; features missing; part went back", "fix": "Right-click the yellow and black bar and pick Roll to End.", "steps": [{"t": "Find the yellow and black bar in the tree.", "w": "rollback"}, {"t": "Right-click it and pick Roll to End. Or drag it to the very bottom.", "w": "rollback"}], "why": "That bar is a time machine. Everything below it is switched off, so you can see the part as it was earlier. Somebody dragged it by accident.", "related": ["lost-part"]}, {"id": "still-drawing", "kind": "wrong", "title": "It keeps drawing lines every time I click", "q": "keeps drawing; cant stop drawing; line tool; extra lines; stop tool", "fix": "Press Esc. That stops the tool.", "steps": [{"t": "Press Esc once or twice.", "w": "keyboard"}, {"t": "Delete any extra lines: click one, press Delete.", "w": "keyboard"}], "why": "The Line tool stays on so you can draw a chain of lines. Esc or a double-click ends the chain.", "related": ["draw"]}, {"id": "enter-repeat", "kind": "wrong", "title": "A tool opened that I did not choose", "q": "tool opened by itself; random tool; enter key; repeat command; popped up", "fix": "Press Esc to close it. Pressing Enter repeats the last tool you used.", "steps": [{"t": "Press Esc.", "w": "keyboard"}, {"t": "If a panel opened on the left, click the red X at its top.", "w": "property"}], "why": "In SolidWorks the Enter key means do the last command again. That is handy once you know it and confusing until you do.", "related": []}, {"id": "wrong-select", "kind": "wrong", "title": "I cannot click the face or edge I want", "q": "cant select; wrong face; clicks wrong thing; select edge; select face; behind; hidden face", "fix": "Right-click near it, choose Select Other, and pick the one you want from the list.", "steps": [{"t": "Rotate the view so the face or edge is facing you: hold the middle mouse button and drag.", "w": "mouse"}, {"t": "Or right-click near it and choose Select Other. Move through the list until the right one lights up, and click it.", "w": "graphics"}, {"t": "Zoom in with the scroll wheel so edges are farther apart.", "w": "mouse"}], "why": "SolidWorks picks whatever is closest to the mouse. Thin parts put faces and edges very close together.", "related": ["move-view"]}, {"id": "toolbar-gone", "kind": "wrong", "title": "The buttons or tabs at the top disappeared", "q": "toolbar gone; tabs missing; commandmanager; buttons gone; sketch tab missing; features tab missing; ribbon gone", "fix": "Right-click on any tab at the top (like Features) and turn on the tab you are missing.", "steps": [{"t": "Right-click on a tab at the top, like Features or Sketch.", "w": "tabs"}, {"t": "In the menu, point at Tabs and check the one that is missing.", "w": "tabs"}, {"t": "If there are no tabs at all: right-click any empty spot at the top and check CommandManager.", "w": "ribbon"}], "why": "The tabs can be turned off with a right-click, so they are easy to lose by accident. Nothing is broken.", "related": []}, {"id": "tree-gone", "kind": "wrong", "title": "The list on the left disappeared", "q": "tree gone; left panel gone; featuremanager missing; list missing; side panel; list on the left is gone; left list disappeared; side panel gone", "fix": "Press F9.", "steps": [{"t": "Press F9. It shows or hides the tree.", "w": "keyboard"}, {"t": "If the left side shows settings instead of the tree, a tool is still open. Click the green check to finish it or the red X to cancel.", "w": "property"}], "why": "The left panel shares its space. When a tool is open, its settings replace the tree until you finish.", "related": []}, {"id": "view-tilted", "kind": "wrong", "title": "My view is tilted and I cannot draw straight", "q": "tilted; sideways; rotated; crooked; cant see sketch flat; view wrong; upside down", "fix": "Press Ctrl+8 to look straight at the sketch, or press the spacebar and pick Front.", "steps": [{"t": "Inside a sketch, press Ctrl+8. The view turns to face the sketch.", "w": "keyboard"}, {"t": "Or press the spacebar and double-click Front.", "w": "keyboard"}], "why": "Drawing on a tilted view makes lines land at angles you did not mean. Always look straight at the sketch while you draw.", "related": ["move-view"]}, {"id": "extrude-direction", "kind": "wrong", "title": "My extrude went the wrong way, or only to one side", "q": "wrong direction; one side; not centered; mid plane; flip; reverse; extrude backwards", "fix": "Edit the extrude and change Blind to Mid Plane.", "steps": [{"t": "Right-click Boss-Extrude1 in the tree and pick Edit Feature.", "w": "tree"}, {"t": "Under Direction 1, open the drop-down that says Blind and pick Mid Plane.", "w": "property"}, {"t": "Type the full thickness, for example 0.500. Half goes each way.", "w": "property"}, {"t": "Click the green check.", "w": "property"}], "why": "Mid Plane grows the part equally both ways from the sketch, so the front and back of your hook match and it stays centered.", "related": ["extrude", "edit-feature"]}, {"id": "two-bodies", "kind": "wrong", "title": "My part has two bodies (Solid Bodies(2))", "q": "two bodies; solid bodies 2; separate pieces; not connected; merge result; floating", "fix": "Edit the last extrude and check Merge result, or change it so it touches the rest of the part.", "steps": [{"t": "Open the Solid Bodies folder in the tree. If it says (2), you have two separate pieces.", "w": "tree"}, {"t": "Right-click the last extrude, pick Edit Feature, and check Merge result.", "w": "property"}, {"t": "If it still makes two, the new piece does not touch the old one. Edit its sketch so they overlap.", "w": "tree"}], "why": "A hook must be one solid piece. Two bodies that only look connected will print as two parts that fall apart.", "related": ["edit-feature"]}, {"id": "radius-not-dia", "kind": "wrong", "title": "My circle dimension shows R instead of a diameter", "q": "radius; diameter; R instead of; circle dimension; show diameter", "fix": "Right-click the dimension, open Display Options, and pick Display As Diameter.", "steps": [{"t": "Right-click the dimension.", "w": "graphics"}, {"t": "Point at Display Options and click Display As Diameter.", "w": "graphics"}, {"t": "Next time, click a full circle, not an arc. A circle gets a diameter automatically.", "w": "graphics"}], "why": "Arcs are measured by radius and full circles by diameter. The hook rules are written as diameters, so show them that way.", "related": ["smart-dim"]}, {"id": "crashed", "kind": "wrong", "title": "SolidWorks froze or closed", "q": "froze; crashed; not responding; closed; lost my work; recover", "fix": "Wait 30 seconds. If it closed, open SolidWorks again and look for Document Recovery on the right.", "steps": [{"t": "Give it 30 seconds before clicking anything. It may be thinking.", "w": "graphics"}, {"t": "If it closed, reopen SolidWorks. A Document Recovery panel appears on the right side with your last autosave.", "w": "taskpane"}, {"t": "Open it and immediately use Save As to save it with your name.", "w": "menu"}, {"t": "From now on press Ctrl+S every few minutes.", "w": "keyboard"}], "why": "Autosave keeps copies every few minutes, but only a real save is safe.", "related": ["save"]}, {"id": "shape-jumped", "kind": "wrong", "title": "When I typed a dimension, the whole shape jumped or flipped", "q": "shape jumped; flipped; went crazy; distorted; dimension moved everything; exploded", "fix": "Press Ctrl+Z. Then drag the shape close to the right size first and dimension it again.", "steps": [{"t": "Press Ctrl+Z to undo the jump.", "w": "keyboard"}, {"t": "Drag the lines so they are already close to the size you want.", "w": "graphics"}, {"t": "Dimension the big sizes first, then the small ones.", "w": "ribbon"}], "why": "When you type a number, SolidWorks moves whatever lines are free to move. If the sketch was far from that size, a lot has to move and it can flip.", "related": ["smart-dim", "colors"]}, {"id": "dim-box", "kind": "wrong", "title": "The box to type my dimension did not pop up", "q": "no box; cant type number; dimension box; modify box; type value", "fix": "Double-click the dimension number. The box opens.", "steps": [{"t": "Double-click the number.", "w": "graphics"}, {"t": "Type the value and press Enter.", "w": "keyboard"}], "why": "The box opens automatically only when a setting is on. Double-clicking always works.", "related": ["smart-dim"]}, {"id": "wrong-plane", "kind": "wrong", "title": "My sketch is on the wrong plane", "q": "wrong plane; lying flat; top plane; sideways part; edit sketch plane", "fix": "Right-click the sketch in the tree, pick Edit Sketch Plane, then click Front Plane.", "steps": [{"t": "Right-click the sketch in the tree.", "w": "tree"}, {"t": "Pick Edit Sketch Plane.", "w": "tree"}, {"t": "Click Front Plane in the tree, then the green check.", "w": "property"}], "why": "Build the hook outline on the Front Plane so Front view shows its shape and Mid Plane grows it evenly.", "related": ["start-sketch"]}, {"id": "rebuild", "kind": "wrong", "title": "It says rebuild, or there is a traffic light icon", "q": "rebuild; traffic light; needs rebuild; not updated", "fix": "Press Ctrl+B.", "steps": [{"t": "Press Ctrl+B to rebuild.", "w": "keyboard"}, {"t": "Still marked? Press Ctrl+Q to rebuild everything.", "w": "keyboard"}], "why": "After a change, SolidWorks recalculates the part. Rebuild makes it catch up.", "related": ["red-x"]}, {"id": "dragged-arrow", "kind": "wrong", "title": "I dragged an arrow and my part changed size", "q": "dragged arrow; changed size by accident; blue arrow; instant3d", "fix": "Press Ctrl+Z.", "steps": [{"t": "Press Ctrl+Z.", "w": "keyboard"}, {"t": "To change a size on purpose, double-click its number and type it.", "w": "graphics"}], "why": "Those arrows let you drag a feature bigger or smaller. Dragging by accident changes the real size.", "related": ["change-dim"]}, {"id": "new-part", "kind": "how", "title": "Start a new part", "q": "new part; new file; start; begin; create part; open solidworks", "fix": "File, New, Part, OK. Then switch to inches and save it with your name.", "steps": [{"t": "Click File, then New (or the blank page icon at the top).", "w": "menu"}, {"t": "Pick Part and click OK.", "w": "menu"}, {"t": "Check the bottom-right corner says IPS. If not, click it and pick IPS.", "w": "units"}, {"t": "Save it now: Ctrl+S, name it with your last name.", "w": "keyboard"}], "why": "Saving first means autosave and Ctrl+S protect your work from the first minute.", "related": ["set-units", "save", "start-sketch"]}, {"id": "set-units", "kind": "how", "title": "Switch to inches", "q": "inches; units; ips; change units; set units", "fix": "Click the units at the bottom-right corner and pick IPS.", "steps": [{"t": "Click the unit label at the bottom-right corner of the window.", "w": "units"}, {"t": "Pick IPS (inch, pound, second).", "w": "units"}, {"t": "For three decimals: Options (gear), Document Properties, Units, Length decimals .123.", "w": "menu"}], "why": "Every hook rule is in inches, to three decimals.", "related": ["units-mm"]}, {"id": "start-sketch", "kind": "how", "title": "Start a sketch", "q": "start sketch; new sketch; draw; begin drawing; front plane; sketch plane", "fix": "Click Front Plane in the tree, then click the Sketch icon that pops up.", "steps": [{"t": "In the tree on the left, click Front Plane.", "w": "tree"}, {"t": "Click the Sketch icon in the small bar that pops up. Or use the Sketch tab, then Sketch.", "w": "ribbon"}, {"t": "The view turns to face the plane. If it does not, press Ctrl+8.", "w": "keyboard"}, {"t": "The origin (two small red arrows) is the center of your part. Start your first circle there.", "w": "graphics"}], "why": "A sketch is a flat drawing on a plane. The Front Plane is the one you look straight at, so the hook outline goes there.", "related": ["draw", "wrong-plane"]}, {"id": "draw", "kind": "how", "title": "Draw lines, circles and arcs", "q": "draw line; circle; arc; rectangle; draw shape; sketch tools; curve", "fix": "Sketch tab: Line, Circle, or an Arc. Click to start, click to end, Esc to stop.", "steps": [{"t": "Circle: on the Sketch tab click Circle, click the center, move out, click again.", "w": "ribbon"}, {"t": "Line: click Line, click a start point, click each corner. Double-click or press Esc to stop.", "w": "ribbon"}, {"t": "Curve that flows from a line: while drawing a line, move the mouse back onto the last point and out again. It switches to an arc. Or use Tangent Arc.", "w": "graphics"}, {"t": "Start and end points should snap onto each other. An orange square means they joined.", "w": "graphics"}], "why": "Do not worry about exact sizes while drawing. Draw the shape roughly, then set exact sizes with Smart Dimension.", "related": ["smart-dim", "still-drawing", "trim"]}, {"id": "smart-dim", "kind": "how", "title": "Set an exact size (Smart Dimension)", "q": "dimension; size; exact size; smart dimension; measure in sketch; set length; diameter; center to center; set size; exact size; type number; make exact; how big", "fix": "Sketch tab, Smart Dimension, click the thing, click to place, type the number, Enter.", "steps": [{"t": "Click Smart Dimension on the Sketch tab (the icon with a ruler and a diameter sign).", "w": "ribbon"}, {"t": "Line length: click the line. Circle diameter: click the circle. Center to center: click one circle, then the other.", "w": "graphics"}, {"t": "Move the mouse to where the number should sit and click.", "w": "graphics"}, {"t": "Type the value in inches and press Enter.", "w": "keyboard"}, {"t": "Press Esc when you are done dimensioning.", "w": "keyboard"}], "why": "The sketch is only rough until you dimension it. Dimensions are how you control the real size, and how you change it later.", "related": ["change-dim", "red-sketch", "shape-jumped"]}, {"id": "change-dim", "kind": "how", "title": "Change a size after I extruded", "q": "change size; change dimension; edit dimension; resize; make bigger; make smaller; modify", "fix": "Double-click the part to show its numbers, double-click the number, type the new value, press Enter.", "steps": [{"t": "Double-click the feature in the tree, or on the part. Its dimensions appear.", "w": "graphics"}, {"t": "Double-click the number you want to change.", "w": "graphics"}, {"t": "Type the new value and press Enter.", "w": "keyboard"}, {"t": "Press Ctrl+B to rebuild.", "w": "keyboard"}], "why": "This is the whole point of CAD: one number changes and the part updates.", "related": ["left-sketch", "rebuild"]}, {"id": "exit-sketch", "kind": "how", "title": "Leave the sketch", "q": "exit sketch; leave sketch; finish sketch; done sketching; close sketch; finish drawing; done drawing; leave drawing; get out of sketch", "fix": "Click the Exit Sketch icon in the top-right corner of the part area.", "steps": [{"t": "Look at the top-right corner of the part area.", "w": "corner"}, {"t": "Click the icon with the sketch and the check mark to keep your sketch. Do NOT click the red X: it throws away your changes.", "w": "corner"}], "why": "You can go back in at any time with Edit Sketch.", "related": ["left-sketch"]}, {"id": "extrude", "kind": "how", "title": "Make it 3D (Extruded Boss/Base)", "q": "extrude; make 3d; thickness; boss; turn sketch into part; extruded boss base; make it thick; make it solid; turn into 3d; pop out; give it thickness", "fix": "Features tab, Extruded Boss/Base, Mid Plane, type the thickness, green check.", "steps": [{"t": "Click the Features tab.", "w": "tabs"}, {"t": "Click Extruded Boss/Base.", "w": "ribbon"}, {"t": "If it asks for a sketch, click your sketch.", "w": "tree"}, {"t": "Under Direction 1 pick Mid Plane and type the thickness (0.750 is the most allowed).", "w": "property"}, {"t": "Click the green check.", "w": "property"}], "why": "An extrude pushes a closed outline straight out to make a solid. Mid Plane keeps it centered.", "related": ["open-contour", "extrude-direction", "cut"]}, {"id": "sketch-face", "kind": "how", "title": "Sketch on a face of my part", "q": "sketch on face; draw on part; face sketch; add to face", "fix": "Click a flat face of the part, then click the Sketch icon that pops up.", "steps": [{"t": "Click a flat face. It turns blue.", "w": "graphics"}, {"t": "Click Sketch in the bar that pops up.", "w": "graphics"}, {"t": "Press Ctrl+8 to look straight at it.", "w": "keyboard"}, {"t": "Draw a closed outline, then use Extruded Boss/Base to add or Extruded Cut to remove.", "w": "ribbon"}], "why": "Any flat face can be a sketch plane. That is how you add a raised rim, a pocket or a boss.", "related": ["cut", "extrude", "offset"]}, {"id": "cut", "kind": "how", "title": "Cut a hole or a pocket (Extruded Cut)", "q": "cut; hole; pocket; remove material; extruded cut; subtract; make hole; put hole; poke hole; hollow", "fix": "Sketch the shape on a face, then Features tab, Extruded Cut, set the depth, green check.", "steps": [{"t": "Sketch a closed shape on a face.", "w": "graphics"}, {"t": "Features tab, Extruded Cut.", "w": "ribbon"}, {"t": "Pick Through All for a hole all the way through, or Blind and type a depth for a pocket.", "w": "property"}, {"t": "Nothing cut? Click the arrow next to the depth to flip the direction.", "w": "property"}, {"t": "Click the green check.", "w": "property"}], "why": "A cut is an extrude that removes material instead of adding it.", "related": ["sketch-face", "mirror"]}, {"id": "fillet", "kind": "how", "title": "Round an edge (Fillet)", "q": "fillet; round edge; round corner; smooth edge; radius edge; make it round; round the edges; make edges round", "fix": "Features tab, Fillet, type a radius, click the edges, green check.", "steps": [{"t": "Features tab, Fillet.", "w": "ribbon"}, {"t": "Type a radius, like 0.060.", "w": "property"}, {"t": "Click each edge to round. They list on the left.", "w": "graphics"}, {"t": "Green check. If it fails, make the radius smaller.", "w": "property"}], "why": "Sharp inside corners are where cracks start. Rounding them makes the hook stronger.", "related": ["chamfer", "red-x"]}, {"id": "chamfer", "kind": "how", "title": "Bevel an edge (Chamfer)", "q": "chamfer; bevel; angled edge; 45 degree edge", "fix": "Features tab, click the small arrow under Fillet, Chamfer, type a distance, click edges, green check.", "steps": [{"t": "Features tab. Click the small arrow under Fillet and pick Chamfer.", "w": "ribbon"}, {"t": "Type a distance and click the edges.", "w": "property"}, {"t": "Green check.", "w": "property"}], "why": "A 45 degree chamfer on an edge that faces down on the printer prints without support.", "related": ["fillet"]}, {"id": "mirror", "kind": "how", "title": "Make both sides match (Mirror)", "q": "mirror; symmetric; both sides; copy to other side; match", "fix": "Features tab, Mirror, pick Front Plane as the mirror, pick the feature to copy, green check.", "steps": [{"t": "Features tab, Mirror.", "w": "ribbon"}, {"t": "Mirror Face/Plane: click Front Plane in the tree (click the small arrow at the top of the left panel to show it).", "w": "tree"}, {"t": "Features to Mirror: click the cut or boss you made on one side.", "w": "tree"}, {"t": "Green check. In a sketch, use Mirror Entities with a centerline instead.", "w": "property"}], "why": "A hook pulled in the middle should be the same on both faces, or it twists.", "related": ["cut", "centerline"]}, {"id": "offset", "kind": "how", "title": "Copy an outline inside itself (Offset Entities)", "q": "offset; wall; rim; copy outline; inside outline; border", "fix": "Sketch tab, Offset Entities, type a distance, click the edges, flip inward if needed, green check.", "steps": [{"t": "Start a sketch on the face.", "w": "graphics"}, {"t": "Sketch tab, Offset Entities.", "w": "ribbon"}, {"t": "Type a distance and click the outer edges.", "w": "property"}, {"t": "Check Reverse if it went outward. Green check.", "w": "property"}], "why": "An offset keeps an even wall, which is how you make a raised rim: offset inward, then cut the pocket.", "related": ["sketch-face", "cut"]}, {"id": "trim", "kind": "how", "title": "Erase part of a line (Trim)", "q": "trim; erase part of line; cut line; remove extra; power trim; cut line; erase part of circle; remove inside arc; extra line inside", "fix": "Sketch tab, Trim Entities, Power trim, drag across the pieces you do not want.", "steps": [{"t": "Sketch tab, Trim Entities.", "w": "ribbon"}, {"t": "Pick Power trim.", "w": "property"}, {"t": "Hold the left mouse button and drag across the pieces. They disappear.", "w": "mouse"}, {"t": "Esc when done.", "w": "keyboard"}], "why": "Overlapping circles and lines leave extra pieces inside your outline. Trim removes them so the outline is one loop.", "related": ["multi-contour"]}, {"id": "centerline", "kind": "how", "title": "Draw a centerline", "q": "centerline; center line; construction; dashed line; symmetry line", "fix": "Sketch tab, click the small arrow next to Line, Centerline.", "steps": [{"t": "Click the arrow next to Line and pick Centerline.", "w": "ribbon"}, {"t": "Draw it like a normal line.", "w": "graphics"}], "why": "A centerline is a guide. It never becomes plastic, and Mirror Entities uses it as the mirror.", "related": ["mirror"]}, {"id": "relations", "kind": "how", "title": "Make two things touch, line up, or be tangent", "q": "tangent; smooth; coincident; line up; horizontal; vertical; equal; relation; make smooth; line touching circle; tangent; attach line to circle", "fix": "Hold Ctrl and click both items, then pick the relation on the left.", "steps": [{"t": "Hold Ctrl and click the two items.", "w": "graphics"}, {"t": "On the left, under Add Relations, pick one: Tangent (smooth join), Coincident (touching), Horizontal, Equal.", "w": "property"}, {"t": "Press Esc.", "w": "keyboard"}], "why": "Relations lock how shapes connect. Tangent makes an arc flow into a line with no corner, which is stronger.", "related": ["colors"]}, {"id": "measure", "kind": "how", "title": "Measure my part", "q": "measure; how big; check size; distance; diameter; thickness; center distance", "fix": "Evaluate tab, Measure, click what you want to measure.", "steps": [{"t": "Click the Evaluate tab, then Measure.", "w": "tabs"}, {"t": "Two circle edges: shows the center to center distance.", "w": "graphics"}, {"t": "One circle edge: shows its diameter.", "w": "graphics"}, {"t": "Two faces: shows the distance between them, like the thickness.", "w": "graphics"}, {"t": "Click in empty space to clear, and close the box when done.", "w": "graphics"}], "why": "Measure checks the real part, which is what the inspection will check.", "related": ["set-units"]}, {"id": "move-view", "kind": "how", "title": "Turn, zoom and move the view", "q": "rotate; turn; spin; zoom; pan; move view; look around; view; turn around; look at back; rotate part; see other side; move around", "fix": "Hold the middle mouse button to turn. Scroll to zoom. Ctrl + middle button to slide.", "steps": [{"t": "Turn: hold the middle mouse button (the scroll wheel) and drag.", "w": "mouse"}, {"t": "Zoom: roll the scroll wheel.", "w": "mouse"}, {"t": "Slide: hold Ctrl and the middle mouse button and drag.", "w": "mouse"}, {"t": "Fit everything: F. Pick a view: spacebar.", "w": "keyboard"}], "why": "Moving the view never changes the part.", "related": ["lost-part", "view-tilted"]}, {"id": "undo", "kind": "how", "title": "Undo a mistake", "q": "undo; go back; oops; mistake; ctrl z; redo; go back a step; control z; take back", "fix": "Ctrl+Z. Ctrl+Y puts it back.", "steps": [{"t": "Press Ctrl+Z. Each press undoes one step.", "w": "keyboard"}, {"t": "Went too far? Ctrl+Y redoes.", "w": "keyboard"}], "why": "Undo is always safer than deleting.", "related": ["delete-part"]}, {"id": "edit-feature", "kind": "how", "title": "Change an extrude, cut or fillet", "q": "edit feature; change extrude; change depth; change thickness; thicker; thinner; change fillet; edit cut; pencil; edit button", "fix": "Right-click the feature in the tree and pick Edit Feature.", "steps": [{"t": "Right-click the feature in the tree.", "w": "tree"}, {"t": "Pick Edit Feature (the icon with a pencil and a box).", "w": "tree"}, {"t": "Change the settings and click the green check.", "w": "property"}], "why": "Every feature keeps its settings. You can change them any time.", "related": ["left-sketch", "red-x"]}, {"id": "check-sketch", "kind": "how", "title": "Find what is wrong with my sketch", "q": "check sketch; what is wrong; find gap; find error; sketch problem", "fix": "Tools menu, Sketch Tools, Check Sketch for Feature, then Check.", "steps": [{"t": "While in the sketch, open the Tools menu.", "w": "menu"}, {"t": "Sketch Tools, then Check Sketch for Feature.", "w": "menu"}, {"t": "Click Check. It lists and highlights the problems.", "w": "property"}], "why": "It finds gaps, crossing lines and doubled lines faster than your eyes can.", "related": ["open-contour", "multi-contour"]}, {"id": "save", "kind": "how", "title": "Save my part with the right name", "q": "save; save as; name file; filename; lastname; where to save", "fix": "File, Save As, type the name you were given with your last name, Save.", "steps": [{"t": "Click File, then Save As.", "w": "menu"}, {"t": "Type the name your assignment asks for, like V1_SMITH.", "w": "menu"}, {"t": "Save as type should be Part (*.sldprt).", "w": "menu"}, {"t": "Save it where Mr. Pina told the class.", "w": "menu"}, {"t": "After that, Ctrl+S saves again.", "w": "keyboard"}], "why": "The .SLDPRT file is what you hand in. A drawing, a STEP or a screenshot is not the part.", "related": ["crashed"]}, {"id": "hide-planes", "kind": "how", "title": "Hide or show the planes", "q": "planes; hide planes; show planes; squares in the way; plane clutter", "fix": "View menu, Hide/Show, Planes.", "steps": [{"t": "Click View, then Hide/Show, then Planes.", "w": "menu"}], "why": "Planes are guides. Hiding them clears the view and does not delete them.", "related": []}, {"id": "what-sketch", "kind": "what", "title": "What is a sketch?", "q": "sketch; what is a sketch; drawing; 2d; flat drawing; blueprint", "fix": "A flat 2D drawing on a plane or a face. Every 3D shape starts as a sketch.", "steps": [], "why": "You draw the outline flat, set its sizes, then a feature like Extrude turns it into 3D. Change the sketch later and the 3D part changes with it.", "related": ["start-sketch", "extrude"]}, {"id": "what-plane", "kind": "what", "title": "What are Front, Top and Right Plane?", "q": "plane; front plane; top plane; right plane; what plane; which plane; squares; sheet", "fix": "Three invisible flat sheets that meet at the origin. You pick one to draw on.", "steps": [], "why": "Front Plane faces you, Top Plane is the floor, Right Plane is a side wall. Draw a flat part like a wrench or a hook on the Front Plane so the Front view shows its shape.", "related": ["start-sketch", "wrong-plane", "hide-planes"]}, {"id": "what-feature", "kind": "what", "title": "What is a feature?", "q": "feature; what is a feature; boss; extrude1; cut1; fillet1; steps in tree", "fix": "One step that makes or changes 3D shape: an extrude, a cut, a fillet.", "steps": [], "why": "A part is a list of features, built in order. The tree on the left is that list. Each one can be edited later.", "related": ["what-tree", "edit-feature"]}, {"id": "what-tree", "kind": "what", "title": "What is the tree on the left?", "q": "tree; featuremanager; feature manager; list on the left; history; left side list", "fix": "The FeatureManager design tree: every step of your part, in the order you made it.", "steps": [], "why": "Click any item to select it, right-click for Edit Sketch or Edit Feature. The yellow and black bar at the bottom is the rollback bar.", "related": ["what-feature", "tree-gone", "rollback"]}, {"id": "what-origin", "kind": "what", "title": "What is the origin?", "q": "origin; red arrows; center point; 0 0; middle point; blue arrows", "fix": "The 0,0 point of your part, shown as two small arrows. Start your first shape there.", "steps": [], "why": "Snapping your first circle or line to the origin locks the part in place, so dimensions have something fixed to measure from.", "related": ["start-sketch", "colors"]}, {"id": "what-files", "kind": "what", "title": "What are .SLDPRT, .SLDASM and .SLDDRW?", "q": "file type; sldprt; sldasm; slddrw; part file; assembly; drawing; which file; extension", "fix": "SLDPRT is a part (one solid). SLDASM is an assembly (parts put together). SLDDRW is a drawing (a printed sheet).", "steps": [], "why": "Your hook, your wrench and your dogtag are parts, so you hand in the .SLDPRT file.", "related": ["save", "attach-file"]}, {"id": "what-dimension", "kind": "what", "title": "What is a dimension?", "q": "dimension; numbers; what is dimension; size numbers; blue numbers", "fix": "A number that sets a size in your sketch, like a length or a diameter.", "steps": [], "why": "Dimensions are rules the sketch must obey. Change the number and the shape follows. Black lines mean every size is set.", "related": ["smart-dim", "change-dim", "colors"]}, {"id": "what-relation", "kind": "what", "title": "What is a relation?", "q": "relation; tangent; coincident; horizontal; vertical; green icons; little icons on lines", "fix": "A rule about how shapes connect: touching, tangent, lined up, equal.", "steps": [], "why": "The small icons next to your lines show relations. Tangent means smooth with no corner. Coincident means a point sits on something.", "related": ["relations"]}, {"id": "what-midplane", "kind": "what", "title": "What does Mid Plane mean?", "q": "mid plane; midplane; both directions; centered; symmetric extrude", "fix": "The extrude grows equally both ways from the sketch, so the part is centered.", "steps": [], "why": "With Mid Plane at 0.250, the part sticks out 0.125 in front of the sketch and 0.125 behind it.", "related": ["extrude", "extrude-direction"]}, {"id": "what-panel", "kind": "what", "title": "What is the panel with the green check and the red X?", "q": "property manager; propertymanager; green check; red x; left panel; settings panel; ok button", "fix": "The PropertyManager: the settings for the tool you are using. Green check = OK. Red X = cancel.", "steps": [], "why": "It takes the place of the tree while a tool is open. Blue boxes in it are waiting for you to click something in the part.", "related": ["green-check-grey", "tree-gone"]}, {"id": "what-corner", "kind": "what", "title": "What are the icons in the top-right corner of the part?", "q": "corner; confirmation corner; top right icons; exit icon; check in corner", "fix": "The confirmation corner. In a sketch it shows Exit Sketch (keep) and a red X (throw away changes).", "steps": [], "why": "Pressing the red X in a sketch deletes what you just drew. Use the other icon to keep it.", "related": ["exit-sketch"]}, {"id": "what-rebuild", "kind": "what", "title": "What does rebuild mean?", "q": "rebuild; regenerate; update part; recalculate", "fix": "SolidWorks recomputing every feature after a change. Ctrl+B does it.", "steps": [], "why": "Most changes rebuild on their own. When they do not, the part looks old until you rebuild.", "related": ["rebuild"]}, {"id": "open-file", "kind": "how", "title": "Open my part again", "q": "open file; open part; find my part; reopen; where is my file; continue working; recent", "fix": "File, Open Recent, or File, Open and find it in the folder you saved to.", "steps": [{"t": "Click File, then Open Recent. Your part is usually at the top.", "w": "menu"}, {"t": "Or File, Open. Go to the folder you saved in and double-click the .SLDPRT.", "w": "menu"}], "why": "SolidWorks remembers the last files you opened.", "related": ["save", "find-file"]}, {"id": "find-file", "kind": "how", "title": "Find where I saved my file", "q": "where did i save; lost file; find file; cant find file; which folder; location; where is my file; where did my file go; cant find my file", "fix": "File, Open Recent shows it. Hover over it to see the folder.", "steps": [{"t": "In SolidWorks: File, Open Recent, and hover over your file name to see where it is.", "w": "menu"}, {"t": "Or open File Explorer and search for your last name in the search box at the top right.", "w": "keyboard"}], "why": "Saving always goes to the last folder used, which may not be the one you expect.", "related": ["open-file", "save"]}, {"id": "close-no-save", "kind": "how", "title": "Close without saving", "q": "close without saving; dont save; discard; throw away; close file", "fix": "File, Close, then Don't Save.", "steps": [{"t": "Click File, then Close.", "w": "menu"}, {"t": "Choose Don't Save only if you really want to lose the changes.", "w": "menu"}], "why": "Once you choose Don't Save, those changes are gone for good.", "related": ["save"]}, {"id": "select-many", "kind": "how", "title": "Select more than one thing", "q": "select multiple; select two; select many; ctrl click; pick several", "fix": "Hold Ctrl and click each one.", "steps": [{"t": "Hold Ctrl.", "w": "keyboard"}, {"t": "Click each line, edge or face.", "w": "graphics"}, {"t": "Click empty space to clear the selection.", "w": "graphics"}], "why": "Relations, fillets and many tools need more than one thing picked.", "related": ["relations", "fillet"]}, {"id": "delete", "kind": "how", "title": "Delete something", "q": "delete; remove; erase; get rid of; delete line; delete feature", "fix": "Click it, then press the Delete key.", "steps": [{"t": "Click the line, dimension or feature.", "w": "graphics"}, {"t": "Press Delete.", "w": "keyboard"}, {"t": "Deleting a feature asks what to do with its sketch. Read the box, then click Yes.", "w": "graphics"}, {"t": "Wrong thing? Ctrl+Z.", "w": "keyboard"}], "why": "Delete removes that one item. It never deletes the whole part unless you delete the file.", "related": ["undo", "delete-part"]}, {"id": "rectangle", "kind": "how", "title": "Draw a rectangle", "q": "rectangle; square; box; center rectangle; corner rectangle", "fix": "Sketch tab, Rectangle. Click one corner, then the opposite corner.", "steps": [{"t": "Sketch tab, click Rectangle (use the small arrow for Center Rectangle).", "w": "ribbon"}, {"t": "Click the first corner, move, click the opposite corner.", "w": "graphics"}, {"t": "Dimension the width and height with Smart Dimension.", "w": "ribbon"}], "why": "A center rectangle stays centered on the point you click first, handy at the origin.", "related": ["smart-dim"]}, {"id": "polygon", "kind": "how", "title": "Draw a hexagon (Polygon)", "q": "hexagon; hex; polygon; six sides; nut shape; octagon", "fix": "Sketch tab, Polygon. Set the number of sides, click the center, click again.", "steps": [{"t": "Sketch tab, click the arrow next to Rectangle or find Polygon.", "w": "ribbon"}, {"t": "On the left, set the number of sides (6 for a hex).", "w": "property"}, {"t": "Pick Inscribed circle, click the center, move out, click.", "w": "graphics"}, {"t": "Dimension the construction circle to set its size.", "w": "ribbon"}], "why": "A hex is sized by the circle drawn inside it: the distance across the flats.", "related": ["cut"]}, {"id": "slot", "kind": "how", "title": "Draw a slot", "q": "slot; oval; rounded rectangle; pill shape; obround", "fix": "Sketch tab, Straight Slot. Click the start, the end, then the width.", "steps": [{"t": "Sketch tab, click Straight Slot.", "w": "ribbon"}, {"t": "Click where it starts, where it ends, then move out and click for the width.", "w": "graphics"}, {"t": "Dimension its length and width.", "w": "ribbon"}], "why": "A slot is a closed outline in one tool, so it extrudes or cuts right away.", "related": ["cut"]}, {"id": "arc", "kind": "how", "title": "Draw an arc or a curve", "q": "arc; curve; round line; bend; three point arc; tangent arc; semicircle", "fix": "Sketch tab, the arrow next to the arc tool: 3 Point Arc or Tangent Arc.", "steps": [{"t": "3 Point Arc: click the start, click the end, then move to set how much it bends and click.", "w": "graphics"}, {"t": "Tangent Arc: start it on the end of a line so it flows out smoothly.", "w": "graphics"}, {"t": "Trick: while drawing a line, move back onto the last point and out again. It switches to an arc.", "w": "graphics"}], "why": "Smooth curves spread load instead of creating a sharp corner.", "related": ["draw", "relations"]}, {"id": "construction", "kind": "how", "title": "Make a line that is only a guide", "q": "construction line; guide line; dashed; for construction; helper line", "fix": "Click the line, then check For construction on the left.", "steps": [{"t": "Click the line.", "w": "graphics"}, {"t": "On the left, check For construction. It turns dashed.", "w": "property"}], "why": "Construction lines help you place things but never become part of the solid.", "related": ["centerline"]}, {"id": "sketch-fillet", "kind": "how", "title": "Round a corner in my sketch", "q": "sketch fillet; round corner in sketch; rounded corner 2d", "fix": "Sketch tab, Sketch Fillet, type a radius, click the corner point.", "steps": [{"t": "Sketch tab, Sketch Fillet.", "w": "ribbon"}, {"t": "Type the radius.", "w": "property"}, {"t": "Click the corner, then the green check.", "w": "graphics"}], "why": "Rounding in the sketch or with the Fillet feature both work. The feature version is easier to change later.", "related": ["fillet"]}, {"id": "views", "kind": "how", "title": "See the part from the front, top or at an angle", "q": "front view; top view; isometric; angle view; standard views; view orientation; spin view", "fix": "Press the spacebar and double-click a view. Ctrl+7 is the angled (isometric) view.", "steps": [{"t": "Press the spacebar. A box of views opens.", "w": "keyboard"}, {"t": "Double-click Front, Top, or Isometric.", "w": "graphics"}, {"t": "Shortcuts: Ctrl+1 Front, Ctrl+5 Top, Ctrl+7 Isometric.", "w": "keyboard"}], "why": "Isometric shows all three directions at once, the best view for a screenshot.", "related": ["move-view"]}, {"id": "display-style", "kind": "how", "title": "See through my part or show only edges", "q": "wireframe; see through; transparent; shaded; hidden lines; display style", "fix": "Use Display Style in the small toolbar above the part.", "steps": [{"t": "Find the view tools toolbar at the top center of the part area.", "w": "headsup"}, {"t": "Click Display Style and pick Shaded With Edges, or Wireframe to see through.", "w": "headsup"}], "why": "Wireframe helps you find edges hidden behind the part.", "related": ["wrong-select"]}, {"id": "section", "kind": "how", "title": "See inside my part", "q": "section view; cut in half view; inside; cross section", "fix": "Section View in the small toolbar above the part.", "steps": [{"t": "Click Section View in the view tools above the part.", "w": "headsup"}, {"t": "Pick a plane and drag the arrow.", "w": "property"}, {"t": "Click Section View again to turn it off. Nothing is really cut.", "w": "headsup"}], "why": "A section view shows how thick the inside is without changing the part.", "related": ["measure"]}, {"id": "color", "kind": "how", "title": "Change the color of my part", "q": "color; colour; paint; appearance; change color; make it red", "fix": "Click the part, then Edit Appearance in the view tools above the part and pick a color.", "steps": [{"t": "Click a face of the part.", "w": "graphics"}, {"t": "Open Edit Appearance in the view tools at the top.", "w": "headsup"}, {"t": "Pick a color, then the green check.", "w": "property"}], "why": "Color is only for looks. It does not change the print.", "related": []}, {"id": "material", "kind": "how", "title": "Set the material", "q": "material; plastic; abs; pla; set material; material not specified", "fix": "Right-click Material in the tree, pick Edit Material, choose one, Apply, Close.", "steps": [{"t": "Right-click Material <not specified> in the tree.", "w": "tree"}, {"t": "Pick Edit Material.", "w": "tree"}, {"t": "Choose a plastic like ABS, click Apply, then Close.", "w": "property"}], "why": "SolidWorks needs a material to calculate mass.", "related": ["mass"]}, {"id": "mass", "kind": "how", "title": "Find how much my part weighs", "q": "mass; weight; how heavy; grams; mass properties; weigh", "fix": "Set a material first, then Evaluate tab, Mass Properties.", "steps": [{"t": "Set the material.", "w": "tree"}, {"t": "Evaluate tab, Mass Properties.", "w": "tabs"}, {"t": "Read Mass. Change the units in Options if it is not grams.", "w": "property"}], "why": "In this class the real mass comes from the slicer and the scale, because printing is not solid plastic.", "related": ["material"]}, {"id": "shortcut-s", "kind": "how", "title": "Get the tools I need without the tabs", "q": "shortcut bar; s key; quick tools; toolbar near mouse", "fix": "Press S. A small toolbar appears at your mouse.", "steps": [{"t": "Move the mouse over the part area and press S.", "w": "keyboard"}, {"t": "Pick a tool from it.", "w": "graphics"}], "why": "It shows tools for what you are doing right now, sketch tools in a sketch.", "related": []}, {"id": "search-command", "kind": "how", "title": "Find a tool when I don't know where it is", "q": "find tool; where is; cant find button; search command; search tool", "fix": "Type the tool name in the search box at the top right of SolidWorks and pick it from the list.", "steps": [{"t": "Click the search box at the top right of the SolidWorks window.", "w": "menu"}, {"t": "Pick Commands, then type the tool name, like polygon.", "w": "menu"}, {"t": "Click it in the list. It shows you where it lives.", "w": "menu"}], "why": "SolidWorks has hundreds of tools. Searching is faster than hunting through tabs.", "related": ["toolbar-gone"]}, {"id": "rename", "kind": "how", "title": "Rename my file or a feature", "q": "rename; rename file; change name; wrong name; rename feature", "fix": "File name: File, Save As with the new name. Feature name: click it slowly twice in the tree and type.", "steps": [{"t": "For the file: File, Save As, type the new name, Save.", "w": "menu"}, {"t": "For a feature: click it once, wait, click again, type the new name, Enter.", "w": "tree"}], "why": "Save As makes a new file with the new name; the old one stays in the folder.", "related": ["save"]}, {"id": "screenshot", "kind": "how", "title": "Take a screenshot", "q": "screenshot; screen shot; snip; capture screen; picture of screen; print screen; windows shift s", "fix": "Press Windows + Shift + S, drag a box over the SolidWorks window, then paste with Ctrl+V.", "steps": [{"t": "Press the Windows key, Shift and S at the same time.", "w": "keyboard"}, {"t": "Drag a box over the whole SolidWorks window, tree included.", "w": "mouse"}, {"t": "Click the step in this page, then press Ctrl+V.", "w": "keyboard"}], "why": "The screenshot goes to the clipboard, ready to paste. Nothing is saved until you paste it.", "related": ["paste-shot"]}, {"id": "paste-shot", "kind": "how", "title": "Put my screenshot in this assignment", "q": "paste screenshot; add picture; upload image; screenshot not showing; where paste", "fix": "Click the step, then press Ctrl+V.", "steps": [{"t": "Click the step in the list so it is highlighted.", "w": "graphics"}, {"t": "Press Ctrl+V. The picture appears and saves. The next step highlights by itself.", "w": "keyboard"}, {"t": "Wrong picture? Press Replace on it.", "w": "graphics"}], "why": "Each step keeps its own picture, so your teacher sees every stage.", "related": ["screenshot"]}, {"id": "attach-file", "kind": "how", "title": "Hand in my .SLDPRT file", "q": "hand in; turn in; submit file; upload part; attach file; upload sldprt; turn in my part; turn in; hand in my file; how do i submit", "fix": "Save in SolidWorks first, then drop the .SLDPRT in the hand-in box, or click the box and find it.", "steps": [{"t": "Press Ctrl+S in SolidWorks.", "w": "keyboard"}, {"t": "Click the hand-in box and find the file in the folder you saved to.", "w": "graphics"}, {"t": "Wait until it says Handed in.", "w": "graphics"}], "why": "The part file is the real work. Screenshots only show it.", "related": ["save", "find-file"]}, {"id": "newer-version", "kind": "wrong", "title": "It says the file is from a newer version", "q": "newer version; cannot open; wont open; future version; 2026; 2025; incompatible", "fix": "The file was saved in a newer SolidWorks. It cannot open here. Ask your teacher for a copy saved on a lab computer.", "steps": [{"t": "Tell your teacher which file and where it came from.", "w": "graphics"}, {"t": "Work saved on the lab computers always opens on the lab computers.", "w": "graphics"}], "why": "Older SolidWorks cannot read files from newer versions. There is no way around it inside SolidWorks.", "related": []}, {"id": "read-only", "kind": "wrong", "title": "It says the file is read-only or in use", "q": "read only; read-only; in use; locked; cannot save; access denied; another user", "fix": "File, Save As, and save a copy with a new name in your own folder.", "steps": [{"t": "File, Save As.", "w": "menu"}, {"t": "Pick your folder, give it your name, Save.", "w": "menu"}], "why": "The file is protected or open somewhere else. Your own copy can be saved.", "related": ["save"]}, {"id": "nothing-happens", "kind": "wrong", "title": "I click a tool and nothing happens", "q": "nothing happens; tool not working; button does nothing; clicked but nothing; waiting", "fix": "The tool is waiting for you to pick something. Read the blue box on the left, then click that thing in the part.", "steps": [{"t": "Look at the left panel. A blue box says what it wants, like a plane or an edge.", "w": "property"}, {"t": "Click that in the part or the tree.", "w": "graphics"}, {"t": "To give up on the tool, press Esc.", "w": "keyboard"}], "why": "Most tools do nothing until you select the thing they work on.", "related": ["what-panel"]}, {"id": "green-check-grey", "kind": "wrong", "title": "The green check is gray and I cannot click OK", "q": "cant click ok; green check gray; ok greyed out; cannot finish; check disabled; ok button grey; ok button gray; check mark grey; cant press ok", "fix": "Something the tool needs is still missing. Fill the empty blue or pink box on the left.", "steps": [{"t": "Look for an empty or pink box on the left.", "w": "property"}, {"t": "Click it, then pick what it asks for in the part.", "w": "graphics"}, {"t": "Or change a value that is 0.", "w": "property"}], "why": "The check turns on only when the tool has everything it needs.", "related": ["what-panel", "nothing-happens"]}, {"id": "driven-dim", "kind": "wrong", "title": "My dimension is gray and I cannot change it", "q": "gray dimension; driven; reference dimension; cant change number; make driven", "fix": "That dimension is not controlling anything because another rule already does. Delete it, or delete the other rule.", "steps": [{"t": "Look for why: the lines may already be sized by other dimensions.", "w": "graphics"}, {"t": "Delete the gray dimension, or the one it fights with.", "w": "keyboard"}], "why": "When a size is already set, a second dimension of the same thing is shown gray as a note only.", "related": ["red-sketch"]}, {"id": "no-snap", "kind": "wrong", "title": "My lines will not connect", "q": "wont connect; cant connect; not snapping; ends not joining; gap wont close; lines separate", "fix": "Drag one end onto the other slowly and let go only when a small orange square appears.", "steps": [{"t": "Zoom in close with the scroll wheel.", "w": "mouse"}, {"t": "Drag the loose end onto the other end. Watch for the orange square.", "w": "graphics"}, {"t": "Still not? Hold Ctrl, click both end points, and pick Merge on the left.", "w": "property"}], "why": "Endpoints join only when one lands exactly on the other.", "related": ["open-contour"]}, {"id": "cut-nothing", "kind": "wrong", "title": "My cut did not cut anything", "q": "cut didnt work; cut nothing; nothing cut; cut wrong way; no hole", "fix": "Edit the cut and flip its direction, or use Through All.", "steps": [{"t": "Right-click the cut in the tree, Edit Feature.", "w": "tree"}, {"t": "Click the arrow next to Direction 1 to flip it, or pick Through All.", "w": "property"}, {"t": "Green check.", "w": "property"}], "why": "A cut goes away from the face you sketched on. If it points out into air, it removes nothing.", "related": ["cut"]}, {"id": "fillet-fails", "kind": "wrong", "title": "My fillet will not work", "q": "fillet wont work; fillet error; fillet failed; round edge fails; fillet too big", "fix": "Make the radius smaller.", "steps": [{"t": "Edit the fillet, or start over with Fillet.", "w": "tree"}, {"t": "Try half the radius.", "w": "property"}, {"t": "The radius cannot be bigger than the edge it rounds or the part thickness.", "w": "property"}], "why": "There is not enough material for that big a round.", "related": ["fillet", "red-x"]}, {"id": "slow", "kind": "wrong", "title": "SolidWorks is slow or frozen for a moment", "q": "slow; lag; laggy; loading; spinning; hourglass; takes forever", "fix": "Wait. Do not click again while it is thinking.", "steps": [{"t": "Wait until the mouse stops spinning.", "w": "graphics"}, {"t": "Close other programs and browser tabs.", "w": "keyboard"}, {"t": "Save once it responds.", "w": "keyboard"}], "why": "Clicking more while it thinks lines up more work and makes it slower.", "related": ["crashed"]}, {"id": "dims-gone", "kind": "wrong", "title": "My dimensions disappeared", "q": "dimensions gone; numbers gone; cant see dimensions; dimensions hidden", "fix": "Edit the sketch: dimensions show inside the sketch. Or double-click the feature.", "steps": [{"t": "Click the sketch in the tree, Edit Sketch.", "w": "tree"}, {"t": "Or double-click the feature to show its dimensions.", "w": "graphics"}], "why": "Sketch dimensions hide when you leave the sketch so the part is easy to see.", "related": ["change-dim"]}, {"id": "recovery-popup", "kind": "wrong", "title": "A recovery box popped up when I opened SolidWorks", "q": "recovery; document recovery; autorecover; recovered file; popup when opening", "fix": "Open the recovered file and Save As right away with your name.", "steps": [{"t": "Look at the panel on the right for the recovered file.", "w": "taskpane"}, {"t": "Open it, then File, Save As, your name.", "w": "menu"}], "why": "SolidWorks kept a backup from before it closed.", "related": ["crashed"]}, {"id": "wont-open", "kind": "wrong", "title": "SolidWorks will not open or asks for a license", "q": "wont open; license; not starting; solidworks not opening; activation", "fix": "Tell a TA or your teacher. Do not reinstall anything.", "steps": [{"t": "Raise your hand for a TA.", "w": "graphics"}], "why": "Licenses are managed by the school.", "related": []}, {"id": "tiny-huge", "kind": "wrong", "title": "My part is tiny or huge", "q": "tiny; huge; too small; too big; microscopic; giant", "fix": "Press F to zoom to fit. Then check the units at the bottom right.", "steps": [{"t": "Press F.", "w": "keyboard"}, {"t": "Check the bottom-right corner says IPS.", "w": "units"}, {"t": "Measure it to check the real size.", "w": "tabs"}], "why": "Usually the zoom is off, not the size. If the units were wrong, the size really is wrong.", "related": ["units-mm", "measure"]}, {"id": "closed-by-mistake", "kind": "wrong", "title": "I closed my file by mistake", "q": "closed by accident; closed file; lost work; accidentally closed", "fix": "File, Open Recent. If you did not save, check Document Recovery on the right.", "steps": [{"t": "File, Open Recent.", "w": "menu"}, {"t": "If it is not there, look for Document Recovery on the right side.", "w": "taskpane"}], "why": "Ctrl+S often means you never lose more than a few minutes.", "related": ["open-file", "crashed"]}, {"id": "sketch-greyed-tools", "kind": "wrong", "title": "The sketch tools are gray", "q": "tools gray; sketch tools disabled; cant use line; greyed out tools", "fix": "You are not in a sketch. Click a plane or face, then Sketch.", "steps": [{"t": "Click Front Plane or a flat face.", "w": "tree"}, {"t": "Click Sketch.", "w": "ribbon"}], "why": "Drawing tools only work inside a sketch.", "related": ["start-sketch", "left-sketch"]}], "syn": {"pencil": "edit", "fix": "edit", "change": "edit", "modify": "edit", "adjust": "edit", "thick": "thickness", "thicker": "thickness", "thin": "thickness", "thinner": "thickness", "depth": "thickness", "deep": "thickness", "hole": "cut", "holes": "cut", "pocket": "cut", "remove": "cut", "subtract": "cut", "carve": "cut", "round": "fillet", "rounded": "fillet", "smooth": "fillet", "curved": "arc", "curve": "arc", "bent": "arc", "3d": "extrude", "solid": "extrude", "puff": "extrude", "pull": "extrude", "raise": "extrude", "grow": "extrude", "height": "extrude", "gone": "disappeared", "vanished": "disappeared", "missing": "disappeared", "lost": "disappeared", "invisible": "disappeared", "broke": "error", "broken": "error", "wrong": "error", "failed": "error", "fail": "error", "problem": "error", "issue": "error", "bug": "error", "cant": "cannot", "wont": "cannot", "unable": "cannot", "doesnt": "cannot", "stuck": "cannot", "number": "dimension", "numbers": "dimension", "size": "dimension", "length": "dimension", "measurement": "dimension", "bigger": "dimension", "smaller": "dimension", "longer": "dimension", "shorter": "dimension", "draw": "sketch", "drawing": "sketch", "outline": "sketch", "shape": "sketch", "list": "tree", "history": "tree", "sidebar": "tree", "button": "tool", "buttons": "tool", "icon": "tool", "icons": "tool", "menu": "tool", "toolbar": "tool", "spin": "rotate", "turn": "rotate", "flip": "rotate", "tilt": "rotate", "angle": "rotate", "look": "view", "camera": "view", "redo": "undo", "back": "undo", "oops": "undo", "mistake": "undo", "mm": "millimeters", "metric": "millimeters", "inch": "inches", "inchs": "inches", "weight": "mass", "heavy": "mass", "grams": "mass", "turnin": "hand", "submit": "hand", "upload": "hand", "handin": "hand", "pic": "screenshot", "picture": "screenshot", "photo": "screenshot", "snip": "screenshot", "image": "screenshot", "ok": "green check", "okay": "green check", "done": "green check", "accept": "green check", "confirm": "green check", "red": "red", "yellow": "yellow", "x": "red x", "grey": "gray", "greyed": "gray", "hex": "hexagon", "nut": "hexagon", "bolt": "hexagon", "join": "connect", "attach": "connect", "close": "closed", "gap": "open contour", "clear": "delete", "erase": "delete", "trash": "delete", "crash": "crashed", "froze": "crashed", "freeze": "crashed", "frozen": "crashed"}, "keys": [["Ctrl+Z", "Undo"], ["Esc", "Stop the tool"], ["F", "Find my part"], ["Ctrl+8", "Look straight at it"], ["Space", "Pick a view"], ["Ctrl+B", "Rebuild"], ["F9", "Show the tree"], ["Ctrl+S", "Save"], ["Win+Shift+S", "Screenshot"], ["Ctrl+V", "Paste it"]], "steps": [{"n": 1, "title": "New part, inches, saved", "do": [["File, New, Part, OK.", "menu"], ["Bottom-right corner: click the units and pick IPS.", "units"], ["File, Save As. Name it SWDAY_ and your last name, like SWDAY_SMITH. Save.", "menu"]], "shot": "The empty part: your file name at the very top, IPS at the bottom right.", "help": ["new-part", "set-units", "save"]}, {"n": 2, "title": "Two circles on the Front Plane", "do": [["Click Front Plane in the tree, then Sketch.", "tree"], ["Circle tool. Click ON the origin, move out, click.", "graphics"], ["Draw a smaller circle to the right. Keep its center level with the first (a dotted line appears).", "graphics"], ["Press Esc.", "keyboard"]], "shot": "Two circles side by side, the big one on the origin.", "help": ["start-sketch", "draw", "what-origin"]}, {"n": 3, "title": "Exact sizes", "do": [["Smart Dimension. Click the big circle, place it, type 1.5, Enter.", "ribbon"], ["Click the small circle: 1.0, Enter.", "graphics"], ["Click the big circle, then the small one: center to center. Type 4, Enter.", "graphics"], ["Not level? Hold Ctrl, click both center points, pick Horizontal on the left.", "property"]], "shot": "Three dimensions: 1.500, 1.000, 4.000.", "help": ["smart-dim", "relations", "shape-jumped"]}, {"n": 4, "title": "Two tangent lines", "do": [["Line tool. Draw a line from the top of the big circle to the top of the small one. Esc.", "graphics"], ["Hold Ctrl, click the line and the big circle. Pick Tangent on the left.", "property"], ["Ctrl-click the line and the small circle. Tangent.", "property"], ["Do the same for a bottom line.", "graphics"]], "shot": "Top and bottom lines touching both circles smoothly.", "help": ["relations", "draw", "no-snap"]}, {"n": 5, "title": "One outline", "do": [["Sketch tab, Trim Entities, pick Power trim.", "ribbon"], ["Hold the left button and drag across the inside half of each circle.", "mouse"], ["Esc. You should have one closed wrench outline.", "keyboard"]], "shot": "One outline shaped like a bone. No lines inside it.", "help": ["trim", "multi-contour", "open-contour"]}, {"n": 6, "title": "Make it 3D", "do": [["Features tab, Extruded Boss/Base.", "ribbon"], ["Direction 1: Mid Plane. Depth 0.25.", "property"], ["Green check. Then Ctrl+7 for the angled view.", "property"]], "shot": "A solid wrench shape, seen at an angle.", "help": ["extrude", "what-midplane", "open-contour"]}, {"n": 7, "title": "A hex socket", "do": [["Click the front face of the big end, then Sketch. Ctrl+8.", "graphics"], ["Polygon: 6 sides, Inscribed circle. Click on the big end's center point, move out, click.", "property"], ["Smart Dimension the dashed circle: 0.75.", "ribbon"], ["Features tab, Extruded Cut, Through All, green check.", "property"]], "shot": "A six-sided hole through the big end.", "help": ["polygon", "cut", "sketch-face", "cut-nothing"]}, {"n": 8, "title": "Round the edges", "do": [["Features tab, Fillet. Radius 0.05.", "ribbon"], ["Click the front face. Turn the part and click the back face.", "graphics"], ["Green check.", "property"]], "shot": "Every edge rounded, front and back.", "help": ["fillet", "fillet-fails", "move-view"]}, {"n": 9, "title": "Change a size", "do": [["In the tree, click the arrow next to Boss-Extrude1, click Sketch1, Edit Sketch.", "tree"], ["Double-click 4.000, type 3.5, Enter.", "graphics"], ["Take the screenshot now, then Exit Sketch in the top-right corner.", "corner"]], "shot": "The sketch open with 3.500 showing.", "help": ["left-sketch", "change-dim", "exit-sketch"]}, {"n": 10, "title": "Measure it and save", "do": [["Evaluate tab, Measure.", "tabs"], ["Click the front face, then the back face. It shows the distance: 0.250.", "graphics"], ["Close Measure. Press Ctrl+S.", "keyboard"]], "shot": "The Measure box showing 0.250.", "help": ["measure", "save"]}], "traps": [{"id": "trap1", "title": "Leave the sketch, get back in", "cause": "Edit Sketch1, then click Exit Sketch.", "fix": "left-sketch"}, {"id": "trap2", "title": "A shape that is not closed", "cause": "Sketch on the front face. Draw three lines that do not close. Try Extruded Cut.", "fix": "open-contour"}, {"id": "trap3", "title": "The rollback bar", "cause": "Drag the yellow and black bar in the tree up above Cut-Extrude1. The hex disappears.", "fix": "rollback"}, {"id": "trap4", "title": "Millimeters", "cause": "Click IPS at the bottom right and pick MMGS. Look at the numbers.", "fix": "units-mm"}, {"id": "trap5", "title": "A red sketch", "cause": "Edit Sketch1. Dimension center to center again. If a box asks, pick Leave this dimension driving.", "fix": "red-sketch"}], "gloss": {"Front Plane": "The flat sheet you look straight at. Draw a flat part like the wrench here.", "Top Plane": "The flat sheet lying like the floor.", "Right Plane": "The flat sheet standing like a side wall.", "origin": "The 0,0 point of the part: two small arrows in the middle. Start your first shape on it.", "Smart Dimension": "The tool that sets an exact size. Click a line or circle, place the number, type the size.", "Circle": "Sketch tool: click the center, move out, click again.", "Line": "Sketch tool: click to start, click at each corner. Esc to stop.", "Tangent": "A relation that makes a line and a curve join smoothly, with no corner.", "Horizontal": "A relation that makes two points line up level, left to right.", "Trim Entities": "Sketch tool that erases pieces of lines and circles.", "Power trim": "Trim mode: hold the left button and drag across the pieces to erase them.", "Extruded Boss/Base": "Features tool that pushes a closed sketch into a 3D solid.", "Extruded Cut": "Features tool that removes material through a closed sketch.", "Mid Plane": "Extrude setting that grows the part equally both ways from the sketch.", "Through All": "Cut setting that cuts all the way through the part.", "Polygon": "Sketch tool for shapes with equal sides, like a hexagon.", "Inscribed circle": "Polygon setting: the dashed circle touches the middle of each flat side, so it sets the size across the flats.", "Fillet": "Features tool that rounds an edge to a radius you type.", "Chamfer": "Features tool that cuts an edge to a flat bevel.", "Edit Sketch": "Opens a sketch again so you can change it. The pencil icon.", "Exit Sketch": "Leaves the sketch and keeps it. Top-right corner of the part area.", "Measure": "Evaluate tool that reads real distances and sizes on your part.", "IPS": "Inch, pound, second: the unit system this class uses.", "MMGS": "Millimeter, gram, second: metric units. Not what this class uses.", "Features tab": "The tab with the 3D tools: Extruded Boss/Base, Cut, Fillet.", "Sketch tab": "The tab with the 2D drawing tools: Line, Circle, Smart Dimension, Trim.", "Evaluate tab": "The tab with checking tools like Measure and Mass Properties.", "green check": "OK. Finishes the tool and keeps what you did.", "red X": "Cancel. Throws away what the tool was about to do.", "rollback bar": "The yellow and black bar in the tree. Everything below it is switched off.", "SketchXpert": "A helper that finds conflicting dimensions and relations in a red sketch.", "Over Defined": "Two rules in the sketch are fighting. The lines turn red or yellow.", "Under Defined": "Some lines can still move. Normal while you work.", "Fully Defined": "Every line is locked by dimensions and relations. Lines are black.", "Save As": "Saves a copy with the name you type.", ".SLDPRT": "A SolidWorks part file. This is what you hand in.", "Check Sketch for Feature": "Tools, Sketch Tools: finds gaps and crossing lines in a sketch.", "Document Recovery": "The panel on the right that holds an autosaved copy after a crash.", "Boss-Extrude1": "The first extrude you made. Its sketch is inside it: click the arrow.", "Sketch1": "The first sketch you made.", "Cut-Extrude1": "The first cut you made.", "For construction": "Turns a line into a dashed guide that never becomes solid.", "Centerline": "A dashed guide line, used for mirroring.", "Ctrl+Z": "Undo the last step.", "Ctrl+Y": "Redo.", "Esc": "Stop the tool you are using.", "Ctrl+7": "Angled (isometric) view.", "Ctrl+8": "Turn the view to look straight at the sketch or face.", "Ctrl+S": "Save.", "Ctrl+B": "Rebuild.", "Ctrl+V": "Paste.", "Ctrl+C": "Copy.", "F9": "Show or hide the tree.", "tree": "The list on the left: every step of your part, in order.", "dimension": "A number that sets a size in a sketch.", "sketch": "A flat 2D drawing on a plane or a face."}, "fields": {"s1": 1, "s2": 1, "s3": 1, "s4": 1, "s5": 1, "s6": 1, "s7": 1, "s8": 1, "s9": 1, "s10": 1, "partA": 1, "ownShot": 1}};
+  var E = D.entries, BY = {}; E.forEach(function (x) { BY[x.id] = x; });
+  var readOnly = false;
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, txt) { var d = document.createElement(tag); if (cls) d.className = cls; if (txt != null) d.textContent = txt; return d; }
+  function send(m) { try { window.parent.postMessage(m, '*'); } catch (e) {} }
+  var dirty = {};
+  function change(field, value) { if (readOnly) return; dirty[field] = true; send({ type: 'idea:change', field: field, value: value }); progress(); }
+  function setStatus(t, bad) { $('status').textContent = t; $('status').className = 'pill' + (bad ? ' bad' : ''); }
+
+
+  /* ---------------- hover descriptions: anything with data-tip, after 0.8 s ---------------- */
+  var tipEl = el('div', 'tipbox'); tipEl.setAttribute('role', 'tooltip'); tipEl.hidden = true; document.body.appendChild(tipEl);
+  var tipTimer = null, tipFor = null;
+  function tipShow(t) {
+    var txt = t.getAttribute('data-tip'); if (!txt) return;
+    tipEl.textContent = txt; tipEl.hidden = false;
+    var r = t.getBoundingClientRect(), w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+    var x = Math.max(8, Math.min(r.left + window.scrollX, window.scrollX + document.documentElement.clientWidth - w - 8));
+    var y = r.bottom + window.scrollY + 8;
+    tipEl.style.left = x + 'px'; tipEl.style.top = y + 'px';
+  }
+  function tipHide() { clearTimeout(tipTimer); tipTimer = null; tipFor = null; tipEl.hidden = true; }
+  document.addEventListener('mouseover', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-tip]') : null;
+    if (t === tipFor) return;
+    tipHide(); if (!t) return;
+    tipFor = t; tipTimer = setTimeout(function () { tipShow(t); }, 800);
+  });
+  document.addEventListener('focusin', function (e) { var t = e.target.closest && e.target.closest('[data-tip]'); tipHide(); if (t) { tipFor = t; tipTimer = setTimeout(function () { tipShow(t); }, 800); } });
+  document.addEventListener('focusout', tipHide);
+  document.addEventListener('mousedown', tipHide);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') tipHide(); });
+  window.addEventListener('scroll', tipHide, { passive: true });
+  function tip(node, text) { if (node && text) node.setAttribute('data-tip', text); return node; }
+
+  /* glossary: SolidWorks words inside any text get their own description */
+  var GL = D.gloss, GKEYS = Object.keys(GL).sort(function (a, b) { return b.length - a.length; });
+  var GRE = new RegExp('(' + GKEYS.map(function (k) { return k.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&'); }).join('|') + ')', 'g');
+  function gl(text) {
+    var frag = document.createDocumentFragment(), last = 0, m; GRE.lastIndex = 0;
+    while ((m = GRE.exec(text))) {
+      var before = text[m.index - 1], after = text[m.index + m[0].length];
+      if ((before && /[A-Za-z0-9]/.test(before)) || (after && /[A-Za-z0-9]/.test(after))) continue;
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      var sp = el('span', 'term', m[0]); sp.setAttribute('data-tip', GL[m[0]]); frag.appendChild(sp);
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    return frag;
+  }
+  function glEl(tag, cls, text) { var n = el(tag, cls); n.appendChild(gl(text)); return n; }
+
+  /* ---------------- accessibility bar ---------------- */
+  var root = document.documentElement;
+  function toggle(btn, cls, group) {
+    btn.addEventListener('click', function () {
+      if (group) group.forEach(function (c) { if (c !== cls) root.classList.remove(c); });
+      root.classList.toggle(cls);
+      document.querySelectorAll('[data-acc]').forEach(function (b) { b.setAttribute('aria-pressed', String(root.classList.contains(b.getAttribute('data-acc')))); });
+    });
+  }
+  toggle($('acc-big'), 'big', ['big', 'bigger']); toggle($('acc-bigger'), 'bigger', ['big', 'bigger']); toggle($('acc-easy'), 'easy');
+  var canSpeak = 'speechSynthesis' in window;
+  function speak(text) { try { window.speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(text); u.rate = 0.95; window.speechSynthesis.speak(u); } catch (e) {} }
+
+  /* ---------------- views ---------------- */
+  var VIEWS = ['follow', 'break', 'own', 'unstuck'];
+  function show(v) {
+    VIEWS.forEach(function (k) { $('v-' + k).hidden = k !== v; $('t-' + k).setAttribute('aria-selected', String(k === v)); });
+  }
+  VIEWS.forEach(function (k) { $('t-' + k).addEventListener('click', function () { show(k); }); });
+
+  /* ---------------- where-to-look map ---------------- */
+  var REG = {
+    menu: [0, 0, 320, 11, 'Title bar, menus, search', 1], tabs: [0, 11, 320, 9, 'Tabs: Features, Sketch, Evaluate'], ribbon: [0, 20, 320, 22, 'Tool buttons'],
+    tree: [0, 42, 78, 132, 'Tree'], property: [0, 42, 78, 132, 'Settings panel (green check)'], rollback: [4, 136, 70, 7, 'Rollback bar'],
+    graphics: [78, 42, 230, 132, 'Part area'], headsup: [150, 46, 90, 11, 'View tools'], corner: [280, 46, 26, 20, 'Exit/Cancel'],
+    taskpane: [308, 42, 12, 132, ''], status: [0, 174, 320, 11, 'Status bar'], units: [262, 174, 58, 11, 'Units']
+  };
+  var CAP = {
+    menu: 'the menus at the very top', tabs: 'the tabs at the top (Features, Sketch, Evaluate)', ribbon: 'the tool buttons under the tabs', tree: 'the tree on the left',
+    property: 'the settings panel on the left, with the green check', rollback: 'the yellow and black bar in the tree', graphics: 'the big part area',
+    headsup: 'the small view tools above the part', corner: 'the top-right corner of the part area', taskpane: 'the panel on the far right',
+    status: 'the bar along the bottom', units: 'the bottom-right corner', keyboard: 'your keyboard', mouse: 'your mouse'
+  };
+  var NS = 'http://www.w3.org/2000/svg';
+  function sv(tag, a) { var n = document.createElementNS(NS, tag); for (var k in a) n.setAttribute(k, a[k]); return n; }
+  function drawMap(where) {
+    var s = sv('svg', { viewBox: '0 0 320 197', 'class': 'map', role: 'img', 'aria-label': 'Where to look: ' + (CAP[where] || '') });
+    ['menu', 'tabs', 'ribbon', where === 'property' ? 'property' : 'tree', 'graphics', 'taskpane', 'status', 'units', 'headsup', 'corner', 'rollback'].forEach(function (k) {
+      var r = REG[k], hot = k === where, dark = r[5] && !hot;
+      s.appendChild(sv('rect', { x: r[0], y: r[1], width: r[2], height: r[3], 'class': 'r' + (hot ? ' hot' : dark ? ' dark' : ''), 'data-tip': 'This area is ' + (CAP[k] || k) + '.' }));
+      if (r[4]) { var t = sv('text', { x: r[0] + 4, y: r[1] + Math.min(r[3] - 3, 8.5), 'class': hot ? 'hot' : dark ? 'w' : '' }); t.textContent = r[4]; s.appendChild(t); }
+    });
+    s.appendChild(sv('rect', { x: 96, y: 188, width: 74, height: 8, rx: 2, 'class': 'ic' + (where === 'keyboard' ? ' hot' : '') }));
+    var kt = sv('text', { x: 100, y: 194.5 }); kt.textContent = 'KEYBOARD'; s.appendChild(kt);
+    s.appendChild(sv('rect', { x: 186, y: 187, width: 8, height: 10, rx: 4, 'class': 'ic' + (where === 'mouse' ? ' hot' : '') }));
+    var mt = sv('text', { x: 198, y: 194.5 }); mt.textContent = 'MOUSE'; s.appendChild(mt);
+    return s;
+  }
+
+  /* ---------------- image fields: queue, downscale, confirm off idea:state ---------------- */
+  var IMG = {}; // field -> {name, src, state: '', 'up', 'ok', 'bad', err, url}
+  var queue = [], busy = null, busyTimer = null;
+  function pump() {
+    if (busy || !queue.length) return;
+    busy = queue.shift();
+    send({ type: 'idea:image', field: busy.field, name: busy.name, bytes: busy.bytes });
+    busyTimer = setTimeout(function () { settle('No answer from the server after 45 seconds. Check the wifi, then paste it again.'); }, 45000);
+  }
+  function settle(err) {
+    if (!busy) return;
+    clearTimeout(busyTimer);
+    var s = IMG[busy.field] || {};
+    if (err) { s.state = 'bad'; s.err = err; } else { s.state = 'ok'; s.err = ''; dirty[busy.field] = true; }
+    IMG[busy.field] = s; var f = busy.field; busy = null;
+    repaintField(f); progress(); pump();
+  }
+  function shrink(dataUrl, cb) {
+    var im = new Image();
+    im.onload = function () {
+      try {
+        var max = 1600, w = im.naturalWidth, h = im.naturalHeight, k = Math.min(1, max / w);
+        if (k === 1 && dataUrl.length < 900000) return cb(dataUrl);
+        var c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.86));
+      } catch (e) { cb(dataUrl); }
+    };
+    im.onerror = function () { cb(dataUrl); };
+    im.src = dataUrl;
+  }
+  function putImage(field, file, baseName) {
+    if (readOnly || !file || !/^image\//.test(file.type)) return false;
+    var r = new FileReader();
+    r.onload = function () {
+      shrink(String(r.result), function (data) {
+        var name = baseName + (/^data:image\/jpeg/.test(data) ? '.jpg' : '.png');
+        IMG[field] = { name: name, src: data, state: 'up' };
+        queue.push({ field: field, name: name, bytes: data });
+        repaintField(field); progress(); pump();
+        if (field === 's' + cur && cur < D.steps.length) { selectStep(cur + 1); }
+      });
+    };
+    r.readAsDataURL(file);
+    return true;
+  }
+  function removeImage(field) {
+    if (readOnly) return;
+    dirty[field] = true; send({ type: 'idea:image-remove', field: field });
+    IMG[field] = {}; repaintField(field); progress();
+  }
+
+  /* ---------------- follow along ---------------- */
+  var cur = 1;
+  function stepState(n) { var s = IMG['s' + n] || {}; return s.state === 'ok' || (s.name && !s.state) ? 'done' : s.state === 'up' ? 'pend' : s.state === 'bad' ? 'err' : ''; }
+  function paintTree() {
+    var ol = $('tree'); ol.innerHTML = '';
+    D.steps.forEach(function (s) {
+      var li = el('li', stepState(s.n)), b = el('button');
+      b.type = 'button'; if (s.n === cur) b.setAttribute('aria-current', 'step');
+      var st = stepState(s.n);
+      b.appendChild(el('span', 'ic', st === 'done' ? '✓' : String(s.n)));
+      b.appendChild(el('span', 'tt', s.title));
+      b.appendChild(el('span', 'st', st === 'done' ? 'Saved' : st === 'pend' ? 'Saving' : st === 'err' ? 'Retry' : ''));
+      tip(b, 'Step ' + s.n + '. Your screenshot shows: ' + s.shot); b.addEventListener('click', function () { selectStep(s.n); });
+      li.appendChild(b); ol.appendChild(li);
+    });
+  }
+  function selectStep(n) { cur = n; paintTree(); paintStep(); }
+  function paintStep() {
+    var s = D.steps[cur - 1], box = $('step'); box.innerHTML = '';
+    var hd = el('div', 'stephead'); hd.appendChild(el('span', 'num', 'Step ' + s.n + ' of ' + D.steps.length)); hd.appendChild(el('h3', null, s.title));
+    if (canSpeak) { var sp = tip(el('button', 'btn small say', 'Read it to me'), 'Reads this step out loud. Use headphones.'); sp.type = 'button'; sp.addEventListener('click', function () { speak(s.title + '. ' + s.do.map(function (d) { return d[0]; }).join(' ') + ' Screenshot: ' + s.shot); }); hd.appendChild(sp); }
+    box.appendChild(hd);
+    var ol = el('ol', 'doit');
+    s.do.forEach(function (d) { var li = el('li'); var sp = glEl('span', null, d[0]); var w = tip(el('span', 'where', CAP[d[1]] ? 'Look at: ' + CAP[d[1]] : ''), 'Where on the SolidWorks screen this happens.'); if (CAP[d[1]]) sp.appendChild(w); li.appendChild(sp); ol.appendChild(li); });
+    box.appendChild(ol);
+    var lf = tip(el('div', 'lookfor'), 'Check your screenshot shows this before you move on.'); lf.appendChild(el('b', null, 'Your screenshot shows: ')); lf.appendChild(gl(s.shot)); box.appendChild(lf);
+    var z = tip(el('div', 'shotzone'), 'Paste with Ctrl+V anywhere on this page, drag a picture here, or click to choose a file.'); z.id = 'zone'; z.tabIndex = 0; z.setAttribute('role', 'button'); z.setAttribute('aria-label', 'Screenshot for step ' + s.n);
+    box.appendChild(z);
+    var meta = el('div', 'shotmeta'); meta.id = 'zonemeta'; box.appendChild(meta);
+    var stuck = el('div', 'stuckrow'); stuck.appendChild(el('span', null, 'Stuck on this step?'));
+    s.help.forEach(function (id) { var c = el('button', 'chip', BY[id].title); c.type = 'button'; tip(c, BY[id].fix); c.addEventListener('click', function () { show('unstuck'); openEntry(id); }); stuck.appendChild(c); });
+    box.appendChild(stuck);
+    var nav = el('div', 'navrow'), p = tip(el('button', 'btn', 'Previous step'), 'Go back one step.'), n = tip(el('button', 'btn primary', cur === D.steps.length ? 'Next: Break it' : 'Next step'), cur === D.steps.length ? 'Go to the Break it section.' : 'Go to the next step. Wait for Mr. Pina to demo it.');
+    p.type = n.type = 'button'; p.disabled = cur === 1;
+    p.addEventListener('click', function () { if (cur > 1) selectStep(cur - 1); });
+    n.addEventListener('click', function () { if (cur < D.steps.length) selectStep(cur + 1); else show('break'); });
+    nav.appendChild(p); nav.appendChild(n); box.appendChild(nav);
+    wireZone(z, function () { return 's' + cur; }, function () { return 'swday-step-' + (cur < 10 ? '0' : '') + cur; });
+    repaintField('s' + cur);
+  }
+  function wireZone(z, fieldOf, nameOf) {
+    var pick = el('input'); pick.type = 'file'; pick.accept = 'image/*'; pick.hidden = true; z.parentNode.appendChild(pick);
+    z.addEventListener('click', function (e) { if (e.target.closest('button')) return; if (!readOnly) pick.click(); });
+    z.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !readOnly) { e.preventDefault(); pick.click(); } });
+    pick.addEventListener('change', function () { putImage(fieldOf(), pick.files && pick.files[0], nameOf()); pick.value = ''; });
+    ['dragenter', 'dragover'].forEach(function (t) { z.addEventListener(t, function (e) { e.preventDefault(); z.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (t) { z.addEventListener(t, function () { z.classList.remove('over'); }); });
+    z.addEventListener('drop', function (e) { e.preventDefault(); putImage(fieldOf(), e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0], nameOf()); });
+  }
+  function fillZone(z, meta, field, emptyText) {
+    var s = IMG[field] || {};
+    z.innerHTML = '';
+    if (s.src) { var im = new Image(); im.src = s.src; im.alt = 'Your screenshot'; z.appendChild(im); }
+    else if (s.name) { z.appendChild(el('span', 'saved', 'Screenshot saved: ' + s.name)); }
+    else {
+      var b = el('b', null, emptyText); z.appendChild(b);
+      var sp = el('span'); sp.innerHTML = 'Press <kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>, drag over SolidWorks, then <kbd>Ctrl</kbd> + <kbd>V</kbd> here. Or click to choose a file.'; z.appendChild(sp);
+    }
+    if (!meta) return;
+    meta.innerHTML = '';
+    if (s.state === 'up') meta.appendChild(el('span', 'state up', 'Saving...'));
+    if (s.state === 'ok' || (s.name && !s.state)) meta.appendChild(el('span', 'state ok', 'Saved'));
+    if (s.state === 'bad') meta.appendChild(el('span', 'state bad', s.err || 'Not saved.'));
+    if ((s.name || s.state === 'bad') && !readOnly && s.state !== 'up') {
+      var rp = tip(el('button', 'btn small', s.state === 'bad' ? 'Try again' : 'Replace'), 'Removes this screenshot so you can paste a new one.'); rp.type = 'button';
+      rp.addEventListener('click', function () { removeImage(field); });
+      meta.appendChild(rp);
+    }
+  }
+  function repaintField(field) {
+    if (/^s\d+$/.test(field)) { paintTree(); if (field === 's' + cur && $('zone')) fillZone($('zone'), $('zonemeta'), field, 'Paste your step ' + cur + ' screenshot here'); }
+    if (field === 'ownShot') fillZone($('ownzone'), $('ownmeta'), 'ownShot', 'Paste a screenshot of your changed wrench');
+    if (field === 'partA') paintFile();
+  }
+  /* paste anywhere goes to the step on screen, or the own screenshot on that view */
+  document.addEventListener('paste', function (e) {
+    if (readOnly) return;
+    var t = e.target; if (t && (t.tagName === 'TEXTAREA' || t.tagName === 'INPUT')) return;
+    var items = (e.clipboardData && e.clipboardData.items) || [];
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].kind === 'file' && /^image\//.test(items[i].type)) {
+        var f = items[i].getAsFile();
+        if (!$('v-own').hidden) { if (!(IMG.ownShot || {}).name) putImage('ownShot', f, 'swday-own'); }
+        else {
+          if ($('v-follow').hidden) show('follow');
+          var n = cur; while (n <= D.steps.length && (IMG['s' + n] || {}).name) n++;
+          if (n > D.steps.length) { setStatus('Every step has a screenshot. Press Replace on one to change it.'); }
+          else { if (n !== cur) selectStep(n); putImage('s' + n, f, 'swday-step-' + (n < 10 ? '0' : '') + n); }
+        }
+        e.preventDefault(); return;
+      }
+    }
+  });
+
+  /* ---------------- break it ---------------- */
+  function paintTraps() {
+    document.querySelectorAll('#traps .trap').forEach(function (c) {
+      c.querySelector('.fixbtn').addEventListener('click', function () { show('unstuck'); openEntry(c.getAttribute('data-fix')); });
+      var cb = c.querySelector('input[type="checkbox"]');
+      cb.addEventListener('change', function () { change(cb.getAttribute('data-field'), cb.checked); });
+    });
+  }
+
+  /* ---------------- on your own: part file ---------------- */
+  var MAX = 50 * 1024 * 1024;
+  function paintFile() {
+    var s = IMG.partA || {}, drop = $('fdrop'), st = $('fstate'), msg = $('fmsg');
+    drop.hidden = readOnly || !!s.name;
+    st.hidden = !s.name;
+    msg.className = 'fmsg ' + (s.state === 'bad' ? 'bad' : 'note');
+    msg.textContent = s.state === 'bad' ? s.err : (s.name && !/^SWDAY_/i.test(s.name) ? 'Named ' + s.name + '. It should be SWDAY_ and your last name. Use Save As in SolidWorks, then Remove this and hand it in again.' : '');
+    st.innerHTML = '';
+    if (!s.name) return;
+    st.appendChild(el('span', 'fn', s.name));
+    st.appendChild(el('span', 'state ' + (s.state === 'up' ? 'up' : 'ok'), s.state === 'up' ? 'Uploading' : 'Handed in'));
+    if (s.url) { var a = el('a', 'btn small', 'Download'); a.href = s.url; a.addEventListener('click', function (e) { e.preventDefault(); var w = window.open(/^\//.test(s.url) ? 'https://ideabosco.com' + s.url : s.url, '_blank'); if (w) { try { w.opener = null; } catch (x) {} } }); st.appendChild(a); }
+    if (!readOnly && s.state !== 'up') { var rm = el('button', 'btn small', 'Remove'); rm.type = 'button'; rm.addEventListener('click', function () { removeImage('partA'); }); st.appendChild(rm); }
+  }
+  function handIn(f) {
+    if (readOnly || !f) return;
+    var n = f.name || '';
+    if (!/\.sldprt$/i.test(n)) {
+      IMG.partA = { state: 'bad', err: /\.sldasm$/i.test(n) ? 'That is an assembly. Hand in the part file, .SLDPRT.' : /\.slddrw$/i.test(n) ? 'That is a drawing. Hand in the part file, .SLDPRT.' : 'Hand in the SolidWorks part file, the one ending in .SLDPRT.' };
+      paintFile(); return;
+    }
+    if (f.size > MAX) { IMG.partA = { state: 'bad', err: 'That file is ' + (f.size / 1048576).toFixed(1) + ' MB. The limit here is 50 MB.' }; paintFile(); return; }
+    var r = new FileReader();
+    r.onload = function () { IMG.partA = { name: n, state: 'up' }; queue.push({ field: 'partA', name: n, bytes: String(r.result) }); paintFile(); progress(); pump(); };
+    r.readAsDataURL(f);
+  }
+  (function () {
+    var drop = $('fdrop'), pick = $('fpick');
+    drop.addEventListener('click', function () { if (!readOnly) pick.click(); });
+    drop.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !readOnly) { e.preventDefault(); pick.click(); } });
+    pick.addEventListener('change', function () { handIn(pick.files && pick.files[0]); pick.value = ''; });
+    ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.remove('over'); }); });
+    drop.addEventListener('drop', function (e) { e.preventDefault(); handIn(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]); });
+    wireZone($('ownzone'), function () { return 'ownShot'; }, function () { return 'swday-own'; });
+    $('ownNote').addEventListener('input', function () { change('ownNote', $('ownNote').value); });
+  })();
+
+  /* ---------------- unstuck ---------------- */
+  var curEntry = null, level = 'fix', stepAt = 0;
+  var openGroups = { wrong: true };
+  function paintBrowse() {
+    var b = $('browse'); b.innerHTML = '';
+    [['wrong', 'Something is wrong'], ['how', 'How do I...'], ['what', 'What is...']].forEach(function (g) {
+      var list = E.filter(function (x) { return x.kind === g[0]; });
+      if (curEntry && curEntry.kind === g[0]) openGroups[g[0]] = true;
+      var d = el('details'); d.open = !!openGroups[g[0]];
+      var sm = el('summary'); sm.appendChild(el('span', null, g[1])); sm.appendChild(el('small', null, String(list.length))); d.appendChild(sm);
+      d.addEventListener('toggle', function () { openGroups[g[0]] = d.open; });
+      list.forEach(function (x) {
+        var btn = el('button', curEntry && curEntry.id === x.id ? 'on' : '', x.title); btn.type = 'button'; tip(btn, x.fix);
+        btn.addEventListener('click', function () { openEntry(x.id); });
+        d.appendChild(btn);
+      });
+      b.appendChild(d);
+    });
+  }
+  var KIND = { wrong: 'Something is wrong', how: 'How do I', what: 'What is' };
+  function openEntry(id, quiet) {
+    curEntry = BY[id]; level = 'fix'; stepAt = 0; paintBrowse(); paintAnswer();
+    if (!quiet) { var a = $('answer'); if (a && a.offsetParent) try { a.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { a.scrollIntoView(true); } }
+  }
+  function paintAnswer() {
+    var x = curEntry, a = $('answer'); a.innerHTML = '';
+    if (!x) return;
+    var top = el('div'); top.appendChild(el('span', 'kind ' + x.kind, KIND[x.kind])); a.appendChild(top);
+    a.appendChild(el('h3', null, x.title));
+    var f = el('div', 'fix'); f.appendChild(el('b', null, 'Do this')); f.appendChild(glEl('span', null, x.fix)); a.appendChild(f);
+    var lv = el('div', 'levels');
+    if (x.steps.length) { var b1 = tip(el('button', 'btn', 'Show me step by step'), 'Every click in order, with a map of where to look on the screen.'); b1.type = 'button'; b1.setAttribute('aria-pressed', String(level === 'steps')); b1.addEventListener('click', function () { level = level === 'steps' ? 'fix' : 'steps'; paintAnswer(); }); lv.appendChild(b1); }
+    var b2 = tip(el('button', 'btn', 'Why?'), 'Why this happens, so it does not happen again.'); b2.type = 'button'; b2.setAttribute('aria-pressed', String(level === 'why')); b2.addEventListener('click', function () { level = level === 'why' ? 'fix' : 'why'; paintAnswer(); }); lv.appendChild(b2);
+    if (canSpeak) { var b3 = tip(el('button', 'btn', 'Read it to me'), 'Reads this answer out loud. Use headphones.'); b3.type = 'button'; b3.addEventListener('click', function () { speak(x.title + '. ' + x.fix + ' ' + x.steps.map(function (s) { return s.t; }).join(' ')); }); lv.appendChild(b3); }
+    a.appendChild(lv);
+    if (level === 'steps') a.appendChild(stepsView(x));
+    if (level === 'why') a.appendChild(glEl('p', 'why', x.why));
+    if (x.related.length) {
+      var r = el('div', 'rel'); r.appendChild(document.createTextNode('Related:'));
+      x.related.forEach(function (id) { if (!BY[id]) return; var c = el('button', 'chip', BY[id].title); c.type = 'button'; tip(c, BY[id].fix); c.addEventListener('click', function () { openEntry(id); }); r.appendChild(c); });
+      a.appendChild(r);
+    }
+    a.appendChild(aiBox(x.title, x.fix));
+  }
+  function stepsView(x) {
+    var wrap = el('div', 'steps'), ol = el('ol', 'st'), mb = el('div');
+    function paint() {
+      Array.prototype.forEach.call(ol.children, function (li, i) { li.classList.toggle('on', i === stepAt); });
+      mb.innerHTML = ''; var w = x.steps[stepAt].w;
+      mb.appendChild(drawMap(w));
+      var cap = el('div', 'mapcap'); cap.appendChild(document.createTextNode('Step ' + (stepAt + 1) + ': look at ')); cap.appendChild(el('b', null, CAP[w] || w)); mb.appendChild(cap);
+      var nav = el('div', 'navrow'); nav.style.marginTop = '8px';
+      var p = el('button', 'btn small', 'Back'), n = el('button', 'btn small primary', stepAt === x.steps.length - 1 ? 'Done' : 'Next');
+      p.type = n.type = 'button'; p.disabled = stepAt === 0;
+      p.addEventListener('click', function () { if (stepAt > 0) { stepAt--; paint(); } });
+      n.addEventListener('click', function () { if (stepAt < x.steps.length - 1) { stepAt++; paint(); } else { level = 'fix'; paintAnswer(); } });
+      nav.appendChild(p); nav.appendChild(n); mb.appendChild(nav);
+    }
+    x.steps.forEach(function (s, i) { var li = el('li'), b = glEl('button', null, s.t); b.type = 'button'; b.addEventListener('click', function () { stepAt = i; paint(); }); li.appendChild(b); ol.appendChild(li); });
+    wrap.appendChild(ol); wrap.appendChild(mb); paint();
+    return wrap;
+  }
+  function aiBox(title, tried) {
+    var box = el('div', 'aibox');
+    box.appendChild(el('p', null, 'Still stuck? Raise your hand for a TA. Or, if you use an AI chat, copy this, paste it in, then paste a screenshot of your whole SolidWorks window.'));
+    var ta = el('textarea'); ta.rows = 3; ta.readOnly = true;
+    ta.value = 'I am using SOLIDWORKS for the first time in a high school class. My problem: ' + title + '. I already tried: ' + tried + ' I will paste a screenshot of my whole window next. Tell me what is causing it and the next click, one step at a time, using the exact button names.';
+    var b = tip(el('button', 'btn small', 'Copy'), 'Copies this message so you can paste it into an AI chat.'); b.type = 'button';
+    var note = el('span');
+    b.addEventListener('click', function () {
+      ta.focus(); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      if (ok) { note.textContent = ' Copied.'; return; }
+      try { navigator.clipboard.writeText(ta.value).then(function () { note.textContent = ' Copied.'; }, function () { note.textContent = ' Selected. Press Ctrl+C.'; }); } catch (e) { note.textContent = ' Selected. Press Ctrl+C.'; }
+    });
+    box.appendChild(ta); var row = el('div'); row.appendChild(b); row.appendChild(note); box.appendChild(row);
+    return box;
+  }
+
+  /* search: any word counts, typos forgiven, everyday words mapped to SolidWorks words */
+  var STOP = {}; 'i my me the a an it is are to and of in on how do does what why can with for at be this that so just its im you your was were has have had get got there here when where which who will would should could up out off into from by as or if then than too very really make let thing things like super little kinda sorta please help'.split(' ').forEach(function (w) { STOP[w] = 1; });
+  function norm(s) { return String(s).toLowerCase().replace(/can't|cannot|can not/g, 'cant').replace(/won't|will not/g, 'wont').replace(/don't|do not/g, 'dont').replace(/doesn't|does not/g, 'doesnt').replace(/[^a-z0-9+ ]/g, ' '); }
+  function toks(s) { return norm(s).split(/\s+/).filter(function (w) { return w && !STOP[w]; }); }
+  function stem(w) { return w.length > 4 ? w.replace(/(ing|ed|es|s)$/, '') : w; }
+  function dl(a, b) {
+    if (Math.abs(a.length - b.length) > 1) return 2;
+    var d = [], i, j; for (i = 0; i <= a.length; i++) d[i] = [i]; for (j = 0; j <= b.length; j++) d[0][j] = j;
+    for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) {
+      var c = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+    return d[a.length][b.length];
+  }
+  E.forEach(function (x) { x._t = toks(x.title + ' ' + x.q.replace(/;/g, ' ')).map(stem); x._p = x.q.split(';').map(function (p) { return ' ' + norm(p).trim() + ' '; }); });
+  function wordScore(w, x) {
+    var best = 0, sw = stem(w);
+    x._t.forEach(function (t) {
+      if (t === sw) best = Math.max(best, 3);
+      else if (sw.length >= 3 && (t.indexOf(sw) === 0 || sw.indexOf(t) === 0 && t.length >= 4)) best = Math.max(best, 2);
+      else if (sw.length >= 4 && dl(sw, t) <= 1) best = Math.max(best, 1.5);
+      else if (sw.length >= 7 && dl(sw, t) <= 2) best = Math.max(best, 1);
+    });
+    return best;
+  }
+  function score(x, qt, qn) {
+    var s = 0;
+    qt.forEach(function (w) {
+      var b = wordScore(w, x);
+      var syn = D.syn[w] || D.syn[stem(w)];
+      if (syn) toks(syn).forEach(function (sw) { b = Math.max(b, wordScore(sw, x) * 0.85); });
+      s += b;
+    });
+    x._p.forEach(function (p) { if (p.length > 4 && qn.indexOf(p) >= 0) s += 4; });
+    if (x.kind === 'wrong' && PROBLEM.test(qn)) s += 1.5;
+    if (x.kind === 'what' && /\bwhat\b|\bmean/.test(qn)) s += 1.5;
+    return s;
+  }
+  var PROBLEM = /\b(gone|missing|disappear\w*|wont|cant|cannot|error|red|yellow|broke\w*|not|stuck|wrong|weird|failed|fail\w*|lost|help|crash\w*|froze|frozen|nothing|grey|gray)\b/;
+  var shown = [], act = 0;
+  function search() {
+    var v = $('q').value, qt = toks(v), qn = ' ' + norm(v).replace(/\s+/g, ' ') + ' ', r = $('res');
+    r.innerHTML = '';
+    if (!qt.length) { $('hint').hidden = false; return; }
+    $('hint').hidden = true;
+    shown = E.map(function (x) { return [score(x, qt, qn), x]; }).filter(function (p) { return p[0] >= 2; })
+      .sort(function (a, b) { return b[0] - a[0]; }).slice(0, 7).map(function (p) { return p[1]; });
+    act = 0;
+    if (!shown.length) {
+      var n = el('div', 'none');
+      n.appendChild(document.createTextNode('Nothing matched those words. Try one short word you can see on screen, like sketch, extrude, red, tree, units, circle. Or pick from the lists below.'));
+      r.appendChild(n); r.appendChild(aiBox(v, 'searching the SolidWorks Unstuck page'));
+      return;
+    }
+    shown.forEach(function (x, i) {
+      var b = el('button', i === act ? 'act' : ''); b.type = 'button';
+      tip(b, x.fix); b.appendChild(el('span', 'kind ' + x.kind, KIND[x.kind])); b.appendChild(el('span', null, x.title)); b.appendChild(el('small', null, 'Open'));
+      b.addEventListener('click', function () { openEntry(x.id); });
+      r.appendChild(b);
+    });
+  }
+  $('q').addEventListener('input', search);
+  $('q').addEventListener('keydown', function (e) { if (e.key === 'Enter' && shown.length) { openEntry(shown[0].id); e.preventDefault(); } });
+  var keys = $('keys'); D.keys.forEach(function (k) { var s = el('span'); tip(s, (GL[k[0]] || k[1])); s.appendChild(el('kbd', null, k[0])); s.appendChild(document.createTextNode(k[1])); keys.appendChild(s); });
+
+  /* ---------------- progress: 10 steps + part file + own ---------------- */
+  function progress() {
+    var n = 0; for (var i = 1; i <= D.steps.length; i++) if (stepState(i) === 'done') n++;
+    var total = D.steps.length + 2, done = n + ((IMG.partA || {}).name && (IMG.partA || {}).state !== 'up' && (IMG.partA || {}).state !== 'bad' ? 1 : 0) + ((IMG.ownShot || {}).name && String($('ownNote').value).trim() ? 1 : 0);
+    $('bar').style.width = Math.round(done / total * 100) + '%';
+    $('bartext').textContent = n + ' of ' + D.steps.length + ' steps';
+    $('badge-follow').textContent = n + '/' + D.steps.length;
+  }
+
+  /* ---------------- restore ---------------- */
+  var seeded = false, wasRO = false;
+  function applyState(m) {
+    readOnly = !!m.readOnly;
+    var v = m.values || {}, imgs = m.images || {};
+    if (!dirty.ownNote && typeof v.ownNote === 'string' && $('ownNote').value !== v.ownNote) $('ownNote').value = v.ownNote;
+    document.querySelectorAll('input[type="checkbox"][data-field]').forEach(function (cb) { var f = cb.getAttribute('data-field'); if (!dirty[f]) cb.checked = v[f] === true || v[f] === 'true'; });
+    Object.keys(D.fields).forEach(function (f) {
+      var im = imgs[f], s = IMG[f] || {};
+      if (busy && busy.field === f) { if (im) { s.url = im.url; IMG[f] = s; settle(null); } return; }
+      if (dirty[f]) { if (im && s.name && !s.url) s.url = im.url; return; }
+      IMG[f] = im ? { name: im.name, url: im.url, state: 'ok' } : {};
+    });
+    document.querySelectorAll('[data-field], #ownNote').forEach(function (x) { x.disabled = readOnly; });
+    paintTree(); if ($('zone')) repaintField('s' + cur); repaintField('ownShot'); paintFile(); progress();
+    if (readOnly !== wasRO || !seeded) setStatus(readOnly ? 'Read only' : 'Autosave on');
+    seeded = true; wasRO = readOnly;
+  }
+  window.addEventListener('message', function (e) {
+    if (e.source !== window.parent) return;
+    var m = e.data; if (!m || typeof m.type !== 'string') return;
+    if (m.type === 'idea:state') applyState(m);
+    if (m.type === 'idea:saved') {
+      if (m.ok) setStatus('Saved ' + new Date(m.at).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }));
+      else { setStatus('Not saved: ' + (m.reason || 'refused'), true); if (busy) settle('Not saved: ' + (m.reason || 'the server refused it') + '.'); }
+    }
+  });
+
+  /* ---------------- the top bar follows the reader ---------------- */
+  var content = $('content'), probes = $('probes'), top = $('top'), STRIP = 40, visTop = null, lastH = 0, tops = new Map(), io = null;
+  function docH() { return content.offsetHeight; }
+  function place() { var y = visTop === null ? 0 : Math.max(0, Math.min(visTop, docH() - top.offsetHeight)); top.style.transform = y > 0 ? 'translateY(' + Math.round(y) + 'px)' : ''; top.classList.toggle('float', y > 0); }
+  function buildProbes() {
+    probes.innerHTML = ''; var h = docH(), n = Math.floor((h - 2) / STRIP) + 1, frag = document.createDocumentFragment();
+    for (var i = 0; i < n; i++) { var d = document.createElement('i'); d.style.top = (i * STRIP) + 'px'; d.style.height = Math.max(1, Math.min(STRIP, h - i * STRIP)) + 'px'; frag.appendChild(d); }
+    probes.appendChild(frag);
+    if (io) { io.disconnect(); tops.clear(); probes.querySelectorAll('i').forEach(function (s) { io.observe(s); }); }
+  }
+  if ('IntersectionObserver' in window) {
+    var thr = []; for (var ti = 0; ti <= 20; ti++) thr.push(ti / 20);
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting && en.intersectionRect.height > 0) tops.set(en.target, en.intersectionRect.top + window.scrollY); else tops.delete(en.target); });
+      var mn = Infinity; tops.forEach(function (x) { if (x < mn) mn = x; }); visTop = tops.size ? mn : null; place();
+    }, { threshold: thr });
+  }
+  var sentH = -1, queued = false;
+  function onResize() { queued = false; var h = Math.ceil(docH()); if (h !== sentH) { sentH = h; send({ type: 'idea:height', px: h + 4 }); } probes.style.height = h + 'px'; if (Math.abs(h - lastH) > STRIP) { lastH = h; buildProbes(); } place(); }
+  if (window.ResizeObserver) new ResizeObserver(function () { if (!queued) { queued = true; requestAnimationFrame(onResize); } }).observe(content);
+  buildProbes();
+
+  document.querySelectorAll('.trap p, .own li').forEach(function (p) { var parts = Array.prototype.slice.call(p.childNodes); parts.forEach(function (n) { if (n.nodeType === 3) p.replaceChild(gl(n.textContent), n); }); });
+  document.querySelectorAll('[data-tipstatic]').forEach(function (n) { n.setAttribute('data-tip', n.getAttribute('data-tipstatic')); });
+  paintTree(); paintStep(); paintTraps(); paintFile(); repaintField('ownShot'); paintBrowse(); openEntry('open-contour', true); progress();
+  send({ type: 'idea:ready', schemaVersion: 3 });
+})();
+
+</script>
+</body>
+</html>
