@@ -36,6 +36,8 @@ namespace IdeaUnstuck.AddIn.Ui
         readonly Skin skin;
         public TextRole Role { get; set; }
         public bool Soft { get; set; }
+        /// <summary>A fixed color (for example the green "Looks good"); ignored in high contrast.</summary>
+        public Color? InkColor { get; set; }
         public Words(Skin skin, string text, TextRole role = TextRole.Body)
         {
             this.skin = skin; Role = role; Text = text;
@@ -57,7 +59,8 @@ namespace IdeaUnstuck.AddIn.Ui
         protected override void OnPaint(PaintEventArgs e)
         {
             var t = skin.T;
-            TextRenderer.DrawText(e.Graphics, Text, global::IdeaUnstuck.AddIn.Ui.Text.Of(t, Role), new Rectangle(0, 0, Width, Height + 4), Soft ? t.InkSoft : t.Ink, global::IdeaUnstuck.AddIn.Ui.Text.Wrap);
+            var ink = InkColor.HasValue && !t.HighContrast ? InkColor.Value : Soft ? t.InkSoft : t.Ink;
+            TextRenderer.DrawText(e.Graphics, Text, global::IdeaUnstuck.AddIn.Ui.Text.Of(t, Role), new Rectangle(0, 0, Width, Height + 4), ink, global::IdeaUnstuck.AddIn.Ui.Text.Wrap);
         }
     }
 

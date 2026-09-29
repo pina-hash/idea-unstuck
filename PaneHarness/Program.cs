@@ -27,6 +27,8 @@ namespace PaneHarness
 
         static StateSnapshot NoDoc() => new StateSnapshot { DocumentType = 0 };
         static StateSnapshot Mm() => new StateSnapshot { DocumentType = 1, DocumentKey = "h", FileName = "SMITH_PART.SLDPRT", LengthUnit = 0, UnitSystem = 1, BodyCount = 0, InSketch = true, Sketch = new SketchState { Name = "Sketch1", Support = "Front Plane", SupportKind = "plane", EntityCount = 1, FullCircleCount = 1, ClosedContours = 1 }, Path = "C:\\x.SLDPRT" };
+        static StateSnapshot OpenSketch() => new StateSnapshot { DocumentType = 1, DocumentKey = "h", FileName = "SMITH_PART.SLDPRT", LengthUnit = 3, UnitSystem = 3, BodyCount = 0, InSketch = true, Path = "C:\\x.SLDPRT",
+            Sketch = new SketchState { Name = "Sketch1", Support = "Front Plane", SupportKind = "plane", EntityCount = 4, ContourCount = 1, OpenContours = 1, ClosedContours = 0, ConstraintCode = 2, ConstraintName = "Under defined", ConstraintMeaning = "Some lines can still move." } };
         static StateSnapshot Clean() => new StateSnapshot { DocumentType = 1, DocumentKey = "h", FileName = "SMITH_PART.SLDPRT", LengthUnit = 3, UnitSystem = 3, BodyCount = 1, Path = "C:\\x.SLDPRT" };
 
         [STAThread]
@@ -41,7 +43,7 @@ namespace PaneHarness
             var shots = new List<object>();
             foreach (var scale in new[] { 1f, 1.25f, 1.5f })
                 foreach (var width in new[] { 260, 320, 420 })
-                    foreach (var state in new[] { "first-run", "empty", "typing", "answer", "right-now", "practice", "no-document" })
+                    foreach (var state in new[] { "first-run", "empty", "typing", "answer", "right-now", "practice", "no-document", "sketch-check" })
                         shots.Add(Shot(outDir, state, width, scale, false));
             shots.Add(Shot(outDir, "answer", 320, 1f, true));
             shots.Add(Shot(outDir, "right-now", 320, 1f, true));
@@ -80,6 +82,7 @@ namespace PaneHarness
                         if (state == "answer-a++") pane.UseTextSize(2);
                         break;
                     case "right-now": pane.Render(Mm(), new Rules().Evaluate(Mm()), paths); break;
+                    case "sketch-check": pane.Render(OpenSketch(), new Rules().Evaluate(OpenSketch()), paths); break;
                     case "practice": { var g = new GuidedPaths(log); var s = Mm(); s.LengthUnit = 3; s.UnitSystem = 3; g.Update(s); pane.Render(s, new Rules().Evaluate(s), g.Paths); pane.ShowPractice(true); break; }
                     case "no-document": pane.Render(NoDoc(), new Rules().Evaluate(NoDoc()), paths); break;
                 }

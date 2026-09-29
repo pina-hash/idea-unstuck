@@ -17,7 +17,7 @@ namespace IdeaUnstuck.AddIn
     /// in place. Rules this class keeps:
     ///  * It never takes keyboard focus on its own. Only a student's click or Tab
     ///    moves focus here; Esc in the search box hands it back to SOLIDWORKS.
-    ///  * Render() (the 1.5 s poll) touches only the Right now card and the
+    ///  * Render() (the 1.5 s poll) touches only the live status panel and the
     ///    practice ticks, and only when they changed. Search text, the open
     ///    answer, the selection and the scroll position are left alone.
     /// </summary>
@@ -55,7 +55,8 @@ namespace IdeaUnstuck.AddIn
         readonly Column welcome;
         readonly SearchBox search;
         readonly Column results, rightNow, noDocument, home, browse, answer;
-        readonly Words rightNowText;
+        readonly Words rightNowText, statusText, sketchText;
+        readonly Column issues;
         readonly Tile rightNowButton;
         Tile browseToggle;
         readonly Tile export;
@@ -142,12 +143,17 @@ namespace IdeaUnstuck.AddIn
             search.Box.LostFocus += (s, e) => search.Invalidate();
             search.Box.Hint = Placeholder;
             results = new Column(skin) { Gap = 4, Visible = false, Name = "Results" };
-            rightNow = new Column(skin) { Padding = new Padding(14, 10, 10, 10), Gap = 8, Visible = false, Name = "RightNow" };
-            rightNow.Controls.Add(new Words(skin, "Right now", TextRole.SmallBold) { Soft = true });
+            // Live check of the open part, as in v0.1 and v0.2: redrawn whenever SOLIDWORKS
+            // reports something different, never otherwise.
+            rightNow = new Column(skin) { Padding = new Padding(14, 10, 10, 10), Gap = 6, Visible = false, Name = "RightNow" };
+            rightNow.Controls.Add(new Words(skin, "Your part right now", TextRole.SmallBold) { Soft = true });
             rightNowText = new Words(skin, "", TextRole.Bold) { Name = "RightNowText" };
-            rightNowButton = new Tile(skin, "", TileStyle.Primary) { Name = "RightNowButton" };
+            statusText = new Words(skin, "") { Soft = true, Name = "StatusLine" };
+            sketchText = new Words(skin, "") { Soft = true, Name = "SketchLine" };
+            rightNowButton = new Tile(skin, "", TileStyle.Primary) { Name = "RightNowButton", Visible = false };
             rightNowButton.Click += (s, e) => Guard("right_now", RightNowPressed);
-            rightNow.Controls.Add(rightNowText); rightNow.Controls.Add(rightNowButton);
+            issues = new Column(skin) { Gap = 6, Name = "Issues" };
+            rightNow.Controls.Add(rightNowText); rightNow.Controls.Add(statusText); rightNow.Controls.Add(sketchText); rightNow.Controls.Add(rightNowButton); rightNow.Controls.Add(issues);
             noDocument = new Column(skin) { Padding = new Padding(14, 10, 10, 10), Gap = 8, Visible = false, Name = "NoDocument" };
             noDocument.Controls.Add(new Words(skin, "Open or start a part", TextRole.Bold));
             noDocument.Controls.Add(new Words(skin, "This helper reads your part while you work. Start a new part, or open yours with File > Open.") { Soft = true });
@@ -484,10 +490,10 @@ namespace IdeaUnstuck.AddIn
             }
         }
 
-        // ---------- Right now card ----------
+        // ---------- Your part right now (live status) ----------
         static readonly HashSet<string> CardActions = new HashSet<string> { "units", "edit", "roll", "undo", "front" };
         static readonly HashSet<string> CardIds = new HashSet<string> { "wrong-document", "still-drawing", "tree-gone", "wrong-select", "rebuild" };
-        /// <summary>The one diagnosis confident enough to show, or null. Stuck, read gaps and reminders never show here.</summary>
+        /// <summary>The first diagnosis the helper can act on or is sure about, or null.</summary>
         public static Diagnosis Confident(IEnumerable<Diagnosis> list) => list?.FirstOrDefault(d => d.Id != "stuck" && d.Id != "read-incomplete" && d.Id != "unsaved" &&
             (d.IsError || (d.Action != null && CardActions.Contains(d.Action)) || CardIds.Contains(d.Id)));
         static string ActionLabel(string a) => a == "units" ? "Set units to inches" : a == "roll" ? "Roll to end" : a == "undo" ? "Undo" : a == "front" ? "Start a sketch on the Front Plane" : a == "edit" ? "Get back into my sketch" : null;
@@ -496,7 +502,7 @@ namespace IdeaUnstuck.AddIn
         {
             bool answerOpen = openEntry != null;
             noDocument.Visible = !answerOpen && documentType == 0;
-            rightNow.Visible = !answerOpen && documentType != 0 && cardDiagnosis != null;
+            rightNow.Visible = !answerOpen && documentType != 0;
         }
 
         void RightNowPressed()
@@ -505,6 +511,53 @@ namespace IdeaUnstuck.AddIn
             log.Write("right_now_pressed", new { d.Id, d.Action });
             if (d.Action != null && CardActions.Contains(d.Action)) Act(d.Action);
             else { var e = help?.ForDiagnosis(d.Id); if (e != null) OpenEntry(e, "right_now"); }
+        }
+
+        void BuildStatus(StateSnapshot state, List<Diagnosis> list)
+        {
+            var t = skin.T;
+            var ordered = (list ?? new List<Diagnosis>()).OrderByDescending(x => x.IsError).ToList();
+            int errors = ordered.Count(x => x.IsError);
+            if (ordered.Count == 0) { rightNowText.Text = "Looks good. Nothing to fix right now."; rightNowText.InkColor = t.Green; }
+            else if (errors > 0) { rightNowText.Text = errors == 1 ? "1 thing to fix" + (ordered.Count > 1 ? ", " + (ordered.Count - 1) + " to check" : "") : errors + " things to fix" + (ordered.Count > errors ? ", " + (ordered.Count - errors) + " to check" : ""); rightNowText.InkColor = System.Drawing.Color.FromArgb(0xa3, 0x2a, 0x2a); }
+            else { rightNowText.Text = ordered.Count == 1 ? "1 thing to check" : ordered.Count + " things to check"; rightNowText.InkColor = null; }
+            statusText.Text = state?.StatusLine ?? "";
+            var sketch = state == null || state.DocumentType != 1 ? null : state.InSketch ? state.Sketch : state.BodyCount == 0 ? state.LastSketch : null;
+            sketchText.Text = sketch == null ? "" : sketch.Describe();
+            sketchText.Visible = sketchText.Text.Length > 0;
+            Tip(sketchText, "What SOLIDWORKS reports about the sketch: its drawing items, closed and open outlines, and whether its sizes are locked.");
+            cardDiagnosis = Confident(ordered.Where(x => x.Action == null || CardActions.Contains(x.Action)));
+            var label = cardDiagnosis?.Action != null ? ActionLabel(cardDiagnosis.Action) : null;
+            rightNowButton.Visible = label != null;
+            if (label != null)
+            {
+                rightNowButton.Text = label; rightNowButton.UpdateName();
+                tips.SetToolTip(rightNowButton, "The helper does this for you in SOLIDWORKS: " + label + ". Fixes: " + cardDiagnosis.Title);
+            }
+            issues.SuspendLayout();
+            try
+            {
+                ClearChildren(issues);
+                foreach (var d in ordered)
+                {
+                    var row = new Column(skin) { Padding = new Padding(t.Px(10), t.Px(6), t.Px(8), t.Px(6)), Gap = 2, Edge = d.IsError ? System.Drawing.Color.FromArgb(0xa3, 0x2a, 0x2a) : t.PanelBorder, BackColor = t.Page, Name = "Issue_" + d.Id.Split(':')[0] };
+                    row.Controls.Add(new Words(skin, d.Title, TextRole.Bold));
+                    row.Controls.Add(new Words(skin, d.Meaning));
+                    row.Controls.Add(new Words(skin, "Next: " + d.NextClick) { Soft = true });
+                    var entry = help?.ForDiagnosis(d.Id);
+                    if (entry != null)
+                    {
+                        var how = new Tile(skin, "Show me how", TileStyle.Link);
+                        var target = entry;
+                        how.Click += (s, e) => Guard("issue_help", () => OpenEntry(target, "status"));
+                        Tip(how, target.Title);
+                        row.Controls.Add(how);
+                    }
+                    issues.Controls.Add(row);
+                }
+            }
+            finally { issues.ResumeLayout(false); }
+            issues.Visible = ordered.Count > 0;
         }
 
         public void ShowMessage(string text)
@@ -523,20 +576,12 @@ namespace IdeaUnstuck.AddIn
             var watch = Stopwatch.StartNew();
             bool changed = false;
             int type = state?.DocumentType ?? 0;
-            var d = type == 1 && (state.ReadIssues?.Count ?? 0) == 0 ? Confident(diagnoses) : type > 1 ? diagnoses?.FirstOrDefault(x => x.Id == "wrong-document") : null;
-            string key = type + "|" + (d == null ? "" : d.Id + "|" + d.Title + "|" + d.Action);
+            var sk = state == null ? null : state.InSketch ? state.Sketch : state.LastSketch;
+            string key = type + "|" + state?.StatusLine + "|" + sk?.Describe() + "|" + string.Join("|", (diagnoses ?? new List<Diagnosis>()).Select(x => x.Id + ":" + x));
             if (key != cardKey)
             {
-                cardKey = key; documentType = type; cardDiagnosis = d; changed = true;
-                if (d != null)
-                {
-                    rightNowText.Text = d.Title;
-                    var label = d.Action != null ? ActionLabel(d.Action) : null;
-                    rightNowButton.Text = label ?? "Show me how";
-                    rightNowButton.UpdateName();
-                    tips.SetToolTip(rightNowText, d.Meaning + " " + d.NextClick);
-                    tips.SetToolTip(rightNowButton, label != null ? "The helper does this for you in SOLIDWORKS: " + label + "." : "Opens the steps for this problem.");
-                }
+                cardKey = key; documentType = type; changed = true;
+                if (type != 0) BuildStatus(state, diagnoses);
                 ShowCard();
             }
             string pk = guided == null ? "" : string.Join("|", guided.Select(p => p.Title + ":" + string.Concat(p.Steps.Select(s => s.Done ? "1" : "0"))));
