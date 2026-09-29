@@ -65,8 +65,8 @@ The HTML report and JSON sidecar include the top ten diagnoses by count and comp
 ## Uninstall
 
 1. Save your work and close SOLIDWORKS.
-2. Right-click `uninstall.bat` and choose **Run as administrator**.
-3. Wait for **SUCCESS**. The program directory, COM registration, startup logon entry, and the add-in's startup registry entries in local user profiles are removed.
+2. Double-click **Uninstall IDEA Unstuck.cmd** on the flash drive and choose **Yes** (or use Settings > Apps > IDEA Unstuck > Uninstall).
+3. Wait for the green **PASS** line. The program directory, COM registration, startup logon entry, and the add-in's startup registry entries in local user profiles are removed.
 4. Open SOLIDWORKS and check that IDEA Unstuck is gone from **Tools > Add-Ins**.
 
 Running install or uninstall twice is supported. Your part files and teaching logs are deliberately retained. The separately installed .NET Developer Pack is a build tool and is not removed by the add-in uninstaller.
@@ -77,7 +77,7 @@ SOLIDWORKS stores **Start Up** in each user's `HKCU\Software\SolidWorks\AddInsSt
 
 The installer also creates the machine-wide Windows logon entry `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\IDEA Unstuck User Startup`. It runs the installed `Initialize-User.ps1` as the newly signed-in user, without an administrator prompt. The script creates that user's SOLIDWORKS startup value as DWORD 1 if it is absent. It respects an existing student's unchecked startup setting. RegAsm creates the current installing user's value immediately.
 
-This is a logon mechanism, not a service. School policy can disable logon programs or PowerShell scripts. Sign out/in and verify with a second student login. Until that real login test has passed, multi-user automatic startup remains unverified. Users already signed in when installation occurs should sign out/in or set both checkboxes manually. Uninstall visits loaded user hives and temporarily loads unloaded local profile hives to remove this add-in's setting only.
+This is a logon mechanism, not a service. School policy can disable logon programs or PowerShell scripts. Sign out/in and verify with a second student login. Until that real login test has passed, multi-user automatic startup remains unverified. Since v0.3 the installer also turns the add-in on for every user signed in at install time (it writes the value into each loaded user hive, only where absent), so no sign-out is needed. Uninstall visits loaded user hives and temporarily loads unloaded local profile hives to remove this add-in's setting only.
 
 ## For the person building it
 
@@ -102,7 +102,7 @@ Run tests on a licensed PC with standard templates:
 
 `--addin` checks the installed connection, live pane polling, and teacher ZIP export. For `--addin --startup`, first launch SOLIDWORKS normally and wait until startup is complete. This mode attaches to the running instance and checks it without calling LoadAddIn. `--diagnose` prints the installed add-in health; adding `--export` creates a teacher ZIP through the same export function used by the button.
 
-The release ZIP also includes `release\IdeaUnstuck.SelfTest.exe`. The live runner creates its own test parts through `SldWorks.Application`. It closes only the documents it created. It saves a test part and its last snapshot in `test-results` beside the executable. Use `--filter=fillet` to run one named case. `--inspect` holds the test instance for up to five minutes for inspection. Do not use the test runner during class modeling. A case fails if an API exception is caught, an expected state is missing, or a rescue does not produce its expected state. No unperformed check is counted as a pass.
+The SelfTest runner is built to `IdeaUnstuck.SelfTest\bin\Release\net48\IdeaUnstuck.SelfTest.exe` (it is not in the v0.3 flash-drive ZIP). The live runner creates its own test parts through `SldWorks.Application`. It closes only the documents it created. It saves a test part and its last snapshot in `test-results` beside the executable. Use `--filter=fillet` to run one named case. `--inspect` holds the test instance for up to five minutes for inspection. Do not use the test runner during class modeling. A case fails if an API exception is caught, an expected state is missing, or a rescue does not produce its expected state. No unperformed check is counted as a pass.
 
 ## Behavior and limits
 
@@ -149,6 +149,6 @@ The original audit could not confirm first availability for these members (the o
 
 ## Overnight stress modes
 
-After installing the exact release build and closing all documents, use `release\IdeaUnstuck.SelfTest.exe --chaos` for 500 seeded legal operations or `--soak` for 45 minutes of modeling. Both refuse to attribute metrics from a different installed build to this release. Reports go to `release\test-results`. Soak checks a 50 ms poll p95 and flags more than 256 MiB of growth after warm-up; a finite test cannot prove an unlimited memory bound. `--edges`, `--traps`, and `--learning` select their smaller live suites. A skipped prerequisite returns exit code 2; failure returns 1; a complete pass returns 0.
+After installing the exact release build and closing all documents, use `IdeaUnstuck.SelfTest.exe --chaos` for 500 seeded legal operations or `--soak` for 45 minutes of modeling. Both refuse to attribute metrics from a different installed build to this release. Reports go to `test-results` beside the executable. Soak checks a 50 ms poll p95 and flags more than 256 MiB of growth after warm-up; a finite test cannot prove an unlimited memory bound. `--edges`, `--traps`, and `--learning` select their smaller live suites. A skipped prerequisite returns exit code 2; failure returns 1; a complete pass returns 0.
 
 The development PC still has the older v0.1 add-in installed. The overnight run did not prompt for elevation. Install v0.2 before using the current host checks. See HANDOFF.md for the exact remaining acceptance work.
